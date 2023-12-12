@@ -88,7 +88,10 @@ struct APIHelper {
             let decodeData = try decoder.decode(PokemonData.self, from: pokemonDetailData)
             let pokemonId = decodeData.id
             let pokemonName = decodeData.name
-            let baseExperience = decodeData.base_experience
+            var baseExperience = -1
+            if let baseExperienceContent = decodeData.base_experience { //some Pokemons doesnt have base experience
+                baseExperience = baseExperienceContent
+            }
             let height = decodeData.height
             let weight = decodeData.weight
             var types: [String] = []

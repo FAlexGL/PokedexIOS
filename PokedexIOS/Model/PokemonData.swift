@@ -10,7 +10,7 @@ import Foundation
 struct PokemonData: Decodable{
     let id: Int
     let name: String
-    let base_experience: Int
+    let base_experience: Int?
     let height: Int
     let weight: Int
     let types: [Types]

@@ -14,13 +14,13 @@ class PokemonListVC: UIViewController {
     private var pokemonsFetched: [String] = []
     private var pokemonListModel: PokemonListModel?
     private var url = K.PokemonAPI.URL_POKEMON_LIST
-    
     private var apiHelper = APIHelper()
-    let pokemonDetailVC = PokemonDetailVC(nibName: K.NibNames.POKEMON_DETAIL, bundle: nil)
+    private let pokemonDetailVC = PokemonDetailVC(nibName: K.NibNames.POKEMON_DETAIL, bundle: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         apiHelper.delegate = self
+        pokemonDetailVC.delegate = self
         tableView.dataSource = self
         tableView.delegate = self
         tableView.rowHeight = 70.0
@@ -91,7 +91,14 @@ extension PokemonListVC: APIHelperDelegate{
 }
 
 extension PokemonListVC: PokemonDetailDelegate{
-    func favouriteUpdated(pokemonID: Int) {
-        if let cell = self.tableView
+    
+    func favouriteUpdated(pokemonID: Int, isFavourite: Bool) {
+        let indexPath = IndexPath(row: pokemonID-1, section: 0)
+        if let cell = self.tableView.cellForRow(at: indexPath) as? PokemonCellVC{
+            cell.favouriteImage.isHidden = !isFavourite
+        }
+        DispatchQueue.main.async {
+            self.tableView.reloadRows(at: [indexPath], with: .none)
+        }
     }
 }

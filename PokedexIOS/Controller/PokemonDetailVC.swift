@@ -8,7 +8,7 @@
 import UIKit
 
 protocol PokemonDetailDelegate {
-    func favouriteUpdated(pokemonID: Int)
+    func favouriteUpdated(pokemonID: Int, isFavourite: Bool)
 }
 
 class PokemonDetailVC: UIViewController {
@@ -40,7 +40,11 @@ class PokemonDetailVC: UIViewController {
             self.title = "#\(pokemonModel.pokemonId) \(pokemonModel.pokemonName)"
             self.heightLabel.text = "Height: \(pokemonModel.height)"
             weightLabel.text = "Weight: \(pokemonModel.weight)"
-            baseExperienceLabel.text = "Base experience: \(pokemonModel.baseExperience)"
+            if pokemonModel.baseExperience != -1 {
+                baseExperienceLabel.text = "Base experience: \(pokemonModel.baseExperience)"
+            } else {
+                baseExperienceLabel.text = ""
+            }
             var types = "Types: "
             for i in 0..<pokemonModel.types.count {
                 if i != pokemonModel.types.count-1{
@@ -88,10 +92,10 @@ class PokemonDetailVC: UIViewController {
             if sender.isOn{
                 let favouritePokemon = FavouritePokemon(pokemonId: pokemonModel.pokemonId, pokemonName: pokemonModel.pokemonName)
                 dbHelper.saveFavourite(favouritePokemon: favouritePokemon)
-                delegate?.favouriteUpdated(pokemonID: pokemonModel.pokemonId)
+                delegate?.favouriteUpdated(pokemonID: pokemonModel.pokemonId, isFavourite: true)
             } else {
                 dbHelper.deleteFavourite(pokemonId: pokemonModel.pokemonId)
-                delegate?.favouriteUpdated(pokemonID: pokemonModel.pokemonId)
+                delegate?.favouriteUpdated(pokemonID: pokemonModel.pokemonId, isFavourite: false)
             }
         }
     }

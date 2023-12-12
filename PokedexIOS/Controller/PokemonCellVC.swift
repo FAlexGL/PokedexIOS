@@ -12,7 +12,8 @@ class PokemonCellVC: UITableViewCell {
     @IBOutlet weak private var pokemonName: UILabel!
     @IBOutlet weak private var pokemonID: UILabel!
     @IBOutlet weak private var pokemonImage: UIImageView!
-    @IBOutlet weak private var favouriteImage: UIImageView!
+    
+    @IBOutlet weak var favouriteImage: UIImageView!
     
     private let dbHelper = DBHelper.shared
     
