@@ -37,7 +37,7 @@ class DBHelper {
     
     func isFavourite(pokemonId: Int) -> Bool {
         let realm = obtainRealm()
-        if let isFavourite = realm?.object(ofType: FavouritePokemon.self, forPrimaryKey: pokemonId){
+        if let _ = realm?.object(ofType: FavouritePokemon.self, forPrimaryKey: pokemonId){
             return true
         } else {
             return false
@@ -57,5 +57,16 @@ class DBHelper {
         } catch {
             print("Error trying to delete favourite Pokemon: \(error)")
         }
+    }
+    
+    func fetchFavourites() -> [(Int, String)] {
+        var result: [(pokemonID: Int, pokemonName: String)] = []
+        let realm = obtainRealm()
+        if let objetos = realm?.objects(FavouritePokemon.self).sorted(byKeyPath: "pokemonId", ascending: true){
+            for objeto in objetos {
+                result.append((pokemonID: objeto.pokemonId, pokemonName: objeto.pokemonName))
+            }
+        }
+        return result
     }
 }
