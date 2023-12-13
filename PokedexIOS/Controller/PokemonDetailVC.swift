@@ -40,18 +40,10 @@ class PokemonDetailVC: UIViewController {
             self.title = "#\(pokemonModel.pokemonId) \(pokemonModel.pokemonName)"
             self.heightLabel.text = "Height: \(pokemonModel.height)"
             weightLabel.text = "Weight: \(pokemonModel.weight)"
-            if pokemonModel.baseExperience != -1 {
-                baseExperienceLabel.text = "Base experience: \(pokemonModel.baseExperience)"
-            } else {
-                baseExperienceLabel.text = ""
-            }
+            baseExperienceLabel.text = pokemonModel.baseExperience != -1 ? "Base experience: \(pokemonModel.baseExperience)" : ""
             var types = "Types: "
             for i in 0..<pokemonModel.types.count {
-                if i != pokemonModel.types.count-1{
-                    types.append("\(pokemonModel.types[i]), ")
-                } else {
-                    types.append("\(pokemonModel.types[i]).")
-                }
+                i != pokemonModel.types.count-1 ? types.append("\(pokemonModel.types[i]), ") : types.append("\(pokemonModel.types[i]).")
             }
             typesLabel.text = types
             var stats = ""
@@ -59,9 +51,7 @@ class PokemonDetailVC: UIViewController {
                 stats.append("\(stat.nameStat): \(stat.baseStat)\n")
             }
             statsTextView.text = stats
-            if dbHelper.isFavourite(pokemonId: pokemonModel.pokemonId){
-                favouriteSwitch.isOn = true
-            }
+            favouriteSwitch.isOn = dbHelper.isFavourite(pokemonId: pokemonModel.pokemonId) ? true : false
             loadImage(from: pokemonModel.spriteURL)
         }
         

@@ -19,12 +19,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(windowScene: windowScene)
-        
         let navigationController = UINavigationController()
-        
         let mainVC = PokemonListVC(nibName: K.NibNames.POKEMON_LIST, bundle: nil)
         navigationController.pushViewController(mainVC, animated: true)
-        
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         

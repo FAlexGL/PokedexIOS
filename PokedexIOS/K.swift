@@ -17,6 +17,7 @@ struct K {
     struct NibNames{
         static let POKEMON_LIST = "PokemonListVC"
         static let POKEMON_DETAIL = "PokemonDetailVC"
+        static let POKEMON_ERROR = "ErrorVC"
     }
     
     struct Identifiers{

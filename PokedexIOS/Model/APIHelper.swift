@@ -28,6 +28,7 @@ extension APIHelperDelegate {
 struct APIHelper {
     
     var delegate: APIHelperDelegate?
+    static let share = APIHelper()
     
     func fetchPokemonList(url: String){
         performRequest(with: url, type: .pokemonList)

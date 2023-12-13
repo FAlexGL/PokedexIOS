@@ -21,23 +21,13 @@ class PokemonCellVC: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the sdfview for the selected state
-    }
     
     func showData(pokemonID: Int, pokemonName: String) {
         self.pokemonID.text = "#\(pokemonID)"
         self.pokemonName.text = pokemonName
         let urlString = "\(K.PokemonAPI.URL_POKEMON_IMAGE)\(pokemonID).png"
         loadImage(from: urlString)
-        if dbHelper.isFavourite(pokemonId: pokemonID){
-            favouriteImage.isHidden = false
-        } else {
-            favouriteImage.isHidden = true
-        }
+        favouriteImage.isHidden = dbHelper.isFavourite(pokemonId: pokemonID) ? false : true
     }
     
     func loadImage(from urlString: String) {

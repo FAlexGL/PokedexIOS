@@ -14,7 +14,7 @@ class PokemonListVC: UIViewController {
     private var pokemonsFetched: [String] = []
     private var pokemonListModel: PokemonListModel?
     private var url = K.PokemonAPI.URL_POKEMON_LIST
-    private var apiHelper = APIHelper()
+    private var apiHelper = APIHelper.share
     private let pokemonDetailVC = PokemonDetailVC(nibName: K.NibNames.POKEMON_DETAIL, bundle: nil)
     
     override func viewDidLoad() {
@@ -34,6 +34,15 @@ class PokemonListVC: UIViewController {
                 self.pokemonsFetched.append(pokemon)
             }
         }
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
+    func resetApp(){
+        url = K.PokemonAPI.URL_POKEMON_LIST
+        pokemonsFetched = []
+        apiHelper.fetchPokemonList(url: url)
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
@@ -77,16 +86,13 @@ extension PokemonListVC: APIHelperDelegate{
         self.loadPokemonList()
     }
     
-    
-    
-    
     func didFailWithError(error: Error) {
-        print("Error: \(error)")
+        let errorVC = ErrorVC(nibName: K.NibNames.POKEMON_ERROR, bundle: nil)
+        navigationController?.pushViewController(errorVC, animated: true)
     }
     
     func didUpdatePokemonDetail(pokemonModel: PokemonModel) {
         pokemonDetailVC.showData(pokemonModel: pokemonModel)
-        
     }
 }
 
