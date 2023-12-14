@@ -24,6 +24,7 @@ class PokemonDetailVC: UIViewController {
     private let dbHelper = DBHelper.shared
     private var isFavourite: Bool?
     private var spritesArray: [String] = []
+    private var spriteArrayPosition = 1
     
     var delegate: PokemonDetailDelegate?
     
@@ -135,14 +136,14 @@ class PokemonDetailVC: UIViewController {
         }
     }
     
-    private var arrayPosition = 1
+    
     @IBAction func imageTapped(_ sender: UITapGestureRecognizer) {
         if spritesArray.count > 1 {
-            loadImage(from: spritesArray[arrayPosition])
-            if arrayPosition < spritesArray.count-1{
-                arrayPosition += 1
+            loadImage(from: spritesArray[spriteArrayPosition])
+            if spriteArrayPosition < spritesArray.count-1{
+                spriteArrayPosition += 1
             } else {
-                arrayPosition = 0
+                spriteArrayPosition = 0
             }
         }
     }

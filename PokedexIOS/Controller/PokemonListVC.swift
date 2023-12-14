@@ -10,7 +10,6 @@ import UIKit
 class PokemonListVC: UIViewController {
     
     @IBOutlet private weak var tableView: UITableView!
-    @IBOutlet weak var switchTableView: UISwitch!
     @IBOutlet weak var favouriteTableView: UITableView!
     
     private var pokemonsFetched: [String] = []
@@ -21,6 +20,7 @@ class PokemonListVC: UIViewController {
     private let dbHelper = DBHelper.shared
     private let pokemonDetailVC = PokemonDetailVC(nibName: K.NibNames.POKEMON_DETAIL, bundle: nil)
     private var positionOfFavouritePokemonSelected: IndexPath?
+    private var isShowingOnlyFavourites = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +35,28 @@ class PokemonListVC: UIViewController {
         tableView.register(UINib(nibName: "PokemonCellVC", bundle: nil), forCellReuseIdentifier: K.Identifiers.POKEMON_CELL_IDENTIFIER)
         favouriteTableView.register(UINib(nibName: "PokemonCellVC", bundle: nil), forCellReuseIdentifier: K.Identifiers.POKEMON_CELL_IDENTIFIER)
         apiHelper.fetchPokemonList(url: url)
+        
+        let buttonFavourites = UIButton(type: .system)
+        buttonFavourites.setTitle("Show Favourites", for: .normal)
+        buttonFavourites.addTarget(self, action: #selector(favouriteButtonTapped(_:)), for: .touchUpInside)
+        let buttonItem = UIBarButtonItem(customView: buttonFavourites)
+        self.navigationItem.rightBarButtonItem = buttonItem
+    }
+        
+    @objc func favouriteButtonTapped(_ sender: UIButton!){
+        if !isShowingOnlyFavourites {
+            favouriteTableView.isHidden = false
+            favouritePokemonsFetched = dbHelper.fetchFavourites()
+            isShowingOnlyFavourites = true
+            sender.setTitle("Show all", for: .normal)
+            DispatchQueue.main.async {
+                self.favouriteTableView.reloadData()
+            }
+        } else {
+            favouriteTableView.isHidden = true
+            sender.setTitle("Show Favourites", for: .normal)
+            isShowingOnlyFavourites = false
+        }
     }
     
     private func loadPokemonList() {
@@ -55,16 +77,6 @@ class PokemonListVC: UIViewController {
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
-    }
-    
-    @IBAction func favouriteSwitchChanged(_ sender: UISwitch) {
-        if sender.isOn {
-            favouritePokemonsFetched = dbHelper.fetchFavourites()
-            DispatchQueue.main.async {
-                self.favouriteTableView.reloadData()
-            }
-        }
-        favouriteTableView.isHidden = !sender.isOn
     }
 }
 
@@ -135,19 +147,19 @@ extension PokemonListVC: APIHelperDelegate{
 extension PokemonListVC: PokemonDetailDelegate{
     func favouriteUpdated(pokemonID: Int, isFavourite: Bool) {
         let indexPath = IndexPath(row: pokemonID-1, section: 0)
-        if let cell = self.tableView.cellForRow(at: indexPath) as? PokemonCellVC{
+        if let cell = self.tableView.cellForRow(at: indexPath) as? PokemonCellVC {
             cell.favouriteImage.isHidden = !isFavourite
         }
         DispatchQueue.main.async {
             self.tableView.reloadRows(at: [indexPath], with: .none)
-        }
         
-        if self.favouriteTableView.isHidden != true {
-            if let indexPath = self.positionOfFavouritePokemonSelected {
-                favouriteTableView.beginUpdates()
-                favouritePokemonsFetched.remove(at: indexPath.row)
-                favouriteTableView.deleteRows(at: [indexPath], with: .automatic)
-                favouriteTableView.endUpdates()
+            if self.favouriteTableView.isHidden != true {
+                if let indexPath = self.positionOfFavouritePokemonSelected {
+                    self.favouriteTableView.beginUpdates()
+                    self.favouritePokemonsFetched.remove(at: indexPath.row)
+                    self.favouriteTableView.deleteRows(at: [indexPath], with: .automatic)
+                    self.favouriteTableView.endUpdates()
+                }
             }
         }
     }

@@ -103,7 +103,7 @@
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-            <point key="canvasLocation" x="37" y="20"/>
+            <point key="canvasLocation" x="62" y="17"/>
         </view>
         <tapGestureRecognizer id="bxR-nA-aGd">
             <connections>

@@ -12,12 +12,12 @@ class MovesListVC: UIViewController {
     
     private var pokemonModel: PokemonModel?
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
-        
     }
     
     func showData(pokemonModel: PokemonModel){
