@@ -119,8 +119,18 @@ struct APIHelper {
                     moves.append(PokemonModel.Moves(moveName: moveName, moveVersionDetails: moveVersionDetails))
                 }
             }
-            let spriteURL = decodeData.sprites.front_default
-            return PokemonModel(pokemonId: pokemonId, pokemonName: pokemonName, baseExperience: baseExperience, height: height, weight: weight, types: types, stats: stats, spriteURL: spriteURL, moves: moves)
+            //Sprites
+            let frontDefault = decodeData.sprites.front_default
+            let backDefault = decodeData.sprites.back_default ?? nil
+            let backFemale = decodeData.sprites.back_female ?? nil
+            let backShiny = decodeData.sprites.back_shiny ?? nil
+            let backShinyFemale = decodeData.sprites.back_shiny_female ?? nil
+            let frontFemale = decodeData.sprites.front_female ?? nil
+            let frontShiny = decodeData.sprites.front_shiny ?? nil
+            let frontShinyFemale = decodeData.sprites.front_shiny_female ?? nil
+            let sprites = PokemonModel.Sprites(frontDefault: frontDefault, backDefault: backDefault, backFemale: backFemale, backShiny: backShiny, backShinyFemale: backShinyFemale, frontFemale: frontFemale, frontShiny: frontShiny, frontShinyFemale: frontShinyFemale)
+            
+            return PokemonModel(pokemonId: pokemonId, pokemonName: pokemonName, baseExperience: baseExperience, height: height, weight: weight, types: types, stats: stats, sprites: sprites, moves: moves)
         } catch {
             delegate?.didFailWithError(error: error)
             return nil

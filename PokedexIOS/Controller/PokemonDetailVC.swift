@@ -23,6 +23,7 @@ class PokemonDetailVC: UIViewController {
     private var pokemonModel: PokemonModel?
     private let dbHelper = DBHelper.shared
     private var isFavourite: Bool?
+    private var spritesArray: [String] = []
     
     var delegate: PokemonDetailDelegate?
     
@@ -43,6 +44,7 @@ class PokemonDetailVC: UIViewController {
     
     func showData(pokemonModel: PokemonModel){
         print("Accesing to \(pokemonModel.pokemonName)'s data...")
+        spritesArray = []
         self.pokemonModel = pokemonModel
         DispatchQueue.main.async { [self] in
             self.title = "#\(pokemonModel.pokemonId) \((pokemonModel.pokemonName).uppercased())"
@@ -60,9 +62,35 @@ class PokemonDetailVC: UIViewController {
             }
             statsTextView.text = stats
             favouriteSwitch.isOn = dbHelper.isFavourite(pokemonId: pokemonModel.pokemonId) ? true : false
-            loadImage(from: pokemonModel.spriteURL)
+            loadImage(from: pokemonModel.sprites.frontDefault)
         }
-        
+        getSprites(pokemonModel.sprites)
+        print("Total sprites: \(spritesArray.count)")
+    }
+    
+    func getSprites(_ sprites: PokemonModel.Sprites){
+        spritesArray.append(sprites.frontDefault)
+        if let backDefault = sprites.backDefault {
+            spritesArray.append(backDefault)
+        }
+        if let backFemale = sprites.backFemale {
+            spritesArray.append(backFemale)
+        }
+        if let backShiny = sprites.backShiny {
+            spritesArray.append(backShiny)
+        }
+        if let backShinyFemale = sprites.backShinyFemale{
+            spritesArray.append(backShinyFemale)
+        }
+        if let frontFemale = sprites.frontFemale {
+            spritesArray.append(frontFemale)
+        }
+        if let frontShiny = sprites.frontShiny {
+            spritesArray.append(frontShiny)
+        }
+        if let frontShinyFemale = sprites.frontShinyFemale {
+            spritesArray.append(frontShinyFemale)
+        }
     }
     
     func loadImage(from urlString: String) {
@@ -106,4 +134,17 @@ class PokemonDetailVC: UIViewController {
             }
         }
     }
+    
+    private var arrayPosition = 1
+    @IBAction func imageTapped(_ sender: UITapGestureRecognizer) {
+        if spritesArray.count > 1 {
+            loadImage(from: spritesArray[arrayPosition])
+            if arrayPosition < spritesArray.count-1{
+                arrayPosition += 1
+            } else {
+                arrayPosition = 0
+            }
+        }
+    }
+    
 }

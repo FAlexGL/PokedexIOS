@@ -41,7 +41,7 @@ extension MovesListVC: UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier", for: indexPath)
         var content = cell.defaultContentConfiguration()
-        content.text = pokemonModel?.moves[indexPath.row].moveName
+        content.text = pokemonModel?.moves[indexPath.row].moveName.replacingOccurrences(of: "-", with: " ")
         content.textProperties.font = UIFont.systemFont(ofSize: 20)
         cell.contentConfiguration = content
         cell.accessoryType = .disclosureIndicator

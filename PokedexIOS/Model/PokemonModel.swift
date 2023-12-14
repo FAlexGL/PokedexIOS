@@ -15,7 +15,7 @@ struct PokemonModel {
     let weight: Int
     let types: [String]
     let stats: [Stat]
-    let spriteURL: String
+    let sprites: Sprites
     let moves: [Moves]
     
     struct Stat {
@@ -26,5 +26,16 @@ struct PokemonModel {
     struct Moves{
         let moveName: String
         let moveVersionDetails: [(level: Int, game: String)]
+    }
+    
+    struct Sprites {
+        let frontDefault: String
+        let backDefault: String?
+        let backFemale: String?
+        let backShiny: String?
+        let backShinyFemale: String?
+        let frontFemale: String?
+        let frontShiny: String?
+        let frontShinyFemale: String?
     }
 }

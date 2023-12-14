@@ -21,7 +21,7 @@ class MoveDetailVC: UIViewController {
 
             var moveInfoString = ""
             for move in move.moveVersionDetails{
-                moveInfoString.append("\(move.game):\n     -Level: \(move.level)\n\n")
+                moveInfoString.append("\(move.game.replacingOccurrences(of: "-", with: " ")):\n     -Level: \(move.level)\n\n")
             }
             self.gameAndLevelMove.text = moveInfoString
         }
