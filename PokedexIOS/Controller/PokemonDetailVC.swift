@@ -12,19 +12,40 @@ protocol PokemonDetailDelegate {
 }
 
 class PokemonDetailVC: UIViewController {
+    
     @IBOutlet weak private var pokemonImage: UIImageView!
     @IBOutlet weak private var heightLabel: UILabel!
     @IBOutlet weak private var weightLabel: UILabel!
     @IBOutlet weak private var baseExperienceLabel: UILabel!
-    @IBOutlet weak private var typesLabel: UILabel!
     @IBOutlet weak private var statsTextView: UITextView!
     @IBOutlet weak private var favouriteSwitch: UISwitch!
+    
+    //types images
+    @IBOutlet weak private var normalImage: UIImageView!
+    @IBOutlet weak private var fightingImage: UIImageView!
+    @IBOutlet weak private var flyingImage: UIImageView!
+    @IBOutlet weak private var poisonImage: UIImageView!
+    @IBOutlet weak private var groundImage: UIImageView!
+    @IBOutlet weak private var rockImage: UIImageView!
+    @IBOutlet weak private var bugImage: UIImageView!
+    @IBOutlet weak private var ghostImage: UIImageView!
+    @IBOutlet weak private var steelImage: UIImageView!
+    @IBOutlet weak private var fireImage: UIImageView!
+    @IBOutlet weak private var waterImage: UIImageView!
+    @IBOutlet weak private var grassImage: UIImageView!
+    @IBOutlet weak private var electricImage: UIImageView!
+    @IBOutlet weak private var psychicImage: UIImageView!
+    @IBOutlet weak private var iceImage: UIImageView!
+    @IBOutlet weak private var dragonImage: UIImageView!
+    @IBOutlet weak private var darkImage: UIImageView!
+    @IBOutlet weak private var fairyImage: UIImageView!
     
     private var pokemonModel: PokemonModel?
     private let dbHelper = DBHelper.shared
     private var isFavourite: Bool?
     private var spritesArray: [String] = []
     private var spriteArrayPosition = 1
+    private let defaultAlphaTypes = 0.1
     
     var delegate: PokemonDetailDelegate?
     
@@ -52,11 +73,6 @@ class PokemonDetailVC: UIViewController {
             self.heightLabel.text = "Height: \(pokemonModel.height)"
             weightLabel.text = "Weight: \(pokemonModel.weight)"
             baseExperienceLabel.text = pokemonModel.baseExperience != -1 ? "Base experience: \(pokemonModel.baseExperience)" : ""
-            var types = "Types: "
-            for i in 0..<pokemonModel.types.count {
-                i != pokemonModel.types.count-1 ? types.append("\(pokemonModel.types[i]), ") : types.append("\(pokemonModel.types[i]).")
-            }
-            typesLabel.text = types
             var stats = ""
             for stat in pokemonModel.stats {
                 stats.append("\(stat.nameStat): \(stat.baseStat)\n")
@@ -64,10 +80,76 @@ class PokemonDetailVC: UIViewController {
             statsTextView.text = stats
             favouriteSwitch.isOn = dbHelper.isFavourite(pokemonId: pokemonModel.pokemonId) ? true : false
             loadImage(from: pokemonModel.sprites.frontDefault)
+            showTypes(types: pokemonModel.types)
         }
         getSprites(pokemonModel.sprites)
         print("Total sprites: \(spritesArray.count)")
     }
+    
+    func showTypes(types: [String]) {
+        normalImage.alpha = defaultAlphaTypes
+        fightingImage.alpha = defaultAlphaTypes
+        flyingImage.alpha = defaultAlphaTypes
+        poisonImage.alpha = defaultAlphaTypes
+        groundImage.alpha = defaultAlphaTypes
+        rockImage.alpha = defaultAlphaTypes
+        bugImage.alpha = defaultAlphaTypes
+        ghostImage.alpha = defaultAlphaTypes
+        steelImage.alpha = defaultAlphaTypes
+        fireImage.alpha = defaultAlphaTypes
+        waterImage.alpha = defaultAlphaTypes
+        grassImage.alpha = defaultAlphaTypes
+        electricImage.alpha = defaultAlphaTypes
+        psychicImage.alpha = defaultAlphaTypes
+        iceImage.alpha = defaultAlphaTypes
+        dragonImage.alpha = defaultAlphaTypes
+        darkImage.alpha = defaultAlphaTypes
+        fairyImage.alpha = defaultAlphaTypes
+        
+        for type in types {
+            switch type {
+            case "normal":
+                normalImage.alpha = 1.0
+            case "fighting":
+                fightingImage.alpha = 1.0
+            case "flying":
+                flyingImage.alpha = 1.0
+            case "poison":
+                poisonImage.alpha = 1.0
+            case "ground":
+                groundImage.alpha = 1.0
+            case "rock":
+                rockImage.alpha = 1.0
+            case "bug":
+                bugImage.alpha = 1.0
+            case "ghost":
+                ghostImage.alpha = 1.0
+            case "steel":
+                steelImage.alpha = 1.0
+            case "fire":
+                fireImage.alpha = 1.0
+            case "water":
+                waterImage.alpha = 1.0
+            case "grass":
+                grassImage.alpha = 1.0
+            case "electric":
+                electricImage.alpha = 1.0
+            case "psychic":
+                psychicImage.alpha = 1.0
+            case "ice":
+                iceImage.alpha = 1.0
+            case "dragon":
+                dragonImage.alpha = 1.0
+            case "dark":
+                darkImage.alpha = 1.0
+            case "fairy":
+                fairyImage.alpha = 1.0
+            default:
+                print("error con el typo: \(type)")
+            }
+        }
+    }
+    
     
     func getSprites(_ sprites: PokemonModel.Sprites){
         spritesArray.append(sprites.frontDefault)

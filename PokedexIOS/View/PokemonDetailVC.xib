@@ -11,12 +11,29 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PokemonDetailVC" customModule="PokedexIOS" customModuleProvider="target">
             <connections>
                 <outlet property="baseExperienceLabel" destination="VIa-fM-kOX" id="yNN-Qf-F5m"/>
+                <outlet property="bugImage" destination="8h3-7E-Nzp" id="e7d-AJ-7uk"/>
+                <outlet property="darkImage" destination="KJF-RO-caC" id="AYw-Yv-xgA"/>
+                <outlet property="dragonImage" destination="Oae-ey-waQ" id="Kxt-b8-Itc"/>
+                <outlet property="electricImage" destination="FgE-OG-8Gk" id="RS2-cj-Jbf"/>
+                <outlet property="fairyImage" destination="ksL-V2-0sg" id="iGH-AZ-7xe"/>
                 <outlet property="favouriteSwitch" destination="iwi-N9-iVO" id="Gp8-sK-car"/>
+                <outlet property="fightingImage" destination="Wl8-TO-tRX" id="uOH-Ro-QWD"/>
+                <outlet property="fireImage" destination="Aq9-gd-QBr" id="Uhv-Zx-Wgq"/>
+                <outlet property="flyingImage" destination="KIe-Oa-lNE" id="X26-hQ-SCc"/>
+                <outlet property="ghostImage" destination="6Wy-rI-3Kd" id="hL1-AX-bue"/>
+                <outlet property="grassImage" destination="mBd-v5-LhC" id="02U-4i-7HZ"/>
+                <outlet property="groundImage" destination="Cxv-Ee-XUm" id="Z1f-Gl-z7r"/>
                 <outlet property="heightLabel" destination="j15-aC-nDi" id="Svi-Ef-fdL"/>
+                <outlet property="iceImage" destination="0EI-AC-vmy" id="uEd-2y-Pc3"/>
+                <outlet property="normalImage" destination="i8p-SG-qcZ" id="d4H-Md-Gn3"/>
+                <outlet property="poisonImage" destination="HMH-4C-o3J" id="bD1-NF-FAi"/>
                 <outlet property="pokemonImage" destination="Anq-CQ-g0R" id="Sr7-nf-whh"/>
+                <outlet property="psychicImage" destination="PF7-lg-e8B" id="J9k-GE-cbG"/>
+                <outlet property="rockImage" destination="iaS-Qv-U2W" id="JAj-C8-Cbe"/>
                 <outlet property="statsTextView" destination="5ok-E1-eXj" id="tLT-ga-PB1"/>
-                <outlet property="typesLabel" destination="Wdf-C1-Tds" id="2jI-2y-3Ro"/>
+                <outlet property="steelImage" destination="93N-e6-FLm" id="Ivp-VZ-TWI"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="waterImage" destination="usK-Lo-7FF" id="hkV-mv-KYt"/>
                 <outlet property="weightLabel" destination="heO-0Q-nVl" id="elu-U8-QGK"/>
             </connections>
         </placeholder>
@@ -26,28 +43,21 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Base Experience" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VIa-fM-kOX">
-                    <rect key="frame" x="16" y="344" width="361" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Types:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wdf-C1-Tds">
-                    <rect key="frame" x="16" y="379" width="361" height="27"/>
+                    <rect key="frame" x="16" y="419" width="361" height="27"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Base stats:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Az8-jD-mXb">
-                    <rect key="frame" x="16" y="414" width="104" height="27"/>
+                    <rect key="frame" x="16" y="489" width="104" height="27"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="5ok-E1-eXj">
-                    <rect key="frame" x="16" y="449" width="361" height="225"/>
+                    <rect key="frame" x="16" y="524" width="361" height="225"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
@@ -56,43 +66,122 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="iwi-N9-iVO">
-                    <rect key="frame" x="330" y="692" width="49" height="31"/>
+                    <rect key="frame" x="330" y="767" width="49" height="31"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <connections>
                         <action selector="switchChanged:" destination="-1" eventType="valueChanged" id="712-zf-8k9"/>
                     </connections>
                 </switch>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Favourite:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x3S-v7-rSG">
-                    <rect key="frame" x="221" y="694" width="93" height="27"/>
+                    <rect key="frame" x="221" y="769" width="93" height="27"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Weight" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="heO-0Q-nVl">
-                    <rect key="frame" x="16" y="310" width="183" height="26"/>
+                    <rect key="frame" x="16" y="385" width="183" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Height" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j15-aC-nDi">
-                    <rect key="frame" x="207" y="309" width="170" height="26"/>
+                    <rect key="frame" x="207" y="384" width="170" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Anq-CQ-g0R">
-                    <rect key="frame" x="16" y="107" width="361" height="195"/>
+                    <rect key="frame" x="16" y="107" width="361" height="169"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <gestureRecognizers/>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="bxR-nA-aGd" appends="YES" id="1l6-CP-TOn"/>
                     </connections>
                 </imageView>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mtp-zo-1wJ">
+                    <rect key="frame" x="0.0" y="285" width="393" height="91"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="normal" translatesAutoresizingMaskIntoConstraints="NO" id="i8p-SG-qcZ">
+                            <rect key="frame" x="8" y="5" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fighting" translatesAutoresizingMaskIntoConstraints="NO" id="Wl8-TO-tRX">
+                            <rect key="frame" x="51" y="5" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="flying" translatesAutoresizingMaskIntoConstraints="NO" id="KIe-Oa-lNE">
+                            <rect key="frame" x="94" y="5" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="poison" translatesAutoresizingMaskIntoConstraints="NO" id="HMH-4C-o3J">
+                            <rect key="frame" x="137" y="5" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ground" translatesAutoresizingMaskIntoConstraints="NO" id="Cxv-Ee-XUm">
+                            <rect key="frame" x="180" y="5" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="rock" translatesAutoresizingMaskIntoConstraints="NO" id="iaS-Qv-U2W">
+                            <rect key="frame" x="223" y="5" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bug" translatesAutoresizingMaskIntoConstraints="NO" id="8h3-7E-Nzp">
+                            <rect key="frame" x="266" y="5" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ghost" translatesAutoresizingMaskIntoConstraints="NO" id="6Wy-rI-3Kd">
+                            <rect key="frame" x="309" y="5" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fire" translatesAutoresizingMaskIntoConstraints="NO" id="Aq9-gd-QBr">
+                            <rect key="frame" x="8" y="48" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="water" translatesAutoresizingMaskIntoConstraints="NO" id="usK-Lo-7FF">
+                            <rect key="frame" x="51" y="48" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="grass" translatesAutoresizingMaskIntoConstraints="NO" id="mBd-v5-LhC">
+                            <rect key="frame" x="94" y="48" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="steel" translatesAutoresizingMaskIntoConstraints="NO" id="93N-e6-FLm">
+                            <rect key="frame" x="350" y="5" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="electric" translatesAutoresizingMaskIntoConstraints="NO" id="FgE-OG-8Gk">
+                            <rect key="frame" x="137" y="48" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="psychic" translatesAutoresizingMaskIntoConstraints="NO" id="PF7-lg-e8B">
+                            <rect key="frame" x="180" y="48" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ice" translatesAutoresizingMaskIntoConstraints="NO" id="0EI-AC-vmy">
+                            <rect key="frame" x="223" y="48" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="dragon" translatesAutoresizingMaskIntoConstraints="NO" id="Oae-ey-waQ">
+                            <rect key="frame" x="266" y="48" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="dark" translatesAutoresizingMaskIntoConstraints="NO" id="KJF-RO-caC">
+                            <rect key="frame" x="309" y="48" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fairy" translatesAutoresizingMaskIntoConstraints="NO" id="ksL-V2-0sg">
+                            <rect key="frame" x="352" y="48" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </view>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="owi-Og-DSE">
-                    <rect key="frame" x="70" y="692" width="74" height="35"/>
+                    <rect key="frame" x="70" y="769" width="74" height="34.333333333333371"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="filled" title="Moves"/>
@@ -103,7 +192,7 @@
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-            <point key="canvasLocation" x="62" y="17"/>
+            <point key="canvasLocation" x="61.832061068702288" y="16.901408450704228"/>
         </view>
         <tapGestureRecognizer id="bxR-nA-aGd">
             <connections>
@@ -112,6 +201,24 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
+        <image name="bug" width="64" height="64"/>
+        <image name="dark" width="63" height="63"/>
+        <image name="dragon" width="64" height="64"/>
+        <image name="electric" width="64" height="64"/>
+        <image name="fairy" width="64" height="64"/>
+        <image name="fighting" width="64" height="64"/>
+        <image name="fire" width="64" height="64"/>
+        <image name="flying" width="64" height="64"/>
+        <image name="ghost" width="64" height="64"/>
+        <image name="grass" width="64" height="64"/>
+        <image name="ground" width="64" height="64"/>
+        <image name="ice" width="64" height="64"/>
+        <image name="normal" width="64" height="64"/>
+        <image name="poison" width="64" height="64"/>
+        <image name="psychic" width="64" height="64"/>
+        <image name="rock" width="64" height="64"/>
+        <image name="steel" width="64" height="64"/>
+        <image name="water" width="64" height="64"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

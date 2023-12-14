@@ -21,12 +21,12 @@ class MovesListVC: UIViewController {
     }
     
     func showData(pokemonModel: PokemonModel){
-        self.pokemonModel = pokemonModel
         DispatchQueue.main.async {
+            self.pokemonModel = pokemonModel
             self.tableView.reloadData()
         }
     }
-
+    
 }
 
 extension MovesListVC: UITableViewDataSource{
