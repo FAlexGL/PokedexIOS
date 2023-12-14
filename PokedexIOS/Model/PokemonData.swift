@@ -16,6 +16,7 @@ struct PokemonData: Decodable{
     let types: [Types]
     let stats: [Stats]
     let sprites: Sprites
+    let moves: [Moves]
 }
 
 struct Types: Decodable{
@@ -40,4 +41,22 @@ struct Stat: Decodable{
 
 struct Sprites: Decodable{
     let front_default: String
+}
+
+struct Moves: Decodable{
+    let move: Move
+    let version_group_details: [VersionGroupDetails]
+}
+
+struct Move: Decodable{
+    let name: String
+}
+
+struct VersionGroupDetails: Decodable{
+    let level_learned_at: Int
+    let version_group: VersionGroup
+}
+
+struct VersionGroup: Decodable{
+    let name: String
 }

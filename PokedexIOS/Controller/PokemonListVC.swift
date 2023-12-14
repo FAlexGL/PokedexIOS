@@ -109,6 +109,7 @@ extension PokemonListVC: UITableViewDelegate{
             apiHelper.fetchPokemonDetail(pokemonId: favouritePokemonsFetched[indexPath.row].pokemonID)
             navigationController?.pushViewController(pokemonDetailVC, animated: true)
         }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

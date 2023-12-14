@@ -22,6 +22,7 @@ class PokemonDetailVC: UIViewController {
     
     private var pokemonModel: PokemonModel?
     private let dbHelper = DBHelper.shared
+    private var isFavourite: Bool?
     
     var delegate: PokemonDetailDelegate?
     
@@ -33,11 +34,18 @@ class PokemonDetailVC: UIViewController {
         ]
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if let isFavourite = isFavourite, let pokemonId = pokemonModel?.pokemonId, isMovingFromParent{
+            delegate?.favouriteUpdated(pokemonID: pokemonId, isFavourite: isFavourite)
+        }
+    }
+    
     func showData(pokemonModel: PokemonModel){
         print("Accesing to \(pokemonModel.pokemonName)'s data...")
         self.pokemonModel = pokemonModel
         DispatchQueue.main.async { [self] in
-            self.title = "#\(pokemonModel.pokemonId) \(pokemonModel.pokemonName)"
+            self.title = "#\(pokemonModel.pokemonId) \((pokemonModel.pokemonName).uppercased())"
             self.heightLabel.text = "Height: \(pokemonModel.height)"
             weightLabel.text = "Weight: \(pokemonModel.weight)"
             baseExperienceLabel.text = pokemonModel.baseExperience != -1 ? "Base experience: \(pokemonModel.baseExperience)" : ""
@@ -82,10 +90,19 @@ class PokemonDetailVC: UIViewController {
             if sender.isOn{
                 let favouritePokemon = FavouritePokemon(pokemonId: pokemonModel.pokemonId, pokemonName: pokemonModel.pokemonName)
                 dbHelper.saveFavourite(favouritePokemon: favouritePokemon)
-                delegate?.favouriteUpdated(pokemonID: pokemonModel.pokemonId, isFavourite: true)
             } else {
                 dbHelper.deleteFavourite(pokemonId: pokemonModel.pokemonId)
-                delegate?.favouriteUpdated(pokemonID: pokemonModel.pokemonId, isFavourite: false)
+            }
+            self.isFavourite = sender.isOn
+        }
+    }
+    
+    @IBAction func movesButtonPushed(_ sender: UIButton) {
+        let movesListVC = MovesListVC(nibName: K.NibNames.POKEMON_MOVES_LIST, bundle: nil)
+        if let pokemonModel = self.pokemonModel {
+            DispatchQueue.main.async {
+                movesListVC.showData(pokemonModel: pokemonModel)
+                self.navigationController?.pushViewController(movesListVC, animated: true)
             }
         }
     }

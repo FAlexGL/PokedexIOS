@@ -106,8 +106,21 @@ struct APIHelper {
                 let stat = PokemonModel.Stat(baseStat: baseStat, nameStat: nameStat)
                 stats.append(stat)
             }
+            var moves: [PokemonModel.Moves] = []
+            for move in decodeData.moves {
+                let moveName = move.move.name
+                var moveVersionDetails: [(level: Int, game: String)] = []
+                for moveVersion in move.version_group_details {
+                    if moveVersion.level_learned_at > 0 {
+                        moveVersionDetails.append((level: moveVersion.level_learned_at, game: moveVersion.version_group.name))
+                    }
+                }
+                if moveVersionDetails.count > 0 {
+                    moves.append(PokemonModel.Moves(moveName: moveName, moveVersionDetails: moveVersionDetails))
+                }
+            }
             let spriteURL = decodeData.sprites.front_default
-            return PokemonModel(pokemonId: pokemonId, pokemonName: pokemonName, baseExperience: baseExperience, height: height, weight: weight, types: types, stats: stats, spriteURL: spriteURL)
+            return PokemonModel(pokemonId: pokemonId, pokemonName: pokemonName, baseExperience: baseExperience, height: height, weight: weight, types: types, stats: stats, spriteURL: spriteURL, moves: moves)
         } catch {
             delegate?.didFailWithError(error: error)
             return nil

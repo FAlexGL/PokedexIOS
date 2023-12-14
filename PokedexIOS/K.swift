@@ -18,6 +18,8 @@ struct K {
         static let POKEMON_LIST = "PokemonListVC"
         static let POKEMON_DETAIL = "PokemonDetailVC"
         static let POKEMON_ERROR = "ErrorVC"
+        static let POKEMON_MOVES_LIST = "MovesListVC"
+        static let POKEMON_MOVE_DETAIL = "MoveDetailVC"
     }
     
     struct Identifiers{
