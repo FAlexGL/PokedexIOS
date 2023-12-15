@@ -12,15 +12,15 @@ class PokemonCellVC: UITableViewCell {
     @IBOutlet weak private var pokemonName: UILabel!
     @IBOutlet weak private var pokemonID: UILabel!
     @IBOutlet weak private var pokemonImage: UIImageView!
+    @IBOutlet weak private var contentCellView: UIView!
+    
     @IBOutlet weak var favouriteImage: UIImageView!
-    @IBOutlet weak var contentCellView: UIView!
     
     private let dbHelper = DBHelper.shared
     
     override func awakeFromNib() {
         super.awakeFromNib()
         contentCellView.layer.cornerRadius = 15
-        
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
         swipeGesture.direction = .left
         self.addGestureRecognizer(swipeGesture)
@@ -42,6 +42,7 @@ class PokemonCellVC: UITableViewCell {
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 print("Error obtaining pokemon's sprite: \(error)")
+                self.pokemonImage.image = UIImage(named: K.Images.MISSINGNO)
             }
             if let data = data {
                 DispatchQueue.main.async {

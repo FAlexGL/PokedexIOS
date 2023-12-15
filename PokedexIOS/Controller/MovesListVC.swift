@@ -17,7 +17,7 @@ class MovesListVC: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
-        if let pokemonModel = pokemonModel {
+        if pokemonModel != nil {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }

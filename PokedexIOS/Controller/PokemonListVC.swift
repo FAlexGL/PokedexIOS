@@ -10,7 +10,7 @@ import UIKit
 class PokemonListVC: UIViewController {
     
     @IBOutlet private weak var tableView: UITableView!
-    @IBOutlet weak var favouriteTableView: UITableView!
+    @IBOutlet private weak var favouriteTableView: UITableView!
     
     private var pokemonsFetched: [String] = []
     private var favouritePokemonsFetched: [(pokemonID: Int, pokemonName: String)] = []

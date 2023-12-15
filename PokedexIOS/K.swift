@@ -29,4 +29,8 @@ struct K {
     struct Colours {
         static let BLUE_POKEMON_TITLE = "bluePokemonLogo"
     }
+    
+    struct Images {
+        static let MISSINGNO = "MissingNO"
+    }
 }

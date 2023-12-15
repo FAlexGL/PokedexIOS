@@ -18,7 +18,6 @@ class MoveDetailVC: UIViewController {
     func showData(move: PokemonModel.Moves){
         DispatchQueue.main.async {
             self.moveNameLabel.text = (move.moveName).uppercased()
-
             var moveInfoString = ""
             for move in move.moveVersionDetails{
                 moveInfoString.append("\(move.game.replacingOccurrences(of: "-", with: " ")):\n     -Level: \(move.level)\n\n")

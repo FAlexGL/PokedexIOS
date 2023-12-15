@@ -202,6 +202,7 @@ class PokemonDetailVC: UIViewController {
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 print("Error obtaining pokemon's sprite: \(error)")
+                self.pokemonImage.image = UIImage(named: K.Images.MISSINGNO)
             }
             if let data = data {
                 DispatchQueue.main.async {
@@ -230,7 +231,6 @@ class PokemonDetailVC: UIViewController {
         if let pokemonModel = self.pokemonModel {
             let movesListVC = MovesListVC(nibName: K.NibNames.POKEMON_MOVES_LIST, bundle: nil)
             DispatchQueue.main.async {
-//                movesListVC.showData(pokemonModel: pokemonModel)
                 movesListVC.setPokemonModel(pokemonModel: pokemonModel)
                 self.navigationController?.pushViewController(movesListVC, animated: true)
             }
@@ -248,5 +248,4 @@ class PokemonDetailVC: UIViewController {
             }
         }
     }
-    
 }
