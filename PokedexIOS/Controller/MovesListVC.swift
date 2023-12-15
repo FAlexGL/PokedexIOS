@@ -12,21 +12,21 @@ class MovesListVC: UIViewController {
     
     private var pokemonModel: PokemonModel?
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
-    }
-    
-    func showData(pokemonModel: PokemonModel){
-        DispatchQueue.main.async {
-            self.pokemonModel = pokemonModel
-            self.tableView.reloadData()
+        if let pokemonModel = pokemonModel {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     
+    func setPokemonModel(pokemonModel: PokemonModel){
+        self.pokemonModel = pokemonModel
+    }
 }
 
 extension MovesListVC: UITableViewDataSource{

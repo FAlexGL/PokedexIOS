@@ -25,4 +25,8 @@ struct K {
     struct Identifiers{
         static let POKEMON_CELL_IDENTIFIER = "cell"
     }
+    
+    struct Colours {
+        static let BLUE_POKEMON_TITLE = "bluePokemonLogo"
+    }
 }

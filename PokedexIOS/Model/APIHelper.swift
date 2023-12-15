@@ -99,13 +99,18 @@ struct APIHelper {
             for type in decodeData.types {
                 types.append(type.type.name)
             }
-            var stats: [PokemonModel.Stat] = []
+            var stats: [(statName:String, baseStat:Int)] = []
             for stat in decodeData.stats {
-                let baseStat = stat.base_stat
-                let nameStat = stat.stat.name
-                let stat = PokemonModel.Stat(baseStat: baseStat, nameStat: nameStat)
+                let stat = (statName: stat.stat.name, baseStat: stat.base_stat)
                 stats.append(stat)
             }
+//            var stats: [PokemonModel.Stat] = []
+//            for stat in decodeData.stats {
+//                let baseStat = stat.base_stat
+//                let nameStat = stat.stat.name
+//                let stat = PokemonModel.Stat(baseStat: baseStat, nameStat: nameStat)
+//                stats.append(stat)
+//            }
             var moves: [PokemonModel.Moves] = []
             for move in decodeData.moves {
                 let moveName = move.move.name

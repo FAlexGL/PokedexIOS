@@ -17,8 +17,13 @@ class PokemonDetailVC: UIViewController {
     @IBOutlet weak private var heightLabel: UILabel!
     @IBOutlet weak private var weightLabel: UILabel!
     @IBOutlet weak private var baseExperienceLabel: UILabel!
-    @IBOutlet weak private var statsTextView: UITextView!
     @IBOutlet weak private var favouriteSwitch: UISwitch!
+    @IBOutlet weak private var hpLabel: UILabel!
+    @IBOutlet weak private var attackLabel: UILabel!
+    @IBOutlet weak private var deffenseLabel: UILabel!
+    @IBOutlet weak private var specialAttackLabel: UILabel!
+    @IBOutlet weak private var specialDefenseLabel: UILabel!
+    @IBOutlet weak private var speedLabel: UILabel!
     
     //types images
     @IBOutlet weak private var normalImage: UIImageView!
@@ -70,14 +75,27 @@ class PokemonDetailVC: UIViewController {
         self.pokemonModel = pokemonModel
         DispatchQueue.main.async { [self] in
             self.title = "#\(pokemonModel.pokemonId) \((pokemonModel.pokemonName).uppercased())"
-            self.heightLabel.text = "Height: \(pokemonModel.height)"
-            weightLabel.text = "Weight: \(pokemonModel.weight)"
-            baseExperienceLabel.text = pokemonModel.baseExperience != -1 ? "Base experience: \(pokemonModel.baseExperience)" : ""
-            var stats = ""
-            for stat in pokemonModel.stats {
-                stats.append("\(stat.nameStat): \(stat.baseStat)\n")
+            self.heightLabel.text = "\(pokemonModel.height)"
+            weightLabel.text = "\(pokemonModel.weight)"
+            baseExperienceLabel.text = pokemonModel.baseExperience != -1 ? "\(pokemonModel.baseExperience)" : ""
+            for stat in pokemonModel.stats{
+                switch stat.statName {
+                case "hp":
+                    hpLabel.text = "\(stat.baseStat)"
+                case "attack":
+                    attackLabel.text = "\(stat.baseStat)"
+                case "defense":
+                    deffenseLabel.text = "\(stat.baseStat)"
+                case "special-attack":
+                    specialAttackLabel.text = "\(stat.baseStat)"
+                case "special-defense":
+                    specialDefenseLabel.text = "\(stat.baseStat)"
+                case "speed":
+                    speedLabel.text = "\(stat.baseStat)"
+                default:
+                    print("Unknow stat: \(stat.statName) - \(stat.baseStat)")
+                }
             }
-            statsTextView.text = stats
             favouriteSwitch.isOn = dbHelper.isFavourite(pokemonId: pokemonModel.pokemonId) ? true : false
             loadImage(from: pokemonModel.sprites.frontDefault)
             showTypes(types: pokemonModel.types)
@@ -86,7 +104,7 @@ class PokemonDetailVC: UIViewController {
         print("Total sprites: \(spritesArray.count)")
     }
     
-    func showTypes(types: [String]) {
+    private func showTypes(types: [String]) {
         normalImage.alpha = defaultAlphaTypes
         fightingImage.alpha = defaultAlphaTypes
         flyingImage.alpha = defaultAlphaTypes
@@ -151,7 +169,7 @@ class PokemonDetailVC: UIViewController {
     }
     
     
-    func getSprites(_ sprites: PokemonModel.Sprites){
+    private func getSprites(_ sprites: PokemonModel.Sprites){
         spritesArray.append(sprites.frontDefault)
         if let backDefault = sprites.backDefault {
             spritesArray.append(backDefault)
@@ -176,7 +194,7 @@ class PokemonDetailVC: UIViewController {
         }
     }
     
-    func loadImage(from urlString: String) {
+    private func loadImage(from urlString: String) {
         guard let url = URL(string: urlString) else {
             print("Error converting URL object")
             return
@@ -196,7 +214,7 @@ class PokemonDetailVC: UIViewController {
         task.resume()
     }
     
-    @IBAction func switchChanged(_ sender: UISwitch) {
+    @IBAction private func switchChanged(_ sender: UISwitch) {
         if let pokemonModel = self.pokemonModel {
             if sender.isOn{
                 let favouritePokemon = FavouritePokemon(pokemonId: pokemonModel.pokemonId, pokemonName: pokemonModel.pokemonName)
@@ -208,18 +226,19 @@ class PokemonDetailVC: UIViewController {
         }
     }
     
-    @IBAction func movesButtonPushed(_ sender: UIButton) {
-        let movesListVC = MovesListVC(nibName: K.NibNames.POKEMON_MOVES_LIST, bundle: nil)
+    @IBAction private func movesButtonPushed(_ sender: UIButton) {
         if let pokemonModel = self.pokemonModel {
+            let movesListVC = MovesListVC(nibName: K.NibNames.POKEMON_MOVES_LIST, bundle: nil)
             DispatchQueue.main.async {
-                movesListVC.showData(pokemonModel: pokemonModel)
+//                movesListVC.showData(pokemonModel: pokemonModel)
+                movesListVC.setPokemonModel(pokemonModel: pokemonModel)
                 self.navigationController?.pushViewController(movesListVC, animated: true)
             }
         }
     }
     
     
-    @IBAction func imageTapped(_ sender: UITapGestureRecognizer) {
+    @IBAction private func imageTapped(_ sender: UITapGestureRecognizer) {
         if spritesArray.count > 1 {
             loadImage(from: spritesArray[spriteArrayPosition])
             if spriteArrayPosition < spritesArray.count-1{

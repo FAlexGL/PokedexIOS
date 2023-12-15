@@ -30,20 +30,21 @@ class PokemonListVC: UIViewController {
         favouriteTableView.dataSource = self
         tableView.delegate = self
         favouriteTableView.delegate = self
-        tableView.rowHeight = 70.0
-        favouriteTableView.rowHeight = 70.0
+        tableView.rowHeight = 93.0
+        favouriteTableView.rowHeight = 93.0
         tableView.register(UINib(nibName: "PokemonCellVC", bundle: nil), forCellReuseIdentifier: K.Identifiers.POKEMON_CELL_IDENTIFIER)
         favouriteTableView.register(UINib(nibName: "PokemonCellVC", bundle: nil), forCellReuseIdentifier: K.Identifiers.POKEMON_CELL_IDENTIFIER)
         apiHelper.fetchPokemonList(url: url)
         
         let buttonFavourites = UIButton(type: .system)
+        buttonFavourites.tintColor = UIColor.white
         buttonFavourites.setTitle("Show Favourites", for: .normal)
         buttonFavourites.addTarget(self, action: #selector(favouriteButtonTapped(_:)), for: .touchUpInside)
         let buttonItem = UIBarButtonItem(customView: buttonFavourites)
         self.navigationItem.rightBarButtonItem = buttonItem
     }
         
-    @objc func favouriteButtonTapped(_ sender: UIButton!){
+    @objc private func favouriteButtonTapped(_ sender: UIButton!){
         if !isShowingOnlyFavourites {
             favouriteTableView.isHidden = false
             favouritePokemonsFetched = dbHelper.fetchFavourites()

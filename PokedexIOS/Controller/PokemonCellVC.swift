@@ -12,13 +12,15 @@ class PokemonCellVC: UITableViewCell {
     @IBOutlet weak private var pokemonName: UILabel!
     @IBOutlet weak private var pokemonID: UILabel!
     @IBOutlet weak private var pokemonImage: UIImageView!
-    
     @IBOutlet weak var favouriteImage: UIImageView!
+    @IBOutlet weak var contentCellView: UIView!
     
     private let dbHelper = DBHelper.shared
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        contentCellView.layer.cornerRadius = 15
+        
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
         swipeGesture.direction = .left
         self.addGestureRecognizer(swipeGesture)

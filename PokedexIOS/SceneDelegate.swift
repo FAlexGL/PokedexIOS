@@ -20,6 +20,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
         let navigationController = UINavigationController()
+        navigationController.navigationBar.isTranslucent = false
+        navigationController.navigationBar.barTintColor = UIColor(named: K.Colours.BLUE_POKEMON_TITLE)
         let mainVC = PokemonListVC(nibName: K.NibNames.POKEMON_LIST, bundle: nil)
         navigationController.pushViewController(mainVC, animated: true)
         window?.rootViewController = navigationController
