@@ -6,3 +6,17 @@
 //
 
 import Foundation
+
+struct MoveModel {
+    let id: Int
+    let name: String
+    let power: Int?
+    let pp: Int
+    let priority: Int
+    let accuracy: Int?
+    let effect_chance: Int?
+    let damageClass: String
+    let effect: String
+    let target: String
+    let moveType: String
+}

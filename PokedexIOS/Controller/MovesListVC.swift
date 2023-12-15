@@ -11,9 +11,13 @@ class MovesListVC: UIViewController {
     @IBOutlet weak private var tableView: UITableView!
     
     private var pokemonModel: PokemonModel?
+    private var apiHelper = APIHelper.share
+    private let moveDetailVC = MoveDetailVC(nibName: K.NibNames.POKEMON_MOVE_DETAIL, bundle: nil)
+    private var selectedRow: Int = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        apiHelper.delegate = self
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
@@ -52,13 +56,25 @@ extension MovesListVC: UITableViewDataSource{
 extension MovesListVC: UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let moveDetailVC = MoveDetailVC(nibName: K.NibNames.POKEMON_MOVE_DETAIL, bundle: nil)
         if let pokemonModel = self.pokemonModel {
+            apiHelper.fetchMoveDetail(moveName: pokemonModel.moves[indexPath.row].moveName)
+            self.selectedRow = indexPath.row
             DispatchQueue.main.async {
-                moveDetailVC.showData(move: pokemonModel.moves[indexPath.row])
-                self.navigationController?.pushViewController(moveDetailVC, animated: true)
+                self.navigationController?.pushViewController(self.moveDetailVC, animated: true)
             }
         }
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+extension MovesListVC: APIHelperDelegate{
+    func didFailWithError(error: Error) {
+        print("Error: \(error)")
+    }
+    
+    func didUpdatePokemonMove(moveModel: MoveModel) {
+        if let pokemonModel = pokemonModel {
+            self.moveDetailVC.setMoves(moveModel: moveModel, levelsMove: pokemonModel.moves[self.selectedRow])
+        }
     }
 }

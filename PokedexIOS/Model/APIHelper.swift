@@ -10,11 +10,13 @@ import Foundation
 enum ParseType {
     case pokemonList
     case pokemonDetail
+    case pokemonMove
 }
 
 protocol APIHelperDelegate {
     func didUpdatePokemonList(pokemonListModel: PokemonListModel)
     func didUpdatePokemonDetail(pokemonModel: PokemonModel)
+    func didUpdatePokemonMove(moveModel: MoveModel)
     func didFailWithError(error: Error)
 }
 
@@ -22,6 +24,8 @@ extension APIHelperDelegate {
     func didUpdatePokemonList(pokemonListModel: PokemonListModel){
     }
     func didUpdatePokemonDetail(pokemonModel: PokemonModel){
+    }
+    func didUpdatePokemonMove(moveModel: MoveModel){
     }
 }
 
@@ -36,6 +40,10 @@ struct APIHelper {
     
     func fetchPokemonDetail(pokemonId: Int){
         performRequest(with: "\(K.PokemonAPI.URL_POKEMON_DETAIL)\(pokemonId)", type: .pokemonDetail)
+    }
+    
+    func fetchMoveDetail(moveName: String){
+        performRequest(with: "\(K.PokemonAPI.URL_POKEMON_MOVE)\(moveName)", type: .pokemonMove)
     }
     
     
@@ -58,10 +66,38 @@ struct APIHelper {
                         if let pokemonModel = parseJSONPokemonDetail(safeData) {
                             delegate?.didUpdatePokemonDetail(pokemonModel: pokemonModel)
                         }
+                    case .pokemonMove:
+                        if let moveModel = parseJSONPokemonMove(safeData){
+                            delegate?.didUpdatePokemonMove(moveModel: moveModel)
+                        }
                     }
                 }
             }
             task.resume()
+        }
+    }
+    
+    private func parseJSONPokemonMove(_ moveData: Data) -> MoveModel? {
+        let decoder = JSONDecoder()
+        do{
+            let decodeData = try decoder.decode(MoveData.self, from: moveData)
+            let id = decodeData.id
+            let name = decodeData.name
+            let power = decodeData.power
+            let pp = decodeData.pp
+            let priority = decodeData.priority
+            let accuracy = decodeData.accuracy
+            let effectChance = decodeData.effect_chance
+            let damageClass = decodeData.damage_class.name
+            let effect = decodeData.effect_entries[0].effect
+            let target = decodeData.target.name
+            let type = decodeData.type.name
+            let moveModel = MoveModel(id: id, name: name, power: power, pp: pp, priority: priority, accuracy: accuracy, effect_chance: effectChance, damageClass: damageClass, effect: effect, target: target, moveType: type)
+            return moveModel
+        } catch {
+            print("error\(error)")
+            delegate?.didFailWithError(error: error)
+            return nil
         }
     }
     
@@ -104,24 +140,18 @@ struct APIHelper {
                 let stat = (statName: stat.stat.name, baseStat: stat.base_stat)
                 stats.append(stat)
             }
-//            var stats: [PokemonModel.Stat] = []
-//            for stat in decodeData.stats {
-//                let baseStat = stat.base_stat
-//                let nameStat = stat.stat.name
-//                let stat = PokemonModel.Stat(baseStat: baseStat, nameStat: nameStat)
-//                stats.append(stat)
-//            }
             var moves: [PokemonModel.Moves] = []
             for move in decodeData.moves {
                 let moveName = move.move.name
+                let moveURL = move.move.url
                 var moveVersionDetails: [(level: Int, game: String)] = []
                 for moveVersion in move.version_group_details {
-                    if moveVersion.level_learned_at > 0 {
+                    if moveVersion.move_learn_method.name == "level-up" {
                         moveVersionDetails.append((level: moveVersion.level_learned_at, game: moveVersion.version_group.name))
                     }
                 }
                 if moveVersionDetails.count > 0 {
-                    moves.append(PokemonModel.Moves(moveName: moveName, moveVersionDetails: moveVersionDetails))
+                    moves.append(PokemonModel.Moves(moveName: moveName, moveURL: moveURL, learnMethod: "level-up", moveVersionDetails: moveVersionDetails))
                 }
             }
             //Sprites

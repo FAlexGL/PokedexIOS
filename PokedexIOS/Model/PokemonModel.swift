@@ -20,6 +20,8 @@ struct PokemonModel {
     
     struct Moves{
         let moveName: String
+        let moveURL: String
+        let learnMethod: String
         let moveVersionDetails: [(level: Int, game: String)]
     }
     

@@ -57,13 +57,19 @@ struct Moves: Decodable{
 
 struct Move: Decodable{
     let name: String
+    let url: String
 }
 
 struct VersionGroupDetails: Decodable{
     let level_learned_at: Int
+    let move_learn_method: MoveLearnMethod
     let version_group: VersionGroup
 }
 
 struct VersionGroup: Decodable{
+    let name: String
+}
+
+struct MoveLearnMethod: Decodable{
     let name: String
 }
