@@ -8,21 +8,31 @@
 import UIKit
 
 class MoveDetailVC: UIViewController {
-    @IBOutlet weak var moveNameLabel: UILabel!
-    @IBOutlet weak var gameAndLevelMove: UITextView!
+    @IBOutlet weak private var moveNameLabel: UILabel!
+    @IBOutlet weak private var gameAndLevelMove: UITextView!
+    private var moveModel: MoveModel?
+    private var levelsMove: PokemonModel.Moves?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        showData()
     }
     
-    func showData(move: PokemonModel.Moves){
+    func setMoves(moveModel: MoveModel, levelsMove:PokemonModel.Moves){
+        self.moveModel = moveModel
+        self.levelsMove = levelsMove
+    }
+    
+    func showData(){
         DispatchQueue.main.async {
-            self.moveNameLabel.text = (move.moveName).uppercased()
-            var moveInfoString = ""
-            for move in move.moveVersionDetails{
-                moveInfoString.append("\(move.game.replacingOccurrences(of: "-", with: " ")):\n     -Level: \(move.level)\n\n")
+            if let levelsMove = self.levelsMove, let moveModel = self.moveModel {
+                self.moveNameLabel.text = (moveModel.name).uppercased()
+                var moveInfoString = ""
+                for move in levelsMove.moveVersionDetails{
+                    moveInfoString.append("\(move.game.replacingOccurrences(of: "-", with: " ")):\n     -Level: \(move.level)\n\n")
+                }
+                self.gameAndLevelMove.text = moveInfoString
             }
-            self.gameAndLevelMove.text = moveInfoString
         }
     }
 }
