@@ -47,8 +47,10 @@ extension MovesListVC: UITableViewDataSource{
         var content = cell.defaultContentConfiguration()
         content.text = pokemonModel?.moves[indexPath.row].moveName.replacingOccurrences(of: "-", with: " ")
         content.textProperties.font = UIFont.systemFont(ofSize: 20)
+        content.textProperties.color = UIColor(named: K.Colours.YELLOW_POKEMON_TITLE) ?? UIColor.yellow
         cell.contentConfiguration = content
         cell.accessoryType = .disclosureIndicator
+        cell.backgroundColor = UIColor(named: K.Colours.BLUE_POKEMON_TITLE)
         return cell
     }
 }
@@ -58,10 +60,9 @@ extension MovesListVC: UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let pokemonModel = self.pokemonModel {
             apiHelper.fetchMoveDetail(moveName: pokemonModel.moves[indexPath.row].moveName)
+            print(pokemonModel.moves[indexPath.row].moveName)
             self.selectedRow = indexPath.row
-            DispatchQueue.main.async {
-                self.navigationController?.pushViewController(self.moveDetailVC, animated: true)
-            }
+            self.navigationController?.pushViewController(self.moveDetailVC, animated: true)
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }

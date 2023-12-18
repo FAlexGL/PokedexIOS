@@ -14,7 +14,7 @@ struct MoveModel {
     let pp: Int
     let priority: Int
     let accuracy: Int?
-    let effect_chance: Int?
+    let effectChance: Int?
     let damageClass: String
     let effect: String
     let target: String

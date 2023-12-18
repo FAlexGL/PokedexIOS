@@ -92,7 +92,7 @@ struct APIHelper {
             let effect = decodeData.effect_entries[0].effect
             let target = decodeData.target.name
             let type = decodeData.type.name
-            let moveModel = MoveModel(id: id, name: name, power: power, pp: pp, priority: priority, accuracy: accuracy, effect_chance: effectChance, damageClass: damageClass, effect: effect, target: target, moveType: type)
+            let moveModel = MoveModel(id: id, name: name, power: power, pp: pp, priority: priority, accuracy: accuracy, effectChance: effectChance, damageClass: damageClass, effect: effect, target: target, moveType: type)
             return moveModel
         } catch {
             print("error\(error)")
