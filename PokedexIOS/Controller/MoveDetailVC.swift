@@ -47,7 +47,7 @@ class MoveDetailVC: UIViewController {
                 }
                 self.imageMoveType.image = UIImage(named: moveModel.moveType)
                 self.descriptionTextView.text = moveModel.effect.replacingOccurrences(of: "$effect_chance", with: "\(moveModel.effectChance ?? -1)")
-                self.targetLabel.text = moveModel.target
+                self.targetLabel.text = moveModel.target.replacingOccurrences(of: "-", with: " ")
                 self.powerLabel.text = "\(moveModel.power ?? 0)"
                 self.ppLabel.text = "\(moveModel.pp)"
                 self.priorityLabel.text = "\(moveModel.priority)"
