@@ -34,5 +34,7 @@ struct PokemonModel {
         let frontFemale: String?
         let frontShiny: String?
         let frontShinyFemale: String?
+        let officialFront: String?
+        let officialFrontShiny: String?
     }
 }

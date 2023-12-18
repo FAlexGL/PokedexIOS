@@ -21,9 +21,6 @@ class PokemonCellVC: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         contentCellView.layer.cornerRadius = 15
-//        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
-//        swipeGesture.direction = .left
-//        self.addGestureRecognizer(swipeGesture)
     }
     
     func showData(pokemonID: Int, pokemonName: String) {
@@ -54,11 +51,4 @@ class PokemonCellVC: UITableViewCell {
         }
         task.resume()
     }
-    
-//    @objc func handleSwipe(_ gesture: UISwipeGestureRecognizer){
-//        if gesture.direction == .left{
-//            print("holiiir")
-//        }
-//    }
-    
 }

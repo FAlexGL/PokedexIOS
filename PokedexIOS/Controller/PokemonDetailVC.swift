@@ -72,6 +72,7 @@ class PokemonDetailVC: UIViewController {
     func showData(pokemonModel: PokemonModel){
         print("Accesing to \(pokemonModel.pokemonName)'s data...")
         spritesArray = []
+        spriteArrayPosition = 0
         self.pokemonModel = pokemonModel
         DispatchQueue.main.async { [self] in
             self.title = "#\(pokemonModel.pokemonId) \((pokemonModel.pokemonName).uppercased())"
@@ -191,6 +192,12 @@ class PokemonDetailVC: UIViewController {
         }
         if let frontShinyFemale = sprites.frontShinyFemale {
             spritesArray.append(frontShinyFemale)
+        }
+        if let officialFront = sprites.officialFront{
+            spritesArray.append(officialFront)
+        }
+        if let officialFrontShiny = sprites.officialFrontShiny {
+            spritesArray.append(officialFrontShiny)
         }
     }
     

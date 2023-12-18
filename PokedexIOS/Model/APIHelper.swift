@@ -163,7 +163,9 @@ struct APIHelper {
             let frontFemale = decodeData.sprites.front_female ?? nil
             let frontShiny = decodeData.sprites.front_shiny ?? nil
             let frontShinyFemale = decodeData.sprites.front_shiny_female ?? nil
-            let sprites = PokemonModel.Sprites(frontDefault: frontDefault, backDefault: backDefault, backFemale: backFemale, backShiny: backShiny, backShinyFemale: backShinyFemale, frontFemale: frontFemale, frontShiny: frontShiny, frontShinyFemale: frontShinyFemale)
+            let officialFront = decodeData.sprites.other.officialArtwork.front_default ?? nil
+            let officialFrontShiny = decodeData.sprites.other.officialArtwork.front_shiny ?? nil
+            let sprites = PokemonModel.Sprites(frontDefault: frontDefault, backDefault: backDefault, backFemale: backFemale, backShiny: backShiny, backShinyFemale: backShinyFemale, frontFemale: frontFemale, frontShiny: frontShiny, frontShinyFemale: frontShinyFemale, officialFront: officialFront, officialFrontShiny: officialFrontShiny)
             
             return PokemonModel(pokemonId: pokemonId, pokemonName: pokemonName, baseExperience: baseExperience, height: height, weight: weight, types: types, stats: stats, sprites: sprites, moves: moves)
         } catch {

@@ -48,6 +48,7 @@ struct Sprites: Decodable{
     let front_female: String?
     let front_shiny: String?
     let front_shiny_female: String?
+    let other: Other
 }
 
 struct Moves: Decodable{
@@ -72,4 +73,17 @@ struct VersionGroup: Decodable{
 
 struct MoveLearnMethod: Decodable{
     let name: String
+}
+
+struct Other: Decodable{
+    let officialArtwork: OfficialArtwork
+    
+    enum CodingKeys: String, CodingKey {
+    case officialArtwork = "official-artwork"
+    }
+}
+
+struct OfficialArtwork: Decodable{
+    let front_default: String?
+    let front_shiny: String?
 }
