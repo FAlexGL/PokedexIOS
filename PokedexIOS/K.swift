@@ -36,6 +36,7 @@ struct K {
     
     struct Images {
         static let MISSINGNO = "MissingNO"
+        static let POKEBALL_FAVOURITE = "pokeballFavourite"
         static let PHYSICAL_MOVE = "physicalMove"
         static let SPECIAL_MOVE = "specialMove"
         static let STATUS_MOVE = "statusMove"

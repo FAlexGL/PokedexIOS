@@ -101,6 +101,37 @@ extension PokemonListVC: UITableViewDataSource{
         return cell
     }
     
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let item = UIContextualAction(style: .normal, title: "Favourite") { (action, view, completionHandler) in
+            if tableView == self.favouriteTableView {
+                self.dbHelper.deleteFavourite(pokemonId: self.favouritePokemonsFetched[indexPath.row].pokemonID)
+            } else {
+                if self.dbHelper.isFavourite(pokemonId: indexPath.row+1){
+                    self.dbHelper.deleteFavourite(pokemonId: indexPath.row+1)
+                } else {
+                    let favouritePokemon = FavouritePokemon(pokemonId: indexPath.row+1, pokemonName: self.pokemonsFetched[indexPath.row])
+                    self.dbHelper.saveFavourite(favouritePokemon: favouritePokemon)
+                }
+            }
+            DispatchQueue.main.async {
+                self.tableView.reloadRows(at: [indexPath], with: .none)
+                if self.favouriteTableView.isHidden != true {
+                        self.favouriteTableView.beginUpdates()
+                        self.favouritePokemonsFetched.remove(at: indexPath.row)
+                        self.favouriteTableView.deleteRows(at: [indexPath], with: .automatic)
+                        self.favouriteTableView.endUpdates()
+                }
+            }
+            completionHandler(true)
+        }
+        item.image = UIImage(named: K.Images.POKEBALL_FAVOURITE)
+        item.backgroundColor = UIColor(named: K.Colours.BLUE_POKEMON_TITLE)
+        let swipeActions = UISwipeActionsConfiguration(actions: [item])
+        swipeActions.performsFirstActionWithFullSwipe = false
+        
+        return swipeActions
+    }
+    
 }
 
 extension PokemonListVC: UITableViewDelegate{
@@ -148,12 +179,8 @@ extension PokemonListVC: APIHelperDelegate{
 extension PokemonListVC: PokemonDetailDelegate{
     func favouriteUpdated(pokemonID: Int, isFavourite: Bool) {
         let indexPath = IndexPath(row: pokemonID-1, section: 0)
-        if let cell = self.tableView.cellForRow(at: indexPath) as? PokemonCellVC {
-            cell.favouriteImage.isHidden = !isFavourite
-        }
         DispatchQueue.main.async {
             self.tableView.reloadRows(at: [indexPath], with: .none)
-        
             if self.favouriteTableView.isHidden != true {
                 if let indexPath = self.positionOfFavouritePokemonSelected {
                     self.favouriteTableView.beginUpdates()
