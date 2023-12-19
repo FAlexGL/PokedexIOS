@@ -1,0 +1,228 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "0Uo-lP-EGD.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"priorityLabel\"; ObjectID = \"0Uo-lP-EGD\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "priorityLabel"
+          }
+        }
+      }
+    },
+    "9ZF-x7-yJ9.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Label\"; ObjectID = \"9ZF-x7-yJ9\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Label"
+          }
+        }
+      }
+    },
+    "AYj-k0-TVg.text" : {
+      "comment" : "Class = \"UITextView\"; text = \"Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.\"; ObjectID = \"AYj-k0-TVg\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."
+          }
+        }
+      }
+    },
+    "FRN-Rm-9uU.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Acuracy: \"; ObjectID = \"FRN-Rm-9uU\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Acuracy: "
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Precisión: "
+          }
+        }
+      }
+    },
+    "ftw-3Y-DQs.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Priority: \"; ObjectID = \"ftw-3Y-DQs\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Priority: "
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prioridad: "
+          }
+        }
+      }
+    },
+    "jB1-jf-I4r.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"PP: \"; ObjectID = \"jB1-jf-I4r\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "PP: "
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PP: "
+          }
+        }
+      }
+    },
+    "kdO-pU-B7F.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Power: \"; ObjectID = \"kdO-pU-B7F\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Power: "
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poder: "
+          }
+        }
+      }
+    },
+    "KVM-kg-8j4.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"ppLabel\"; ObjectID = \"KVM-kg-8j4\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "ppLabel"
+          }
+        }
+      }
+    },
+    "QJ3-Kj-zdO.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"powerLabel\"; ObjectID = \"QJ3-Kj-zdO\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "powerLabel"
+          }
+        }
+      }
+    },
+    "qu0-91-bit.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Description:\"; ObjectID = \"qu0-91-bit\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Description:"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descripción: "
+          }
+        }
+      }
+    },
+    "rhn-6C-jZ5.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"targetLabel\"; ObjectID = \"rhn-6C-jZ5\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "targetLabel"
+          }
+        }
+      }
+    },
+    "TnB-90-Cwm.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"accuracyLabel\"; ObjectID = \"TnB-90-Cwm\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "accuracyLabel"
+          }
+        }
+      }
+    },
+    "Ujc-Xn-4cR.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Learned at...\"; ObjectID = \"Ujc-Xn-4cR\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Learned at..."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aprendido al..."
+          }
+        }
+      }
+    },
+    "VbJ-HP-7NK.text" : {
+      "comment" : "Class = \"UITextView\"; text = \"Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.\"; ObjectID = \"VbJ-HP-7NK\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."
+          }
+        }
+      }
+    },
+    "Wqc-MT-KpY.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Target: \"; ObjectID = \"Wqc-MT-KpY\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Target: "
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Objetivo: "
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

@@ -1,0 +1,72 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "3Py-3w-tni.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Oops... Something went wrong\"; ObjectID = \"3Py-3w-tni\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Oops... Something went wrong"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ups... Algo ha ido mal"
+          }
+        }
+      }
+    },
+    "Gl1-jH-xB2.configuration.title" : {
+      "comment" : "Class = \"UIButton\"; configuration.title = \"Restart\"; ObjectID = \"Gl1-jH-xB2\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Restart"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reiniciar"
+          }
+        }
+      }
+    },
+    "Gl1-jH-xB2.normalTitle" : {
+      "comment" : "Class = \"UIButton\"; normalTitle = \"Button\"; ObjectID = \"Gl1-jH-xB2\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Button"
+          }
+        }
+      }
+    },
+    "lpn-JN-abj.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"There may be a problem with your internet connection\"; ObjectID = \"lpn-JN-abj\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "There may be a problem with your internet connection"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puede que haya un problema con tu conexión a internet"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

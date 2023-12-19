@@ -25,6 +25,20 @@ class PokemonDetailVC: UIViewController {
     @IBOutlet weak private var specialDefenseLabel: UILabel!
     @IBOutlet weak private var speedLabel: UILabel!
     
+    //constant info views
+    @IBOutlet weak private var baseExperienceCILable: UILabel!
+    @IBOutlet weak private var heightCILable: UILabel!
+    @IBOutlet weak private var baseStatsCILable: UILabel!
+    @IBOutlet weak private var weightCILable: UILabel!
+    @IBOutlet weak private var hpCILable: UILabel!
+    @IBOutlet weak private var attackCILable: UILabel!
+    @IBOutlet weak private var defenseCILable: UILabel!
+    @IBOutlet weak private var specialAttackCILable: UILabel!
+    @IBOutlet weak private var specialDefenseCILable: UILabel!
+    @IBOutlet weak private var speedCILable: UILabel!
+    @IBOutlet weak private var favouriteCILable: UILabel!
+    @IBOutlet weak private var movesButton: UIButton!
+    
     //types images
     @IBOutlet weak private var normalImage: UIImageView!
     @IBOutlet weak private var fightingImage: UIImageView!
@@ -57,6 +71,8 @@ class PokemonDetailVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        translateViews()
+        
         self.navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.boldSystemFont(ofSize: 22),
             .foregroundColor: UIColor(named: K.Colours.BLUE_POKEMON_TITLE) ?? UIColor.systemBlue
@@ -68,6 +84,33 @@ class PokemonDetailVC: UIViewController {
         if let isFavourite = isFavourite, let pokemonId = pokemonModel?.pokemonId, isMovingFromParent{
             delegate?.favouriteUpdated(pokemonID: pokemonId, isFavourite: isFavourite)
         }
+    }
+    
+    func translateViews(){
+        let baseExperienceString = NSLocalizedString("BaseExperience", comment: "")
+        let heightString = NSLocalizedString("Height", comment: "")
+        let baseStatsString = NSLocalizedString("BaseStats", comment: "")
+        let weightSring = NSLocalizedString("Weight", comment: "")
+        let attackString = NSLocalizedString("Attack", comment: "")
+        let defenseString = NSLocalizedString("Deffense", comment: "")
+        let specialAttackString = NSLocalizedString("SpecialAttack", comment: "")
+        let specialDefenseString = NSLocalizedString("SpecialDefense", comment: "")
+        let speedString = NSLocalizedString("Speed", comment: "")
+        let movesString = NSLocalizedString("Moves", comment: "")
+        let favouriteString = NSLocalizedString("Favourite", comment: "")
+        
+        baseExperienceCILable.text = baseExperienceString
+        heightCILable.text = heightString
+        baseStatsCILable.text = baseStatsString
+        weightCILable.text = weightSring
+        attackCILable.text = attackString
+        defenseCILable.text = defenseString
+        specialAttackCILable.text = specialAttackString
+        specialDefenseCILable.text = specialDefenseString
+        speedCILable.text = speedString
+        movesButton.setTitle(movesString, for: .normal)
+        favouriteCILable.text = favouriteString
+        
     }
     
     func showData(pokemonModel: PokemonModel){

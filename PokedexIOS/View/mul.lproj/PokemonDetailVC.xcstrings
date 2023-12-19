@@ -1,0 +1,402 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "4cZ-ru-Mzq.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"attackLabel\"; ObjectID = \"4cZ-ru-Mzq\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "attackLabel"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "attackLabel"
+          }
+        }
+      }
+    },
+    "6a6-pU-sal.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Special Attack: \"; ObjectID = \"6a6-pU-sal\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Special Attack: "
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ataque esp.: "
+          }
+        }
+      }
+    },
+    "7y7-HS-cDc.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"hpLabel \"; ObjectID = \"7y7-HS-cDc\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "hpLabel "
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "hpLabel"
+          }
+        }
+      }
+    },
+    "Az8-jD-mXb.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Base stats:\"; ObjectID = \"Az8-jD-mXb\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Base stats:"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estadísticas base:"
+          }
+        }
+      }
+    },
+    "g2Z-a6-w0b.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"sppedLabel\"; ObjectID = \"g2Z-a6-w0b\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "sppedLabel"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "speedLabel"
+          }
+        }
+      }
+    },
+    "Gvc-0U-FkM.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"specialAttackLabel\"; ObjectID = \"Gvc-0U-FkM\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "specialAttackLabel"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "specialAttackLabel"
+          }
+        }
+      }
+    },
+    "heO-0Q-nVl.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Weight\"; ObjectID = \"heO-0Q-nVl\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Weight"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peso: "
+          }
+        }
+      }
+    },
+    "i9o-7e-THF.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Attack: \"; ObjectID = \"i9o-7e-THF\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Attack: "
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ataque: "
+          }
+        }
+      }
+    },
+    "ikm-r4-Roz.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"specialDefenseLabel\"; ObjectID = \"ikm-r4-Roz\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "specialDefenseLabel"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "specialDefenseLabel"
+          }
+        }
+      }
+    },
+    "j15-aC-nDi.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Height\"; ObjectID = \"j15-aC-nDi\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Height"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altura: "
+          }
+        }
+      }
+    },
+    "NKp-rf-pdO.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Speed:  \"; ObjectID = \"NKp-rf-pdO\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Speed:  "
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velocidad: "
+          }
+        }
+      }
+    },
+    "nVe-Ea-2hu.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"HP: \"; ObjectID = \"nVe-Ea-2hu\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "HP: "
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HP: "
+          }
+        }
+      }
+    },
+    "owi-Og-DSE.configuration.title" : {
+      "comment" : "Class = \"UIButton\"; configuration.title = \"Moves\"; ObjectID = \"owi-Og-DSE\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Moves"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Movimientos:"
+          }
+        }
+      }
+    },
+    "owi-Og-DSE.normalTitle" : {
+      "comment" : "Class = \"UIButton\"; normalTitle = \"Button\"; ObjectID = \"owi-Og-DSE\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Button"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Button"
+          }
+        }
+      }
+    },
+    "TvC-Sv-YkU.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Special Defense: \"; ObjectID = \"TvC-Sv-YkU\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Special Defense: "
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Defensa esp.: "
+          }
+        }
+      }
+    },
+    "uRw-h8-i8k.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Height: \"; ObjectID = \"uRw-h8-i8k\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Height: "
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altura: "
+          }
+        }
+      }
+    },
+    "VIa-fM-kOX.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Base Experience\"; ObjectID = \"VIa-fM-kOX\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Base Experience"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Experiencia base:"
+          }
+        }
+      }
+    },
+    "x3S-v7-rSG.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Favourite:\"; ObjectID = \"x3S-v7-rSG\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Favourite:"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favorito: "
+          }
+        }
+      }
+    },
+    "YTA-pG-8kX.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Base Experience: \"; ObjectID = \"YTA-pG-8kX\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Base Experience: "
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Experiencia base:"
+          }
+        }
+      }
+    },
+    "zhn-fD-AO2.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Weight: \"; ObjectID = \"zhn-fD-AO2\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Weight: "
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peso: "
+          }
+        }
+      }
+    },
+    "zQ6-up-kFu.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Deffense: \"; ObjectID = \"zQ6-up-kFu\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Deffense: "
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Defensa: "
+          }
+        }
+      }
+    },
+    "zxB-vD-zDE.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"deffenseLabel\"; ObjectID = \"zxB-vD-zDE\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "deffenseLabel"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "deffenseLabel"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

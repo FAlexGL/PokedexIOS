@@ -11,15 +11,22 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MoveDetailVC" customModule="PokedexIOS" customModuleProvider="target">
             <connections>
+                <outlet property="accuracyCILable" destination="FRN-Rm-9uU" id="cMv-is-uzF"/>
                 <outlet property="accuracyLabel" destination="TnB-90-Cwm" id="c2z-R3-B1n"/>
+                <outlet property="descriptionCILable" destination="qu0-91-bit" id="ues-Qf-HRH"/>
                 <outlet property="descriptionTextView" destination="VbJ-HP-7NK" id="k5Z-S5-uCZ"/>
                 <outlet property="imageMoveClass" destination="c3B-Gs-hih" id="9y0-wO-k1M"/>
                 <outlet property="imageMoveType" destination="ljs-D1-dm4" id="iDA-i5-ql5"/>
+                <outlet property="learnedAtCILable" destination="Ujc-Xn-4cR" id="0iT-Hx-3Pm"/>
                 <outlet property="levelGamesTextView" destination="AYj-k0-TVg" id="vbk-m9-FHE"/>
                 <outlet property="moveNameLabel" destination="9ZF-x7-yJ9" id="g0A-n8-NGs"/>
+                <outlet property="powerCILable" destination="kdO-pU-B7F" id="qY7-qU-Vkn"/>
                 <outlet property="powerLabel" destination="QJ3-Kj-zdO" id="OnM-qH-Q18"/>
+                <outlet property="ppCILable" destination="jB1-jf-I4r" id="qKY-GL-014"/>
                 <outlet property="ppLabel" destination="KVM-kg-8j4" id="I6S-Ep-Swm"/>
+                <outlet property="priorityCILable" destination="ftw-3Y-DQs" id="bP0-f8-riQ"/>
                 <outlet property="priorityLabel" destination="0Uo-lP-EGD" id="4MW-ff-eZ0"/>
+                <outlet property="targetCILable" destination="Wqc-MT-KpY" id="gsm-WB-lES"/>
                 <outlet property="targetLabel" destination="rhn-6C-jZ5" id="CCf-iT-tBB"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>

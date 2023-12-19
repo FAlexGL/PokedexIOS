@@ -40,7 +40,8 @@ class PokemonListVC: UIViewController {
     private func initNavigationControllerFavouriteButton(){
         let buttonFavourites = UIButton(type: .system)
         buttonFavourites.tintColor = UIColor.white
-        buttonFavourites.setTitle("Show Favourites", for: .normal)
+        let buttonString = NSLocalizedString("ShowFavourites", comment: "")
+        buttonFavourites.setTitle(buttonString, for: .normal)
         buttonFavourites.addTarget(self, action: #selector(favouriteButtonTapped(_:)), for: .touchUpInside)
         let buttonItem = UIBarButtonItem(customView: buttonFavourites)
         self.navigationItem.rightBarButtonItem = buttonItem
@@ -62,13 +63,15 @@ class PokemonListVC: UIViewController {
             favouriteTableView.isHidden = false
             favouritePokemonsFetched = dbHelper.fetchFavourites()
             isShowingOnlyFavourites = true
-            sender.setTitle("Show all", for: .normal)
+            let buttonString = NSLocalizedString("ShowAll", comment: "")
+            sender.setTitle(buttonString, for: .normal)
             DispatchQueue.main.async {
                 self.favouriteTableView.reloadData()
             }
         } else {
             favouriteTableView.isHidden = true
-            sender.setTitle("Show Favourites", for: .normal)
+            let buttonString = NSLocalizedString("ShowFavourites", comment: "")
+            sender.setTitle(buttonString, for: .normal)
             isShowingOnlyFavourites = false
         }
     }
@@ -115,7 +118,8 @@ extension PokemonListVC: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let item = UIContextualAction(style: .normal, title: "Favourite") { (action, view, completionHandler) in
+        let stringFavourite = NSLocalizedString("Favourite", comment: "")
+        let item = UIContextualAction(style: .normal, title: stringFavourite) { (action, view, completionHandler) in
             if tableView == self.favouriteTableView {
                 self.dbHelper.deleteFavourite(pokemonId: self.favouritePokemonsFetched[indexPath.row].pokemonID)
             } else {
@@ -180,8 +184,11 @@ extension PokemonListVC: APIHelperDelegate{
     }
     
     func didFailWithError(error: Error) {
-        let errorVC = ErrorVC(nibName: K.NibNames.POKEMON_ERROR, bundle: nil)
-        navigationController?.pushViewController(errorVC, animated: true)
+        DispatchQueue.main.async {
+            let errorVC = ErrorVC(nibName: K.NibNames.POKEMON_ERROR, bundle: nil)
+            self.navigationController?.pushViewController(errorVC, animated: true)
+        }
+        
     }
     
     func didUpdatePokemonDetail(pokemonModel: PokemonModel) {

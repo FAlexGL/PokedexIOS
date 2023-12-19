@@ -19,18 +19,45 @@ class MoveDetailVC: UIViewController {
     @IBOutlet weak var imageMoveType: UIImageView!
     @IBOutlet weak var levelGamesTextView: UITextView!
     
+    //constant info views
+    @IBOutlet weak var descriptionCILable: UILabel!
+    @IBOutlet weak var targetCILable: UILabel!
+    @IBOutlet weak var powerCILable: UILabel!
+    @IBOutlet weak var ppCILable: UILabel!
+    @IBOutlet weak var priorityCILable: UILabel!
+    @IBOutlet weak var accuracyCILable: UILabel!
+    @IBOutlet weak var learnedAtCILable: UILabel!
+    
     private var moveModel: MoveModel?
     private var levelsMove: PokemonModel.Moves?
     private var effectChance = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        translateViews()
     }
     
     func setMoves(moveModel: MoveModel, levelsMove:PokemonModel.Moves){
         self.moveModel = moveModel
         self.levelsMove = levelsMove
         showData()
+    }
+    
+    private func translateViews(){
+        let descriptionString = NSLocalizedString("Description", comment: "")
+        let targetString = NSLocalizedString("Target", comment: "")
+        let powerString = NSLocalizedString("Power", comment: "")
+        let priorityString = NSLocalizedString("Priority", comment: "")
+        let accuracyString = NSLocalizedString("Accuracy", comment: "")
+        let learnedAtString = NSLocalizedString("LearnedAt", comment: "")
+        
+        descriptionCILable.text = descriptionString
+        targetCILable.text = targetString
+        powerCILable.text = powerString
+        priorityCILable.text = priorityString
+        accuracyCILable.text = accuracyString
+        learnedAtCILable.text = learnedAtString
     }
     
     private func showData(){
