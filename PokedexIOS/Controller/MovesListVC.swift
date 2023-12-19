@@ -18,14 +18,13 @@ class MovesListVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         apiHelper.delegate = self
+        initTable()
+    }
+    
+    func initTable(){
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
-        if pokemonModel != nil {
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
     }
     
     func setPokemonModel(pokemonModel: PokemonModel){

@@ -24,8 +24,29 @@ class PokemonListVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        initDelegates()
+        initTables()
+        initNavigationControllerFavouriteButton()
+        
+        apiHelper.fetchPokemonList(url: url)
+    }
+    
+    private func initDelegates(){
         apiHelper.delegate = self
         pokemonDetailVC.delegate = self
+    }
+    
+    private func initNavigationControllerFavouriteButton(){
+        let buttonFavourites = UIButton(type: .system)
+        buttonFavourites.tintColor = UIColor.white
+        buttonFavourites.setTitle("Show Favourites", for: .normal)
+        buttonFavourites.addTarget(self, action: #selector(favouriteButtonTapped(_:)), for: .touchUpInside)
+        let buttonItem = UIBarButtonItem(customView: buttonFavourites)
+        self.navigationItem.rightBarButtonItem = buttonItem
+    }
+    
+    private func initTables(){
         tableView.dataSource = self
         favouriteTableView.dataSource = self
         tableView.delegate = self
@@ -34,14 +55,6 @@ class PokemonListVC: UIViewController {
         favouriteTableView.rowHeight = 93.0
         tableView.register(UINib(nibName: "PokemonCellVC", bundle: nil), forCellReuseIdentifier: K.Identifiers.POKEMON_CELL_IDENTIFIER)
         favouriteTableView.register(UINib(nibName: "PokemonCellVC", bundle: nil), forCellReuseIdentifier: K.Identifiers.POKEMON_CELL_IDENTIFIER)
-        apiHelper.fetchPokemonList(url: url)
-        
-        let buttonFavourites = UIButton(type: .system)
-        buttonFavourites.tintColor = UIColor.white
-        buttonFavourites.setTitle("Show Favourites", for: .normal)
-        buttonFavourites.addTarget(self, action: #selector(favouriteButtonTapped(_:)), for: .touchUpInside)
-        let buttonItem = UIBarButtonItem(customView: buttonFavourites)
-        self.navigationItem.rightBarButtonItem = buttonItem
     }
         
     @objc private func favouriteButtonTapped(_ sender: UIButton!){

@@ -33,7 +33,7 @@ class MoveDetailVC: UIViewController {
         showData()
     }
     
-    func showData(){
+    private func showData(){
         DispatchQueue.main.async {
             if let levelsMove = self.levelsMove, let moveModel = self.moveModel {
                 self.moveNameLabel.text = (moveModel.name).replacingOccurrences(of: "-", with: " ").uppercased()

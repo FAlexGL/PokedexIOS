@@ -56,9 +56,10 @@ class PokemonDetailVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.boldSystemFont(ofSize: 22),
-            .foregroundColor: UIColor.systemBlue
+            .foregroundColor: UIColor(named: K.Colours.BLUE_POKEMON_TITLE) ?? UIColor.systemBlue
         ]
     }
     
