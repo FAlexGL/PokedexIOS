@@ -8,6 +8,13 @@
 import Foundation
 import RealmSwift
 
+protocol DBHelperProtocol {
+    func saveFavourite(favouritePokemon: FavouritePokemon)
+    func isFavourite(pokemonId: Int) -> Bool
+    func deleteFavourite(pokemonId: Int)
+    func fetchFavourites() -> [(Int, String)]
+}
+
 class DBHelper {
     
     static let shared = DBHelper()
@@ -21,7 +28,9 @@ class DBHelper {
         }
         return realm
     }
-    
+}
+
+extension DBHelper: DBHelperProtocol{
     func saveFavourite(favouritePokemon: FavouritePokemon){
         do {
             if let realm = obtainRealm(){
@@ -70,3 +79,4 @@ class DBHelper {
         return result
     }
 }
+

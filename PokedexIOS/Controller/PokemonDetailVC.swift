@@ -72,7 +72,7 @@ class PokemonDetailVC: UIViewController {
     func showData(pokemonModel: PokemonModel){
         print("Accesing to \(pokemonModel.pokemonName)'s data...")
         spritesArray = []
-        spriteArrayPosition = 0
+        spriteArrayPosition = 1
         self.pokemonModel = pokemonModel
         DispatchQueue.main.async { [self] in
             self.title = "#\(pokemonModel.pokemonId) \((pokemonModel.pokemonName).uppercased())"
@@ -243,7 +243,6 @@ class PokemonDetailVC: UIViewController {
             }
         }
     }
-    
     
     @IBAction private func imageTapped(_ sender: UITapGestureRecognizer) {
         if spritesArray.count > 1 {

@@ -29,23 +29,16 @@ extension APIHelperDelegate {
     }
 }
 
+protocol APIHelperProtocol {
+    func fetchPokemonList(url: String)
+    func fetchPokemonDetail(pokemonId: Int)
+    func fetchMoveDetail(moveName: String)
+}
+
 struct APIHelper {
     
     var delegate: APIHelperDelegate?
-    static let share = APIHelper()
-    
-    func fetchPokemonList(url: String){
-        performRequest(with: url, type: .pokemonList)
-    }
-    
-    func fetchPokemonDetail(pokemonId: Int){
-        performRequest(with: "\(K.PokemonAPI.URL_POKEMON_DETAIL)\(pokemonId)", type: .pokemonDetail)
-    }
-    
-    func fetchMoveDetail(moveName: String){
-        performRequest(with: "\(K.PokemonAPI.URL_POKEMON_MOVE)\(moveName)", type: .pokemonMove)
-    }
-    
+    static let share = APIHelper()    
     
     private func performRequest(with urlString: String, type: ParseType){
         if let url = URL(string: urlString){
@@ -175,3 +168,16 @@ struct APIHelper {
     }
 }
 
+extension APIHelper: APIHelperProtocol{
+    func fetchPokemonList(url: String){
+        performRequest(with: url, type: .pokemonList)
+    }
+    
+    func fetchPokemonDetail(pokemonId: Int){
+        performRequest(with: "\(K.PokemonAPI.URL_POKEMON_DETAIL)\(pokemonId)", type: .pokemonDetail)
+    }
+    
+    func fetchMoveDetail(moveName: String){
+        performRequest(with: "\(K.PokemonAPI.URL_POKEMON_MOVE)\(moveName)", type: .pokemonMove)
+    }
+}
