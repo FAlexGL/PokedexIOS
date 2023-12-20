@@ -29,19 +29,27 @@ class MoveDetailVC: UIViewController {
     @IBOutlet weak var learnedAtCILable: UILabel!
     
     private var moveModel: MoveModel?
-    private var levelsMove: PokemonModel.Moves?
+    private var levelsMove: PokemonModel.Move?
     private var effectChance = 0
+    private var moveName: String?
+    private var apiHelper = APIHelper()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        apiHelper.delegate = self
         translateViews()
+        getMoveDetail()
     }
     
-    func setMoves(moveModel: MoveModel, levelsMove:PokemonModel.Moves){
-        self.moveModel = moveModel
+    func setMoves(moveName: String, levelsMove: PokemonModel.Move){
+        self.moveName = moveName
         self.levelsMove = levelsMove
-        showData()
+    }
+    
+    private func getMoveDetail(){
+        if let moveName = moveName {
+            apiHelper.fetchMoveDetail(moveName: moveName)
+        }
     }
     
     private func translateViews(){
@@ -60,9 +68,9 @@ class MoveDetailVC: UIViewController {
         learnedAtCILable.text = learnedAtString
     }
     
-    private func showData(){
+    private func showData(moveModel: MoveModel){
         DispatchQueue.main.async {
-            if let levelsMove = self.levelsMove, let moveModel = self.moveModel {
+            if let levelsMove = self.levelsMove {
                 self.moveNameLabel.text = (moveModel.name).replacingOccurrences(of: "-", with: " ").uppercased()
                 switch moveModel.damageClass {
                 case "physical":
@@ -100,5 +108,14 @@ class MoveDetailVC: UIViewController {
                 self.levelGamesTextView.attributedText = levelGameStringAttribute
             }
         }
+    }
+}
+
+extension MoveDetailVC: APIHelperDelegate{
+    func didFailWithError(error: Error) {
+        print("error: \(error)")
+    }
+    func didUpdatePokemonMove(moveModel: MoveModel) {
+        showData(moveModel: moveModel)
     }
 }

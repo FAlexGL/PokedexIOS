@@ -16,9 +16,9 @@ struct PokemonModel {
     let types: [String]
     let stats: [(statName:String, baseStat:Int)]
     let sprites: Sprites
-    let moves: [Moves]
+    let moves: [Move]
     
-    struct Moves{
+    struct Move{
         let moveName: String
         let moveURL: String
         let learnMethod: String

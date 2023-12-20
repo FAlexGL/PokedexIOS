@@ -10,7 +10,7 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
+    var mainCoordinator: MainCoordinator?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -20,11 +20,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
         let navigationController = UINavigationController()
-        navigationController.navigationBar.isTranslucent = false
-        navigationController.navigationBar.barTintColor = UIColor(named: K.Colours.BLUE_POKEMON_TITLE)
-        let mainVC = PokemonListVC(nibName: K.NibNames.POKEMON_LIST, bundle: nil)
-        navigationController.pushViewController(mainVC, animated: true)
-        window?.rootViewController = navigationController
+//        navigationController.navigationBar.isTranslucent = false
+//        navigationController.navigationBar.barTintColor = UIColor(named: K.Colours.BLUE_POKEMON_TITLE)
+//        let mainVC = PokemonListVC(nibName: K.NibNames.POKEMON_LIST, bundle: nil)
+//        navigationController.pushViewController(mainVC, animated: true)
+        
+        mainCoordinator = MainCoordinator(navigationController: navigationController    )
+        mainCoordinator?.start()
+        
+        window?.rootViewController = mainCoordinator?.navigationController
+//        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         
         

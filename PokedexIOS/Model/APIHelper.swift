@@ -133,7 +133,7 @@ struct APIHelper {
                 let stat = (statName: stat.stat.name, baseStat: stat.base_stat)
                 stats.append(stat)
             }
-            var moves: [PokemonModel.Moves] = []
+            var moves: [PokemonModel.Move] = []
             for move in decodeData.moves {
                 let moveName = move.move.name
                 let moveURL = move.move.url
@@ -144,7 +144,7 @@ struct APIHelper {
                     }
                 }
                 if moveVersionDetails.count > 0 {
-                    moves.append(PokemonModel.Moves(moveName: moveName, moveURL: moveURL, learnMethod: "level-up", moveVersionDetails: moveVersionDetails))
+                    moves.append(PokemonModel.Move(moveName: moveName, moveURL: moveURL, learnMethod: "level-up", moveVersionDetails: moveVersionDetails))
                 }
             }
             //Sprites

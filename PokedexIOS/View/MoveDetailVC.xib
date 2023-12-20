@@ -36,17 +36,34 @@
             <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ZF-x7-yJ9">
-                    <rect key="frame" x="16" y="0.0" width="361" height="50"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ZF-x7-yJ9">
+                    <rect key="frame" x="16" y="0.0" width="361" height="33.666666666666664"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c3B-Gs-hih">
-                    <rect key="frame" x="140" y="58" width="70" height="35"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </imageView>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="AQP-BK-UOj">
+                    <rect key="frame" x="140" y="58" width="113" height="35"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="c3B-Gs-hih">
+                            <rect key="frame" x="0.0" y="0.0" width="70" height="35"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="70" id="1mp-9b-ZT7"/>
+                                <constraint firstAttribute="height" constant="35" id="K7s-vo-Zl5"/>
+                            </constraints>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ljs-D1-dm4">
+                            <rect key="frame" x="78" y="0.0" width="35" height="35"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="35" id="TJh-IZ-eH8"/>
+                                <constraint firstAttribute="width" constant="35" id="qRh-OX-nc1"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="SKG-Be-Jk6"/>
+                    </constraints>
+                </stackView>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="VbJ-HP-7NK">
                     <rect key="frame" x="16" y="139" width="361" height="90"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -56,10 +73,6 @@
                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ljs-D1-dm4">
-                    <rect key="frame" x="218" y="58" width="35" height="35"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Description:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qu0-91-bit">
                     <rect key="frame" x="16" y="104" width="125" height="27"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -156,6 +169,13 @@
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="yellowPokemonLogo"/>
+            <constraints>
+                <constraint firstItem="AQP-BK-UOj" firstAttribute="top" secondItem="9ZF-x7-yJ9" secondAttribute="bottom" constant="24.333333333333336" id="2Qo-zv-7tz"/>
+                <constraint firstAttribute="trailing" secondItem="9ZF-x7-yJ9" secondAttribute="trailing" constant="16" id="CKY-je-PdK"/>
+                <constraint firstItem="9ZF-x7-yJ9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="g8M-pK-Tdw"/>
+                <constraint firstItem="9ZF-x7-yJ9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="n26-tB-KBS"/>
+                <constraint firstItem="AQP-BK-UOj" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="wHq-Mm-2Uh"/>
+            </constraints>
             <point key="canvasLocation" x="116.79389312977099" y="20.422535211267608"/>
         </view>
     </objects>

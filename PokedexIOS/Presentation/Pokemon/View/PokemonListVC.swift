@@ -18,23 +18,34 @@ class PokemonListVC: UIViewController {
     private var url = K.PokemonAPI.URL_POKEMON_LIST
     private var apiHelper = APIHelper.share
     private let dbHelper = DBHelper.shared
-    private let pokemonDetailVC = PokemonDetailVC(nibName: K.NibNames.POKEMON_DETAIL, bundle: nil)
     private var positionOfFavouritePokemonSelected: IndexPath?
     private var isShowingOnlyFavourites = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         initDelegates()
         initTables()
         initNavigationControllerFavouriteButton()
-        
         apiHelper.fetchPokemonList(url: url)
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setNavController()
+    }
+    
+    private func setNavController(){
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = UIColor(named: K.Colours.BLUE_POKEMON_TITLE)
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
     
     private func initDelegates(){
         apiHelper.delegate = self
-        pokemonDetailVC.delegate = self
     }
     
     private func initNavigationControllerFavouriteButton(){
@@ -163,11 +174,15 @@ extension PokemonListVC: UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == self.tableView{
-            apiHelper.fetchPokemonDetail(pokemonId: indexPath.row+1)
+            let pokemonDetailVC = PokemonDetailVC(nibName: K.NibNames.POKEMON_DETAIL, bundle: nil)
+            pokemonDetailVC.setPokemonId(pokemonId: indexPath.row+1)
+            pokemonDetailVC.delegate = self
             navigationController?.pushViewController(pokemonDetailVC, animated: true)
         } else if tableView == self.favouriteTableView {
             self.positionOfFavouritePokemonSelected = indexPath
-            apiHelper.fetchPokemonDetail(pokemonId: favouritePokemonsFetched[indexPath.row].pokemonID)
+            let pokemonDetailVC = PokemonDetailVC(nibName: K.NibNames.POKEMON_DETAIL, bundle: nil)
+            pokemonDetailVC.setPokemonId(pokemonId: indexPath.row+1)
+            pokemonDetailVC.delegate = self
             navigationController?.pushViewController(pokemonDetailVC, animated: true)
         }
         tableView.deselectRow(at: indexPath, animated: true)
@@ -188,11 +203,6 @@ extension PokemonListVC: APIHelperDelegate{
             let errorVC = ErrorVC(nibName: K.NibNames.POKEMON_ERROR, bundle: nil)
             self.navigationController?.pushViewController(errorVC, animated: true)
         }
-        
-    }
-    
-    func didUpdatePokemonDetail(pokemonModel: PokemonModel) {
-        pokemonDetailVC.showData(pokemonModel: pokemonModel)
     }
 }
 

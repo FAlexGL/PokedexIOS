@@ -65,18 +65,21 @@ class PokemonDetailVC: UIViewController {
     private var spritesArray: [String] = []
     private var spriteArrayPosition = 1
     private let defaultAlphaTypes = 0.1
+    private var apiHelper = APIHelper()
+    private var pokemonId: Int?
     
     var delegate: PokemonDetailDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        apiHelper.delegate = self
         
         translateViews()
-        
         self.navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.boldSystemFont(ofSize: 22),
             .foregroundColor: UIColor(named: K.Colours.BLUE_POKEMON_TITLE) ?? UIColor.systemBlue
         ]
+        getPokemonDetail()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -86,7 +89,17 @@ class PokemonDetailVC: UIViewController {
         }
     }
     
-    func translateViews(){
+    func setPokemonId(pokemonId: Int){
+        self.pokemonId = pokemonId
+    }
+    
+    private func getPokemonDetail(){
+        if let pokemonId = pokemonId{
+            apiHelper.fetchPokemonDetail(pokemonId: pokemonId)
+        }
+    }
+    
+    private func translateViews(){
         let baseExperienceString = NSLocalizedString("BaseExperience", comment: "")
         let heightString = NSLocalizedString("Height", comment: "")
         let baseStatsString = NSLocalizedString("BaseStats", comment: "")
@@ -113,12 +126,13 @@ class PokemonDetailVC: UIViewController {
         
     }
     
-    func showData(pokemonModel: PokemonModel){
+    private func showData(pokemonModel: PokemonModel){
         print("Accesing to \(pokemonModel.pokemonName)'s data...")
         spritesArray = []
         spriteArrayPosition = 1
-        self.pokemonModel = pokemonModel
+        
         DispatchQueue.main.async { [self] in
+            self.pokemonModel = pokemonModel
             self.title = "#\(pokemonModel.pokemonId) \((pokemonModel.pokemonName).uppercased())"
             self.heightLabel.text = "\(pokemonModel.height)"
             weightLabel.text = "\(pokemonModel.weight)"
@@ -297,5 +311,15 @@ class PokemonDetailVC: UIViewController {
                 spriteArrayPosition = 0
             }
         }
+    }
+}
+
+extension PokemonDetailVC: APIHelperDelegate{
+    func didFailWithError(error: Error) {
+        print("error: \(error)")
+    }
+    
+    func didUpdatePokemonDetail(pokemonModel: PokemonModel) {
+        showData(pokemonModel: pokemonModel)
     }
 }
