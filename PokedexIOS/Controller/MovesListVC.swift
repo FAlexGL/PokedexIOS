@@ -12,7 +12,18 @@ class MovesListVC: UIViewController {
     
     private var pokemonModel: PokemonModel?
     private var apiHelper = APIHelper.share
-    private var selectedRow: Int = -1
+//    private var selectedRow: Int = -1
+    private var coordinator: MovesCoordinator
+    
+    init(coordinator: MovesCoordinator){
+        self.coordinator = coordinator
+        super.init(nibName: K.NibNames.POKEMON_MOVES_LIST, bundle: nil)
+    }
+    
+    @available(*, unavailable)
+        required init?(coder: NSCoder) {
+            fatalError()
+        }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,11 +68,7 @@ extension MovesListVC: UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let pokemonModel = self.pokemonModel {
-            let moveDetailVC = MoveDetailVC(nibName: K.NibNames.POKEMON_MOVE_DETAIL, bundle: nil)
-            moveDetailVC.setMoves(moveName: pokemonModel.moves[indexPath.row].moveName, levelsMove: pokemonModel.moves[indexPath.row])
-            print(pokemonModel.moves[indexPath.row].moveName)
-            self.selectedRow = indexPath.row
-            self.navigationController?.pushViewController(moveDetailVC, animated: true)
+            coordinator.goToMoveDetail(moveName: pokemonModel.moves[indexPath.row].moveName, levelsMove: pokemonModel.moves[indexPath.row])
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }

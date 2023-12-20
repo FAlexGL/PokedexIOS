@@ -64,18 +64,20 @@
                         <constraint firstAttribute="height" constant="35" id="SKG-Be-Jk6"/>
                     </constraints>
                 </stackView>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="VbJ-HP-7NK">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="VbJ-HP-7NK">
                     <rect key="frame" x="16" y="139" width="361" height="90"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" name="yellowPokemonLogo"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="90" id="NzQ-A8-pfn"/>
+                        <constraint firstAttribute="width" constant="361" id="QNQ-zt-4Fw"/>
+                    </constraints>
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <color key="textColor" systemColor="labelColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Description:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qu0-91-bit">
-                    <rect key="frame" x="16" y="104" width="125" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qu0-91-bit">
+                    <rect key="frame" x="16" y="104" width="125" height="26.333333333333343"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -172,6 +174,10 @@
             <constraints>
                 <constraint firstItem="AQP-BK-UOj" firstAttribute="top" secondItem="9ZF-x7-yJ9" secondAttribute="bottom" constant="24.333333333333336" id="2Qo-zv-7tz"/>
                 <constraint firstAttribute="trailing" secondItem="9ZF-x7-yJ9" secondAttribute="trailing" constant="16" id="CKY-je-PdK"/>
+                <constraint firstItem="qu0-91-bit" firstAttribute="top" secondItem="c3B-Gs-hih" secondAttribute="bottom" constant="11" id="KOC-2Z-cCq"/>
+                <constraint firstItem="VbJ-HP-7NK" firstAttribute="top" secondItem="qu0-91-bit" secondAttribute="bottom" constant="8.6666666666666572" id="MxG-47-TcZ"/>
+                <constraint firstItem="VbJ-HP-7NK" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="RdM-2f-8n5"/>
+                <constraint firstItem="qu0-91-bit" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="cc2-QW-ryF"/>
                 <constraint firstItem="9ZF-x7-yJ9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="g8M-pK-Tdw"/>
                 <constraint firstItem="9ZF-x7-yJ9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="n26-tB-KBS"/>
                 <constraint firstItem="AQP-BK-UOj" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="wHq-Mm-2Uh"/>

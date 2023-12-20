@@ -59,6 +59,8 @@ class PokemonDetailVC: UIViewController {
     @IBOutlet weak private var darkImage: UIImageView!
     @IBOutlet weak private var fairyImage: UIImageView!
     
+    private var coordinator: PokemonCoordinator?
+    //    private var coordinator: MovesCoordinator
     private var pokemonModel: PokemonModel?
     private let dbHelper = DBHelper.shared
     private var isFavourite: Bool?
@@ -70,10 +72,19 @@ class PokemonDetailVC: UIViewController {
     
     var delegate: PokemonDetailDelegate?
     
+    init(pokemonCoordinator: PokemonCoordinator){
+        self.coordinator = pokemonCoordinator
+        super.init(nibName: K.NibNames.POKEMON_DETAIL, bundle: nil)
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         apiHelper.delegate = self
-        
         translateViews()
         self.navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.boldSystemFont(ofSize: 22),
@@ -88,6 +99,7 @@ class PokemonDetailVC: UIViewController {
             delegate?.favouriteUpdated(pokemonID: pokemonId, isFavourite: isFavourite)
         }
     }
+    
     
     func setPokemonId(pokemonId: Int){
         self.pokemonId = pokemonId
@@ -293,11 +305,9 @@ class PokemonDetailVC: UIViewController {
     }
     
     @IBAction private func movesButtonPushed(_ sender: UIButton) {
-        if let pokemonModel = self.pokemonModel {
-            let movesListVC = MovesListVC(nibName: K.NibNames.POKEMON_MOVES_LIST, bundle: nil)
+        if let pokemonModel = self.pokemonModel, let coordinator = self.coordinator {
             DispatchQueue.main.async {
-                movesListVC.setPokemonModel(pokemonModel: pokemonModel)
-                self.navigationController?.pushViewController(movesListVC, animated: true)
+                coordinator.goToPokemonMoves(pokemonModel: pokemonModel)
             }
         }
     }

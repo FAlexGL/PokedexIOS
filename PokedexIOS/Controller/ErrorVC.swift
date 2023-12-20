@@ -14,9 +14,9 @@ class ErrorVC: UIViewController {
     }
     
     @IBAction private func buttonPusshed(_ sender: UIButton) {
-        let pokemonListVC = PokemonListVC(nibName: K.NibNames.POKEMON_LIST, bundle: nil)
-//        pokemonListVC.resetApp()
+//        let pokemonListVC = PokemonListVC(nibName: K.NibNames.POKEMON_LIST, bundle: nil)
+        pokemonListVC.resetApp()
 
-        navigationController?.pushViewController(pokemonListVC, animated: true)
+//        navigationController?.pushViewController(pokemonListVC, animated: true)
     }
 }

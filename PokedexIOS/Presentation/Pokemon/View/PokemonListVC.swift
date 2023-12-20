@@ -12,6 +12,7 @@ class PokemonListVC: UIViewController {
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var favouriteTableView: UITableView!
     
+    private var coordinator: PokemonCoordinator
     private var pokemonsFetched: [String] = []
     private var favouritePokemonsFetched: [(pokemonID: Int, pokemonName: String)] = []
     private var pokemonListModel: PokemonListModel?
@@ -20,6 +21,16 @@ class PokemonListVC: UIViewController {
     private let dbHelper = DBHelper.shared
     private var positionOfFavouritePokemonSelected: IndexPath?
     private var isShowingOnlyFavourites = false
+    
+    init(coordinator: PokemonCoordinator){
+        self.coordinator = coordinator
+        super.init(nibName: K.NibNames.POKEMON_LIST, bundle: nil)
+    }
+    
+    @available(*, unavailable)
+        required init?(coder: NSCoder) {
+            fatalError()
+        }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -174,16 +185,18 @@ extension PokemonListVC: UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == self.tableView{
-            let pokemonDetailVC = PokemonDetailVC(nibName: K.NibNames.POKEMON_DETAIL, bundle: nil)
-            pokemonDetailVC.setPokemonId(pokemonId: indexPath.row+1)
-            pokemonDetailVC.delegate = self
-            navigationController?.pushViewController(pokemonDetailVC, animated: true)
+//            let pokemonDetailVC = PokemonDetailVC(nibName: K.NibNames.POKEMON_DETAIL, bundle: nil)
+//            pokemonDetailVC.setPokemonId(pokemonId: indexPath.row+1)
+//            pokemonDetailVC.delegate = self
+//            navigationController?.pushViewController(pokemonDetailVC, animated: true)
+            coordinator.goToPokemonDetail(pokemonId: indexPath.row+1, delegate: self)
         } else if tableView == self.favouriteTableView {
             self.positionOfFavouritePokemonSelected = indexPath
-            let pokemonDetailVC = PokemonDetailVC(nibName: K.NibNames.POKEMON_DETAIL, bundle: nil)
-            pokemonDetailVC.setPokemonId(pokemonId: indexPath.row+1)
-            pokemonDetailVC.delegate = self
-            navigationController?.pushViewController(pokemonDetailVC, animated: true)
+//            let pokemonDetailVC = PokemonDetailVC(nibName: K.NibNames.POKEMON_DETAIL, bundle: nil)
+//            pokemonDetailVC.setPokemonId(pokemonId: indexPath.row+1)
+//            pokemonDetailVC.delegate = self
+//            navigationController?.pushViewController(pokemonDetailVC, animated: true)
+            coordinator.goToPokemonDetail(pokemonId: indexPath.row+1, delegate: self)
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
