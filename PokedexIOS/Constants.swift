@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct K {
+struct Constants {
     struct PokemonAPI{
         static let URL_POKEMON_LIST = "https://pokeapi.co/api/v2/pokemon-species/" //it uses pagination
         static let URL_POKEMON_DETAIL = "https://pokeapi.co/api/v2/pokemon/" //add the pokemon's name or id
@@ -15,7 +15,7 @@ struct K {
         static let URL_POKEMON_MOVE = "https://pokeapi.co/api/v2/move/" //add move's name
     }
     
-    struct NibNames{
+    struct NibNames {
         static let POKEMON_LIST = "PokemonListVC"
         static let POKEMON_DETAIL = "PokemonDetailVC"
         static let POKEMON_ERROR = "ErrorVC"
@@ -23,7 +23,7 @@ struct K {
         static let POKEMON_MOVE_DETAIL = "MoveDetailVC"
     }
     
-    struct Identifiers{
+    struct Identifiers {
         static let POKEMON_CELL_IDENTIFIER = "cell"
     }
     

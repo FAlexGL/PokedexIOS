@@ -31,8 +31,8 @@ class DefaultMovesCoordinator: MovesCoordinator {
         navigationController.pushViewController(listMovesVC, animated: true)
     }
     
-    func goToMoveDetail(moveName: String, levelsMove: PokemonModel.Move){
-        let moveDetailVC = MoveDetailVC(nibName: K.NibNames.POKEMON_MOVE_DETAIL, bundle: nil)
+    func goToMoveDetail(moveName: String, levelsMove: PokemonModel.Move) {
+        let moveDetailVC = MoveDetailVC(nibName: Constants.NibNames.POKEMON_MOVE_DETAIL, bundle: nil)
         moveDetailVC.setMoves(moveName: moveName, levelsMove: levelsMove)
         navigationController.pushViewController(moveDetailVC, animated: true)
     }

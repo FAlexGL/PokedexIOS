@@ -32,7 +32,7 @@ class MoveDetailVC: UIViewController {
     private var levelsMove: PokemonModel.Move?
     private var effectChance = 0
     private var moveName: String?
-    private var apiHelper = APIHelper.share
+    private var apiHelper: APIHelper = DefaultAPIHelper.share
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,16 +69,17 @@ class MoveDetailVC: UIViewController {
     }
     
     private func showData(moveModel: MoveModel){
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
             if let levelsMove = self.levelsMove {
                 self.moveNameLabel.text = (moveModel.name).replacingOccurrences(of: "-", with: " ").uppercased()
                 switch moveModel.damageClass {
                 case "physical":
-                    self.imageMoveClass.image = UIImage(named: K.Images.PHYSICAL_MOVE)
+                    self.imageMoveClass.image = UIImage(named: Constants.Images.PHYSICAL_MOVE)
                 case "special":
-                    self.imageMoveClass.image = UIImage(named: K.Images.SPECIAL_MOVE)
+                    self.imageMoveClass.image = UIImage(named: Constants.Images.SPECIAL_MOVE)
                 default:
-                    self.imageMoveClass.image = UIImage(named: K.Images.STATUS_MOVE)
+                    self.imageMoveClass.image = UIImage(named: Constants.Images.STATUS_MOVE)
                 }
                 self.imageMoveType.image = UIImage(named: moveModel.moveType)
                 self.descriptionTextView.text = moveModel.effect.replacingOccurrences(of: "$effect_chance", with: "\(moveModel.effectChance ?? -1)")
@@ -97,8 +98,8 @@ class MoveDetailVC: UIViewController {
                 }
                 let levelGamesOrdered = games.sorted { $0.key < $1.key}
                 let levelGameStringAttribute = NSMutableAttributedString(string: "")
-                for levelGames in levelGamesOrdered{
-                    let level = NSAttributedString(string: "Level \(levelGames.key):\n", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: K.Colours.BLUE_POKEMON_TITLE) ?? UIColor.blue, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 19)])
+                for levelGames in levelGamesOrdered {
+                    let level = NSAttributedString(string: "Level \(levelGames.key):\n", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: Constants.Colours.BLUE_POKEMON_TITLE) ?? UIColor.blue, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 19)])
                     levelGameStringAttribute.append(level)
                     for game in levelGames.value {
                         let gameTitle = NSAttributedString(string: "\u{2022} \(game)\n", attributes: [NSAttributedString.Key.foregroundColor: UIColor.black, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 19)])

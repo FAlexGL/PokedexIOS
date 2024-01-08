@@ -21,31 +21,29 @@ protocol APIHelperDelegate {
 }
 
 extension APIHelperDelegate {
-    func didUpdatePokemonList(pokemonListModel: PokemonListModel){
-    }
-    func didUpdatePokemonDetail(pokemonModel: PokemonModel){
-    }
-    func didUpdatePokemonMove(moveModel: MoveModel){
-    }
+    func didUpdatePokemonList(pokemonListModel: PokemonListModel) {}
+    func didUpdatePokemonDetail(pokemonModel: PokemonModel) {}
+    func didUpdatePokemonMove(moveModel: MoveModel) {}
 }
 
-protocol APIHelperProtocol {
+protocol APIHelper {
+    var delegate: APIHelperDelegate? { get set}
     func fetchPokemonList(url: String)
     func fetchPokemonDetail(pokemonId: Int)
     func fetchMoveDetail(moveName: String)
 }
 
-struct APIHelper {
+struct DefaultAPIHelper {
     
     var delegate: APIHelperDelegate?
-    static let share = APIHelper()    
+    static let share = DefaultAPIHelper()
     
-    private func performRequest(with urlString: String, type: ParseType){
-        if let url = URL(string: urlString){
+    private func performRequest(with urlString: String, type: ParseType) {
+        if let url = URL(string: urlString) {
             let session = URLSession(configuration: .default)
             let task = session.dataTask(with: url) { data, response, error in
                 print("Calling API...")
-                if error != nil{
+                if error != nil {
                     delegate?.didFailWithError(error: error!)
                     return
                 }
@@ -114,7 +112,7 @@ struct APIHelper {
     
     private func parseJSONPokemonDetail(_ pokemonDetailData: Data) -> PokemonModel? {
         let decoder = JSONDecoder()
-        do{
+        do {
             let decodeData = try decoder.decode(PokemonData.self, from: pokemonDetailData)
             let pokemonId = decodeData.id
             let pokemonName = decodeData.name
@@ -168,16 +166,16 @@ struct APIHelper {
     }
 }
 
-extension APIHelper: APIHelperProtocol{
-    func fetchPokemonList(url: String){
+extension DefaultAPIHelper: APIHelper {
+    func fetchPokemonList(url: String) {
         performRequest(with: url, type: .pokemonList)
     }
     
-    func fetchPokemonDetail(pokemonId: Int){
-        performRequest(with: "\(K.PokemonAPI.URL_POKEMON_DETAIL)\(pokemonId)", type: .pokemonDetail)
+    func fetchPokemonDetail(pokemonId: Int) {
+        performRequest(with: "\(Constants.PokemonAPI.URL_POKEMON_DETAIL)\(pokemonId)", type: .pokemonDetail)
     }
     
-    func fetchMoveDetail(moveName: String){
-        performRequest(with: "\(K.PokemonAPI.URL_POKEMON_MOVE)\(moveName)", type: .pokemonMove)
+    func fetchMoveDetail(moveName: String) {
+        performRequest(with: "\(Constants.PokemonAPI.URL_POKEMON_MOVE)\(moveName)", type: .pokemonMove)
     }
 }

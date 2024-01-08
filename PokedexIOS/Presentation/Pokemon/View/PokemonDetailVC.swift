@@ -61,19 +61,19 @@ class PokemonDetailVC: UIViewController {
     
     private var coordinator: PokemonCoordinator?
     private var pokemonModel: PokemonModel?
-    private let dbHelper = DBHelper.shared
+    private let dbHelper: DBHelper = DefaultDBHelper.shared
+    private var apiHelper: APIHelper = DefaultAPIHelper.share
     private var isFavourite: Bool?
     private var spritesArray: [String] = []
     private var spriteArrayPosition = 1
     private let defaultAlphaTypes = 0.1
-    private var apiHelper = APIHelper.share
     private var pokemonId: Int?
     
     var delegate: PokemonDetailDelegate?
     
     init(pokemonCoordinator: PokemonCoordinator){
         self.coordinator = pokemonCoordinator
-        super.init(nibName: K.NibNames.POKEMON_DETAIL, bundle: nil)
+        super.init(nibName: Constants.NibNames.POKEMON_DETAIL, bundle: nil)
     }
     
     @available(*, unavailable)
@@ -87,7 +87,7 @@ class PokemonDetailVC: UIViewController {
         translateViews()
         self.navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.boldSystemFont(ofSize: 22),
-            .foregroundColor: UIColor(named: K.Colours.BLUE_POKEMON_TITLE) ?? UIColor.systemBlue
+            .foregroundColor: UIColor(named: Constants.Colours.BLUE_POKEMON_TITLE) ?? UIColor.systemBlue
         ]
         getPokemonDetail()
     }
@@ -142,7 +142,8 @@ class PokemonDetailVC: UIViewController {
         spritesArray = []
         spriteArrayPosition = 1
         
-        DispatchQueue.main.async { [self] in
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
             self.pokemonModel = pokemonModel
             self.title = "#\(pokemonModel.pokemonId) \((pokemonModel.pokemonName).uppercased())"
             self.heightLabel.text = "\(pokemonModel.height)"
@@ -278,10 +279,11 @@ class PokemonDetailVC: UIViewController {
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 print("Error obtaining pokemon's sprite: \(error)")
-                self.pokemonImage.image = UIImage(named: K.Images.MISSINGNO)
+                self.pokemonImage.image = UIImage(named: Constants.Images.MISSINGNO)
             }
             if let data = data {
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
                     if let image = UIImage(data: data){
                         self.pokemonImage.image = image
                     }
@@ -293,11 +295,12 @@ class PokemonDetailVC: UIViewController {
     
     @IBAction private func switchChanged(_ sender: UISwitch) {
         if let pokemonModel = self.pokemonModel {
+            // Control error
             if sender.isOn{
                 let favouritePokemon = FavouritePokemon(pokemonId: pokemonModel.pokemonId, pokemonName: pokemonModel.pokemonName)
-                dbHelper.saveFavourite(favouritePokemon: favouritePokemon)
+                _ = dbHelper.saveFavourite(favouritePokemon: favouritePokemon)
             } else {
-                dbHelper.deleteFavourite(pokemonId: pokemonModel.pokemonId)
+                _ = dbHelper.deleteFavourite(pokemonId: pokemonModel.pokemonId)
             }
             self.isFavourite = sender.isOn
         }
@@ -305,7 +308,8 @@ class PokemonDetailVC: UIViewController {
     
     @IBAction private func movesButtonPushed(_ sender: UIButton) {
         if let pokemonModel = self.pokemonModel, let coordinator = self.coordinator {
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 coordinator.goToPokemonMoves(pokemonModel: pokemonModel)
             }
         }

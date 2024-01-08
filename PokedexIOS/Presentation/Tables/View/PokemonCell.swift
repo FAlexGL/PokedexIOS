@@ -1,5 +1,5 @@
 //
-//  PokemonCellVC.swift
+//  PokemonCell.swift
 //  PokedexIOS
 //
 //  Created by Fernando Alejandro Garcia Lopez on 11/12/23.
@@ -7,16 +7,18 @@
 
 import UIKit
 
-class PokemonCellVC: UITableViewCell {
 
-    @IBOutlet weak private var pokemonName: UILabel!
-    @IBOutlet weak private var pokemonID: UILabel!
-    @IBOutlet weak private var pokemonImage: UIImageView!
-    @IBOutlet weak private var contentCellView: UIView!
+//
+class PokemonCell: UITableViewCell {
+
+    @IBOutlet private weak var pokemonName: UILabel!
+    @IBOutlet private weak var pokemonID: UILabel!
+    @IBOutlet private weak var pokemonImage: UIImageView!
+    @IBOutlet private weak var contentCellView: UIView!
     
     @IBOutlet weak var favouriteImage: UIImageView!
     
-    private let dbHelper = DBHelper.shared
+    private let dbHelper: DBHelper = DefaultDBHelper.shared
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -26,7 +28,7 @@ class PokemonCellVC: UITableViewCell {
     func showData(pokemonID: Int, pokemonName: String) {
         self.pokemonID.text = "#\(pokemonID)"
         self.pokemonName.text = pokemonName
-        let urlString = "\(K.PokemonAPI.URL_POKEMON_IMAGE)\(pokemonID).png"
+        let urlString = "\(Constants.PokemonAPI.URL_POKEMON_IMAGE)\(pokemonID).png"
         loadImage(from: urlString)
         favouriteImage.isHidden = dbHelper.isFavourite(pokemonId: pokemonID) ? false : true
     }
@@ -36,10 +38,12 @@ class PokemonCellVC: UITableViewCell {
             print("Error converting URL object")
             return
         }
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        // Move to APIHelper
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            guard let self = self else { return }
             if let error = error {
                 print("Error obtaining pokemon's sprite: \(error)")
-                self.pokemonImage.image = UIImage(named: K.Images.MISSINGNO)
+                self.pokemonImage.image = UIImage(named: Constants.Images.MISSINGNO)
             }
             if let data = data {
                 DispatchQueue.main.async {
