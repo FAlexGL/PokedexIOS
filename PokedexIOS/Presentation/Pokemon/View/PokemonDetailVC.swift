@@ -308,8 +308,7 @@ class PokemonDetailVC: UIViewController {
     
     @IBAction private func movesButtonPushed(_ sender: UIButton) {
         if let pokemonModel = self.pokemonModel, let coordinator = self.coordinator {
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
+            DispatchQueue.main.async {
                 coordinator.goToPokemonMoves(pokemonModel: pokemonModel)
             }
         }

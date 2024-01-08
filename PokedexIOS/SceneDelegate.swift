@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(windowScene: windowScene)
-        let pokemonCoordinator: PokemonCoordinator = DefaultPokemonCoordinator()
+        let pokemonCoordinator: PokemonCoordinator = DefaultAppDependency().resolve()
         pokemonCoordinator.start()
         
         window?.rootViewController = pokemonCoordinator.navigationController

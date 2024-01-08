@@ -16,13 +16,15 @@ protocol PokemonCoordinator: Coordinator {
 class DefaultPokemonCoordinator: PokemonCoordinator {
     internal var childCoordinator: [Coordinator] = []
     var navigationController: UINavigationController
+    private let presentationDependencies: PresentationDependency
     
-    init(){
+    init(presentationDependencies: PresentationDependency){
+        self.presentationDependencies = presentationDependencies
         self.navigationController = UINavigationController()
     }
     
     func start() {
-        let mainVC = PokemonListVC(coordinator: self)
+        let mainVC: PokemonListVC = presentationDependencies.resolve(coordinator: self)
         navigationController.pushViewController(mainVC, animated: false)
     }
     

@@ -17,12 +17,13 @@ class PokemonListVC: UIViewController {
     private var favouritePokemonsFetched: [(pokemonID: Int, pokemonName: String)] = []
     private var pokemonListModel: PokemonListModel?
     private var url = Constants.PokemonAPI.URL_POKEMON_LIST
-    private var apiHelper: APIHelper = DefaultAPIHelper.share
+    private var apiHelper: APIHelper
     private let dbHelper: DBHelper = DefaultDBHelper.shared
     private var positionOfFavouritePokemonSelected: IndexPath?
     private var isShowingOnlyFavourites = false
     
-    init(coordinator: PokemonCoordinator){
+    init(coordinator: PokemonCoordinator, apiHelper: APIHelper){
+        self.apiHelper = apiHelper
         self.coordinator = coordinator
         super.init(nibName: Constants.NibNames.POKEMON_LIST, bundle: nil)
     }
