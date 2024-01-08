@@ -66,7 +66,7 @@ class PokemonDetailVC: UIViewController {
     private var spritesArray: [String] = []
     private var spriteArrayPosition = 1
     private let defaultAlphaTypes = 0.1
-    private var apiHelper = APIHelper()
+    private var apiHelper = APIHelper.share
     private var pokemonId: Int?
     
     var delegate: PokemonDetailDelegate?

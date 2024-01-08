@@ -32,7 +32,7 @@ class MoveDetailVC: UIViewController {
     private var levelsMove: PokemonModel.Move?
     private var effectChance = 0
     private var moveName: String?
-    private var apiHelper = APIHelper()
+    private var apiHelper = APIHelper.share
     
     override func viewDidLoad() {
         super.viewDidLoad()
