@@ -20,13 +20,13 @@ class MoveDetailVC: UIViewController {
     @IBOutlet weak var levelGamesTextView: UITextView!
     
     //constant info views
-    @IBOutlet weak var descriptionCILable: UILabel!
-    @IBOutlet weak var targetCILable: UILabel!
-    @IBOutlet weak var powerCILable: UILabel!
-    @IBOutlet weak var ppCILable: UILabel!
-    @IBOutlet weak var priorityCILable: UILabel!
-    @IBOutlet weak var accuracyCILable: UILabel!
-    @IBOutlet weak var learnedAtCILable: UILabel!
+    @IBOutlet weak private var descriptionCILable: UILabel!
+    @IBOutlet weak private var targetCILable: UILabel!
+    @IBOutlet weak private var powerCILable: UILabel!
+    @IBOutlet weak private var ppCILable: UILabel!
+    @IBOutlet weak private var priorityCILable: UILabel!
+    @IBOutlet weak private var accuracyCILable: UILabel!
+    @IBOutlet weak private var learnedAtCILable: UILabel!
     
     private var moveModel: MoveModel?
     private var levelsMove: PokemonModel.Move?

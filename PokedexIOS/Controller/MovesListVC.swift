@@ -12,7 +12,6 @@ class MovesListVC: UIViewController {
     
     private var pokemonModel: PokemonModel?
     private var apiHelper = APIHelper.share
-//    private var selectedRow: Int = -1
     private var coordinator: MovesCoordinator
     
     init(coordinator: MovesCoordinator){
@@ -31,14 +30,14 @@ class MovesListVC: UIViewController {
         initTable()
     }
     
-    func initTable(){
+    func setPokemonModel(pokemonModel: PokemonModel){
+        self.pokemonModel = pokemonModel
+    }
+    
+    private func initTable(){
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
-    }
-    
-    func setPokemonModel(pokemonModel: PokemonModel){
-        self.pokemonModel = pokemonModel
     }
 }
 

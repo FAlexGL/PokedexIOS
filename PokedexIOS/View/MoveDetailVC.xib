@@ -37,13 +37,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ZF-x7-yJ9">
-                    <rect key="frame" x="16" y="0.0" width="361" height="33.666666666666664"/>
+                    <rect key="frame" x="16" y="59" width="361" height="33.666666666666664"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="AQP-BK-UOj">
-                    <rect key="frame" x="140" y="58" width="113" height="35"/>
+                    <rect key="frame" x="140" y="117" width="113" height="35"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="c3B-Gs-hih">
                             <rect key="frame" x="0.0" y="0.0" width="70" height="35"/>
@@ -65,7 +65,7 @@
                     </constraints>
                 </stackView>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="VbJ-HP-7NK">
-                    <rect key="frame" x="16" y="139" width="361" height="90"/>
+                    <rect key="frame" x="16" y="198" width="361" height="90"/>
                     <color key="backgroundColor" name="yellowPokemonLogo"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="90" id="NzQ-A8-pfn"/>
@@ -77,93 +77,85 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qu0-91-bit">
-                    <rect key="frame" x="16" y="104" width="125" height="26.333333333333343"/>
+                    <rect key="frame" x="16" y="163" width="125" height="26.333333333333343"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Power: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kdO-pU-B7F">
-                    <rect key="frame" x="16" y="272" width="76" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Power: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kdO-pU-B7F">
+                    <rect key="frame" x="16" y="331" width="75.333333333333329" height="26.333333333333314"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="powerLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QJ3-Kj-zdO">
-                    <rect key="frame" x="89" y="272" width="112" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="powerLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QJ3-Kj-zdO">
+                    <rect key="frame" x="95.333333333333343" y="330" width="111.33333333333334" height="26.333333333333314"/>
                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                     <color key="textColor" name="bluePokemonLogo"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ppLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KVM-kg-8j4">
-                    <rect key="frame" x="245" y="272" width="77" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ppLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KVM-kg-8j4">
+                    <rect key="frame" x="243" y="330" width="77" height="26.333333333333314"/>
                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                     <color key="textColor" name="bluePokemonLogo"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="PP: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jB1-jf-I4r">
-                    <rect key="frame" x="200" y="272" width="39" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Priority: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ftw-3Y-DQs">
+                    <rect key="frame" x="16" y="366" width="86" height="26.333333333333314"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Priority: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ftw-3Y-DQs">
-                    <rect key="frame" x="16" y="307" width="86" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="priorityLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Uo-lP-EGD">
-                    <rect key="frame" x="102" y="307" width="119" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="priorityLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Uo-lP-EGD">
+                    <rect key="frame" x="106" y="366" width="118.66666666666669" height="26.333333333333314"/>
                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                     <color key="textColor" name="bluePokemonLogo"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Acuracy: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FRN-Rm-9uU">
-                    <rect key="frame" x="200" y="307" width="96" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Acuracy: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FRN-Rm-9uU">
+                    <rect key="frame" x="200" y="366" width="96" height="26.333333333333314"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="accuracyLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TnB-90-Cwm">
-                    <rect key="frame" x="297" y="307" width="139" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="accuracyLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TnB-90-Cwm">
+                    <rect key="frame" x="300" y="366" width="139" height="26.333333333333314"/>
                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                     <color key="textColor" name="bluePokemonLogo"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="targetLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rhn-6C-jZ5">
-                    <rect key="frame" x="95" y="237" width="282" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="targetLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rhn-6C-jZ5">
+                    <rect key="frame" x="96.666666666666686" y="296" width="108.33333333333331" height="26.333333333333314"/>
                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                     <color key="textColor" name="bluePokemonLogo"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Target: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wqc-MT-KpY">
-                    <rect key="frame" x="16" y="237" width="77" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Target: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wqc-MT-KpY">
+                    <rect key="frame" x="16" y="296" width="76.666666666666671" height="26.333333333333314"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="AYj-k0-TVg">
-                    <rect key="frame" x="16" y="377" width="361" height="291"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="AYj-k0-TVg">
+                    <rect key="frame" x="16" y="436" width="361" height="291"/>
                     <color key="backgroundColor" name="yellowPokemonLogo"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="361" id="0m6-tF-Gg5"/>
+                        <constraint firstAttribute="height" constant="291" id="toO-Vb-fr0"/>
+                    </constraints>
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <color key="textColor" systemColor="labelColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="19"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Learned at..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ujc-Xn-4cR">
-                    <rect key="frame" x="16" y="342" width="128" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Learned at..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ujc-Xn-4cR">
+                    <rect key="frame" x="16.000000000000007" y="401" width="127.66666666666669" height="26.333333333333314"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PP: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jB1-jf-I4r">
+                    <rect key="frame" x="200" y="330" width="39" height="26.333333333333314"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -172,15 +164,41 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="yellowPokemonLogo"/>
             <constraints>
-                <constraint firstItem="AQP-BK-UOj" firstAttribute="top" secondItem="9ZF-x7-yJ9" secondAttribute="bottom" constant="24.333333333333336" id="2Qo-zv-7tz"/>
-                <constraint firstAttribute="trailing" secondItem="9ZF-x7-yJ9" secondAttribute="trailing" constant="16" id="CKY-je-PdK"/>
-                <constraint firstItem="qu0-91-bit" firstAttribute="top" secondItem="c3B-Gs-hih" secondAttribute="bottom" constant="11" id="KOC-2Z-cCq"/>
-                <constraint firstItem="VbJ-HP-7NK" firstAttribute="top" secondItem="qu0-91-bit" secondAttribute="bottom" constant="8.6666666666666572" id="MxG-47-TcZ"/>
-                <constraint firstItem="VbJ-HP-7NK" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="RdM-2f-8n5"/>
-                <constraint firstItem="qu0-91-bit" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="cc2-QW-ryF"/>
-                <constraint firstItem="9ZF-x7-yJ9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="g8M-pK-Tdw"/>
-                <constraint firstItem="9ZF-x7-yJ9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="n26-tB-KBS"/>
-                <constraint firstItem="AQP-BK-UOj" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="wHq-Mm-2Uh"/>
+                <constraint firstItem="Ujc-Xn-4cR" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="1es-h0-koh"/>
+                <constraint firstItem="kdO-pU-B7F" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="5Qj-K8-dZW"/>
+                <constraint firstItem="0Uo-lP-EGD" firstAttribute="top" secondItem="QJ3-Kj-zdO" secondAttribute="bottom" constant="9.6666666666666856" id="7Cl-9R-GP9"/>
+                <constraint firstItem="FRN-Rm-9uU" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="200" id="8Xw-Az-0xx"/>
+                <constraint firstItem="TnB-90-Cwm" firstAttribute="leading" secondItem="FRN-Rm-9uU" secondAttribute="trailing" constant="4" id="BKd-KW-1f9"/>
+                <constraint firstItem="AYj-k0-TVg" firstAttribute="top" secondItem="Ujc-Xn-4cR" secondAttribute="bottom" constant="8.6666666666666856" id="FtD-Ao-soD"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="9ZF-x7-yJ9" secondAttribute="trailing" constant="16" id="Ghx-y0-fXU"/>
+                <constraint firstItem="jB1-jf-I4r" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="200" id="IBC-8I-nzL"/>
+                <constraint firstItem="VbJ-HP-7NK" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="IIz-XW-cDW"/>
+                <constraint firstItem="Ujc-Xn-4cR" firstAttribute="top" secondItem="ftw-3Y-DQs" secondAttribute="bottom" constant="8.6666666666666856" id="Iyr-nV-Y25"/>
+                <constraint firstItem="qu0-91-bit" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="Kzx-TZ-C24"/>
+                <constraint firstItem="0Uo-lP-EGD" firstAttribute="leading" secondItem="ftw-3Y-DQs" secondAttribute="trailing" constant="4" id="NCR-zY-tDe"/>
+                <constraint firstItem="rhn-6C-jZ5" firstAttribute="top" secondItem="VbJ-HP-7NK" secondAttribute="bottom" constant="8" symbolic="YES" id="PCC-RK-woi"/>
+                <constraint firstItem="rhn-6C-jZ5" firstAttribute="leading" secondItem="Wqc-MT-KpY" secondAttribute="trailing" constant="4" id="Q8c-8h-aiD"/>
+                <constraint firstItem="9ZF-x7-yJ9" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="RC2-9X-m8B"/>
+                <constraint firstItem="VbJ-HP-7NK" firstAttribute="top" secondItem="qu0-91-bit" secondAttribute="bottom" constant="8.6666666666666572" id="WAk-C9-JP3"/>
+                <constraint firstItem="ftw-3Y-DQs" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="Z8s-3i-V7v"/>
+                <constraint firstItem="TnB-90-Cwm" firstAttribute="top" secondItem="KVM-kg-8j4" secondAttribute="bottom" constant="9.6666666666666856" id="dVI-9M-PxI"/>
+                <constraint firstItem="KVM-kg-8j4" firstAttribute="leading" secondItem="jB1-jf-I4r" secondAttribute="trailing" constant="4" id="fKt-eJ-p0h"/>
+                <constraint firstItem="AQP-BK-UOj" firstAttribute="top" secondItem="9ZF-x7-yJ9" secondAttribute="bottom" constant="24.333333333333343" id="gja-cy-VYw"/>
+                <constraint firstItem="kdO-pU-B7F" firstAttribute="top" secondItem="Wqc-MT-KpY" secondAttribute="bottom" constant="8.6666666666666856" id="hnx-x9-dR4"/>
+                <constraint firstItem="AQP-BK-UOj" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="iUI-I3-y2G"/>
+                <constraint firstItem="QJ3-Kj-zdO" firstAttribute="leading" secondItem="kdO-pU-B7F" secondAttribute="trailing" constant="4" id="iuM-Mn-Rfb"/>
+                <constraint firstItem="QJ3-Kj-zdO" firstAttribute="top" secondItem="rhn-6C-jZ5" secondAttribute="bottom" constant="7.6699999999999999" id="iyn-1r-c6E"/>
+                <constraint firstItem="AYj-k0-TVg" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="jDu-Qk-SSq"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="qu0-91-bit" secondAttribute="trailing" constant="252" id="kUr-QT-b1d"/>
+                <constraint firstItem="jB1-jf-I4r" firstAttribute="top" secondItem="rhn-6C-jZ5" secondAttribute="bottom" constant="7.6666666666666856" id="kh2-T9-yTD"/>
+                <constraint firstItem="9ZF-x7-yJ9" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="lb5-EH-0C6"/>
+                <constraint firstItem="KVM-kg-8j4" firstAttribute="top" secondItem="rhn-6C-jZ5" secondAttribute="bottom" constant="7.6666666666666856" id="n8I-33-fBV"/>
+                <constraint firstItem="FRN-Rm-9uU" firstAttribute="top" secondItem="jB1-jf-I4r" secondAttribute="bottom" constant="9.6666666666666856" id="nnO-UG-TiC"/>
+                <constraint firstItem="Wqc-MT-KpY" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="pon-Oc-c5U"/>
+                <constraint firstItem="ftw-3Y-DQs" firstAttribute="top" secondItem="kdO-pU-B7F" secondAttribute="bottom" constant="8.6666666666666856" id="tBm-aP-AIA"/>
+                <constraint firstItem="Wqc-MT-KpY" firstAttribute="top" secondItem="VbJ-HP-7NK" secondAttribute="bottom" constant="8" symbolic="YES" id="xCP-0q-oeI"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="VbJ-HP-7NK" secondAttribute="trailing" constant="16" id="yDh-VG-yQw"/>
+                <constraint firstItem="qu0-91-bit" firstAttribute="top" secondItem="c3B-Gs-hih" secondAttribute="bottom" constant="11" id="zXs-sx-9zD"/>
             </constraints>
             <point key="canvasLocation" x="116.79389312977099" y="20.422535211267608"/>
         </view>

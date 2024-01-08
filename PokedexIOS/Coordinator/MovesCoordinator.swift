@@ -28,7 +28,7 @@ class DefaultMovesCoordinator: MovesCoordinator {
         if let pokemonModel = pokemonModel {
             listMovesVC.setPokemonModel(pokemonModel: pokemonModel)
         }
-        navigationController.pushViewController(listMovesVC, animated: false)
+        navigationController.pushViewController(listMovesVC, animated: true)
     }
     
     func goToMoveDetail(moveName: String, levelsMove: PokemonModel.Move){

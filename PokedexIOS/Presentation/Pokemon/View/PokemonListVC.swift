@@ -185,18 +185,10 @@ extension PokemonListVC: UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == self.tableView{
-//            let pokemonDetailVC = PokemonDetailVC(nibName: K.NibNames.POKEMON_DETAIL, bundle: nil)
-//            pokemonDetailVC.setPokemonId(pokemonId: indexPath.row+1)
-//            pokemonDetailVC.delegate = self
-//            navigationController?.pushViewController(pokemonDetailVC, animated: true)
             coordinator.goToPokemonDetail(pokemonId: indexPath.row+1, delegate: self)
         } else if tableView == self.favouriteTableView {
             self.positionOfFavouritePokemonSelected = indexPath
-//            let pokemonDetailVC = PokemonDetailVC(nibName: K.NibNames.POKEMON_DETAIL, bundle: nil)
-//            pokemonDetailVC.setPokemonId(pokemonId: indexPath.row+1)
-//            pokemonDetailVC.delegate = self
-//            navigationController?.pushViewController(pokemonDetailVC, animated: true)
-            coordinator.goToPokemonDetail(pokemonId: indexPath.row+1, delegate: self)
+            coordinator.goToPokemonDetail(pokemonId: favouritePokemonsFetched[indexPath.row].pokemonID, delegate: self)
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }

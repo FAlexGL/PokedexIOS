@@ -31,7 +31,7 @@ class PokemonCellVC: UITableViewCell {
         favouriteImage.isHidden = dbHelper.isFavourite(pokemonId: pokemonID) ? false : true
     }
     
-    func loadImage(from urlString: String) {
+    private func loadImage(from urlString: String) {
         guard let url = URL(string: urlString) else {
             print("Error converting URL object")
             return

@@ -60,7 +60,6 @@ class PokemonDetailVC: UIViewController {
     @IBOutlet weak private var fairyImage: UIImageView!
     
     private var coordinator: PokemonCoordinator?
-    //    private var coordinator: MovesCoordinator
     private var pokemonModel: PokemonModel?
     private let dbHelper = DBHelper.shared
     private var isFavourite: Bool?
