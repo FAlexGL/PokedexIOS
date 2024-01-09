@@ -15,16 +15,18 @@ protocol MovesCoordinator: Coordinator {
 
 class DefaultMovesCoordinator: MovesCoordinator {
     var pokemonModel: PokemonModel?
-    
     internal var childCoordinator: [Coordinator] = []
     var navigationController: UINavigationController
+    private let presentationDependencies: PresentationDependency
     
-    init(navigationController: UINavigationController) {
+    
+    init(navigationController: UINavigationController, presentationDependencies: PresentationDependency) {
         self.navigationController = navigationController
+        self.presentationDependencies = presentationDependencies
     }
     
     func start() {
-        let listMovesVC = MovesListVC(coordinator: self)
+        let listMovesVC: MovesListVC = presentationDependencies.resolve(coordinator: self)
         if let pokemonModel = pokemonModel {
             listMovesVC.setPokemonModel(pokemonModel: pokemonModel)
         }
@@ -32,7 +34,7 @@ class DefaultMovesCoordinator: MovesCoordinator {
     }
     
     func goToMoveDetail(moveName: String, levelsMove: PokemonModel.Move) {
-        let moveDetailVC = MoveDetailVC(nibName: Constants.NibNames.POKEMON_MOVE_DETAIL, bundle: nil)
+        let moveDetailVC: MoveDetailVC = presentationDependencies.resolve()
         moveDetailVC.setMoves(moveName: moveName, levelsMove: levelsMove)
         navigationController.pushViewController(moveDetailVC, animated: true)
     }

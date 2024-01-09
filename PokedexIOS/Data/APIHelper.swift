@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 enum ParseType {
     case pokemonList
@@ -31,6 +32,7 @@ protocol APIHelper {
     func fetchPokemonList(url: String)
     func fetchPokemonDetail(pokemonId: Int)
     func fetchMoveDetail(moveName: String)
+    func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void)
 }
 
 struct DefaultAPIHelper {
@@ -164,6 +166,7 @@ struct DefaultAPIHelper {
             return nil
         }
     }
+    
 }
 
 extension DefaultAPIHelper: APIHelper {
@@ -177,5 +180,25 @@ extension DefaultAPIHelper: APIHelper {
     
     func fetchMoveDetail(moveName: String) {
         performRequest(with: "\(Constants.PokemonAPI.URL_POKEMON_MOVE)\(moveName)", type: .pokemonMove)
+    }
+    
+    func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
+        guard let url = URL(string: urlString) else {
+            print("Error converting URL object")
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let data = data {
+                if let image = UIImage(data: data){
+                    completion(image)
+                } else {
+                    completion(nil)
+                }
+            } else {
+                completion(nil)
+            }
+        }
+        task.resume()
     }
 }

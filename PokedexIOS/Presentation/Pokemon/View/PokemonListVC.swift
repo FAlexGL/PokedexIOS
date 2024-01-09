@@ -146,16 +146,38 @@ extension PokemonListVC: UITableViewDataSource{
         let item = UIContextualAction(style: .normal, title: stringFavourite) { [weak self] (action, view, completionHandler) in
             guard let self = self else { return }
             //Control errrors
+            var message = ""
+            var error = false
             if tableView == self.favouriteTableView {
-                _ = self.dbHelper.deleteFavourite(pokemonId: self.favouritePokemonsFetched[indexPath.row].pokemonID)
+//                _ = self.dbHelper.deleteFavourite(pokemonId: self.favouritePokemonsFetched[indexPath.row].pokemonID)
+                if (!self.dbHelper.deleteFavourite(pokemonId: self.favouritePokemonsFetched[indexPath.row].pokemonID)) {
+                    message = "Error deletting favourite, try again."
+                    error = true
+                }
             } else {
-                if self.dbHelper.isFavourite(pokemonId: indexPath.row+1){
-                    _ = self.dbHelper.deleteFavourite(pokemonId: indexPath.row+1)
+                if self.dbHelper.isFavourite(pokemonId: indexPath.row+1) {
+//                    _ = self.dbHelper.deleteFavourite(pokemonId: indexPath.row+1)
+                    if (!self.dbHelper.deleteFavourite(pokemonId: indexPath.row+1)) {
+                        message = "Error deletting favourite, try again."
+                        error = true
+                    }
                 } else {
                     let favouritePokemon = FavouritePokemon(pokemonId: indexPath.row+1, pokemonName: self.pokemonsFetched[indexPath.row])
-                    _ = self.dbHelper.saveFavourite(favouritePokemon: favouritePokemon)
+//                    _ = self.dbHelper.saveFavourite(favouritePokemon: favouritePokemon)
+                    if (!self.dbHelper.saveFavourite(favouritePokemon: favouritePokemon)) {
+                        message = "Error adding favourite Pokemon, try again"
+                        error = true
+                    }
                 }
             }
+            if error {
+                let alert = UIAlertController(title: "", message: message, preferredStyle: .actionSheet)
+                self.present(alert , animated: true)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    alert.dismiss(animated: true)
+                }
+            }
+            
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.tableView.reloadRows(at: [indexPath], with: .none)
@@ -209,7 +231,8 @@ extension PokemonListVC: APIHelperDelegate{
     }
     
     func didFailWithError(error: Error) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {return}
             let errorVC = ErrorVC(nibName: Constants.NibNames.POKEMON_ERROR, bundle: nil)
             self.navigationController?.pushViewController(errorVC, animated: true)
         }

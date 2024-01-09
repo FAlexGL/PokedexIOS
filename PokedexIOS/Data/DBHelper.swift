@@ -75,9 +75,9 @@ extension DefaultDBHelper: DBHelper {
     func fetchFavourites() -> [(Int, String)] {
         var result: [(pokemonID: Int, pokemonName: String)] = []
         let realm = obtainRealm()
-        if let objetos = realm?.objects(FavouritePokemon.self).sorted(byKeyPath: "pokemonId", ascending: true){
-            for objeto in objetos {
-                result.append((pokemonID: objeto.pokemonId, pokemonName: objeto.pokemonName))
+        if let favouritePokemons = realm?.objects(FavouritePokemon.self).sorted(byKeyPath: "pokemonId", ascending: true){
+            for favouritePokemon in favouritePokemons {
+                result.append((pokemonID: favouritePokemon.pokemonId, pokemonName: favouritePokemon.pokemonName))
             }
         }
         return result

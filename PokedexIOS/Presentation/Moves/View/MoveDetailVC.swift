@@ -8,25 +8,25 @@
 import UIKit
 
 class MoveDetailVC: UIViewController {
-    @IBOutlet weak private var moveNameLabel: UILabel!
-    @IBOutlet weak private var imageMoveClass: UIImageView!
-    @IBOutlet weak private var descriptionTextView: UITextView!
-    @IBOutlet weak private var targetLabel: UILabel!
-    @IBOutlet weak private var powerLabel: UILabel!
-    @IBOutlet weak private var ppLabel: UILabel!
-    @IBOutlet weak private var priorityLabel: UILabel!
-    @IBOutlet weak private var accuracyLabel: UILabel!
+    @IBOutlet private weak var moveNameLabel: UILabel!
+    @IBOutlet private weak var imageMoveClass: UIImageView!
+    @IBOutlet private weak var descriptionTextView: UITextView!
+    @IBOutlet private weak var targetLabel: UILabel!
+    @IBOutlet private weak var powerLabel: UILabel!
+    @IBOutlet private weak var ppLabel: UILabel!
+    @IBOutlet private weak var priorityLabel: UILabel!
+    @IBOutlet private weak var accuracyLabel: UILabel!
     @IBOutlet weak var imageMoveType: UIImageView!
     @IBOutlet weak var levelGamesTextView: UITextView!
     
     //constant info views
-    @IBOutlet weak private var descriptionCILable: UILabel!
-    @IBOutlet weak private var targetCILable: UILabel!
-    @IBOutlet weak private var powerCILable: UILabel!
-    @IBOutlet weak private var ppCILable: UILabel!
-    @IBOutlet weak private var priorityCILable: UILabel!
-    @IBOutlet weak private var accuracyCILable: UILabel!
-    @IBOutlet weak private var learnedAtCILable: UILabel!
+    @IBOutlet private weak var descriptionCILable: UILabel!
+    @IBOutlet private weak var targetCILable: UILabel!
+    @IBOutlet private weak var powerCILable: UILabel!
+    @IBOutlet private weak var ppCILable: UILabel!
+    @IBOutlet private weak var priorityCILable: UILabel!
+    @IBOutlet private weak var accuracyCILable: UILabel!
+    @IBOutlet private weak var learnedAtCILable: UILabel!
     
     private var moveModel: MoveModel?
     private var levelsMove: PokemonModel.Move?

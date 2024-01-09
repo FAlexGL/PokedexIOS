@@ -13,51 +13,51 @@ protocol PokemonDetailDelegate {
 
 class PokemonDetailVC: UIViewController {
     
-    @IBOutlet weak private var pokemonImage: UIImageView!
-    @IBOutlet weak private var heightLabel: UILabel!
-    @IBOutlet weak private var weightLabel: UILabel!
-    @IBOutlet weak private var baseExperienceLabel: UILabel!
-    @IBOutlet weak private var favouriteSwitch: UISwitch!
-    @IBOutlet weak private var hpLabel: UILabel!
-    @IBOutlet weak private var attackLabel: UILabel!
-    @IBOutlet weak private var deffenseLabel: UILabel!
-    @IBOutlet weak private var specialAttackLabel: UILabel!
-    @IBOutlet weak private var specialDefenseLabel: UILabel!
-    @IBOutlet weak private var speedLabel: UILabel!
+    @IBOutlet private weak var pokemonImage: UIImageView!
+    @IBOutlet private weak var heightLabel: UILabel!
+    @IBOutlet private weak var weightLabel: UILabel!
+    @IBOutlet private weak var baseExperienceLabel: UILabel!
+    @IBOutlet private weak var favouriteSwitch: UISwitch!
+    @IBOutlet private weak var hpLabel: UILabel!
+    @IBOutlet private weak var attackLabel: UILabel!
+    @IBOutlet private weak var deffenseLabel: UILabel!
+    @IBOutlet private weak var specialAttackLabel: UILabel!
+    @IBOutlet private weak var specialDefenseLabel: UILabel!
+    @IBOutlet private weak var speedLabel: UILabel!
     
     //constant info views
-    @IBOutlet weak private var baseExperienceCILable: UILabel!
-    @IBOutlet weak private var heightCILable: UILabel!
-    @IBOutlet weak private var baseStatsCILable: UILabel!
-    @IBOutlet weak private var weightCILable: UILabel!
-    @IBOutlet weak private var hpCILable: UILabel!
-    @IBOutlet weak private var attackCILable: UILabel!
-    @IBOutlet weak private var defenseCILable: UILabel!
-    @IBOutlet weak private var specialAttackCILable: UILabel!
-    @IBOutlet weak private var specialDefenseCILable: UILabel!
-    @IBOutlet weak private var speedCILable: UILabel!
-    @IBOutlet weak private var favouriteCILable: UILabel!
-    @IBOutlet weak private var movesButton: UIButton!
+    @IBOutlet private weak var baseExperienceCILable: UILabel!
+    @IBOutlet private weak var heightCILable: UILabel!
+    @IBOutlet private weak var baseStatsCILable: UILabel!
+    @IBOutlet private weak var weightCILable: UILabel!
+    @IBOutlet private weak var hpCILable: UILabel!
+    @IBOutlet private weak var attackCILable: UILabel!
+    @IBOutlet private weak var defenseCILable: UILabel!
+    @IBOutlet private weak var specialAttackCILable: UILabel!
+    @IBOutlet private weak var specialDefenseCILable: UILabel!
+    @IBOutlet private weak var speedCILable: UILabel!
+    @IBOutlet private weak var favouriteCILable: UILabel!
+    @IBOutlet private weak var movesButton: UIButton!
     
     //types images
-    @IBOutlet weak private var normalImage: UIImageView!
-    @IBOutlet weak private var fightingImage: UIImageView!
-    @IBOutlet weak private var flyingImage: UIImageView!
-    @IBOutlet weak private var poisonImage: UIImageView!
-    @IBOutlet weak private var groundImage: UIImageView!
-    @IBOutlet weak private var rockImage: UIImageView!
-    @IBOutlet weak private var bugImage: UIImageView!
-    @IBOutlet weak private var ghostImage: UIImageView!
-    @IBOutlet weak private var steelImage: UIImageView!
-    @IBOutlet weak private var fireImage: UIImageView!
-    @IBOutlet weak private var waterImage: UIImageView!
-    @IBOutlet weak private var grassImage: UIImageView!
-    @IBOutlet weak private var electricImage: UIImageView!
-    @IBOutlet weak private var psychicImage: UIImageView!
-    @IBOutlet weak private var iceImage: UIImageView!
-    @IBOutlet weak private var dragonImage: UIImageView!
-    @IBOutlet weak private var darkImage: UIImageView!
-    @IBOutlet weak private var fairyImage: UIImageView!
+    @IBOutlet private weak var normalImage: UIImageView!
+    @IBOutlet private weak var fightingImage: UIImageView!
+    @IBOutlet private weak var flyingImage: UIImageView!
+    @IBOutlet private weak var poisonImage: UIImageView!
+    @IBOutlet private weak var groundImage: UIImageView!
+    @IBOutlet private weak var rockImage: UIImageView!
+    @IBOutlet private weak var bugImage: UIImageView!
+    @IBOutlet private weak var ghostImage: UIImageView!
+    @IBOutlet private weak var steelImage: UIImageView!
+    @IBOutlet private weak var fireImage: UIImageView!
+    @IBOutlet private weak var waterImage: UIImageView!
+    @IBOutlet private weak var grassImage: UIImageView!
+    @IBOutlet private weak var electricImage: UIImageView!
+    @IBOutlet private weak var psychicImage: UIImageView!
+    @IBOutlet private weak var iceImage: UIImageView!
+    @IBOutlet private weak var dragonImage: UIImageView!
+    @IBOutlet private weak var darkImage: UIImageView!
+    @IBOutlet private weak var fairyImage: UIImageView!
     
     private var coordinator: PokemonCoordinator?
     private var pokemonModel: PokemonModel?
@@ -168,7 +168,17 @@ class PokemonDetailVC: UIViewController {
                 }
             }
             favouriteSwitch.isOn = dbHelper.isFavourite(pokemonId: pokemonModel.pokemonId) ? true : false
-            loadImage(from: pokemonModel.sprites.frontDefault)
+            apiHelper.downloadImage(from: pokemonModel.sprites.frontDefault) { [weak self] (image) in
+                guard let self = self else {return}
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    if let image = image {
+                        self.pokemonImage.image = image
+                    } else {
+                        self.pokemonImage.image = UIImage(named: Constants.Images.MISSINGNO)
+                    }
+                }
+            }
             showTypes(types: pokemonModel.types)
         }
         getSprites(pokemonModel.sprites)
@@ -271,28 +281,6 @@ class PokemonDetailVC: UIViewController {
         }
     }
     
-    private func loadImage(from urlString: String) {
-        guard let url = URL(string: urlString) else {
-            print("Error converting URL object")
-            return
-        }
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                print("Error obtaining pokemon's sprite: \(error)")
-                self.pokemonImage.image = UIImage(named: Constants.Images.MISSINGNO)
-            }
-            if let data = data {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    if let image = UIImage(data: data){
-                        self.pokemonImage.image = image
-                    }
-                }
-            }
-        }
-        task.resume()
-    }
-    
     @IBAction private func switchChanged(_ sender: UISwitch) {
         if let pokemonModel = self.pokemonModel {
             // Control error
@@ -316,7 +304,16 @@ class PokemonDetailVC: UIViewController {
     
     @IBAction private func imageTapped(_ sender: UITapGestureRecognizer) {
         if spritesArray.count > 1 {
-            loadImage(from: spritesArray[spriteArrayPosition])
+            apiHelper.downloadImage(from: spritesArray[spriteArrayPosition]) { image in
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    if let image = image {
+                        self.pokemonImage.image = image
+                    } else {
+                        self.pokemonImage.image = UIImage(named: Constants.Images.MISSINGNO)
+                    }
+                }
+            }
             if spriteArrayPosition < spritesArray.count-1{
                 spriteArrayPosition += 1
             } else {

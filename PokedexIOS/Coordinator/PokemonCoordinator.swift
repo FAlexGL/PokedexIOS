@@ -29,14 +29,14 @@ class DefaultPokemonCoordinator: PokemonCoordinator {
     }
     
     func goToPokemonDetail(pokemonId: Int, delegate: PokemonDetailDelegate){
-        let pokemonDetailVC = PokemonDetailVC(pokemonCoordinator: self)
+        let pokemonDetailVC: PokemonDetailVC = presentationDependencies.resolve(coordinator: self)
         pokemonDetailVC.setPokemonId(pokemonId: pokemonId)
         pokemonDetailVC.delegate = delegate
         navigationController.pushViewController(pokemonDetailVC, animated: true)
     }
     
     func goToPokemonMoves(pokemonModel: PokemonModel){
-        var movesCoordinator: MovesCoordinator = DefaultMovesCoordinator(navigationController: self.navigationController)
+        var movesCoordinator: MovesCoordinator = presentationDependencies.resolve(navigationController: navigationController)
         movesCoordinator.pokemonModel = pokemonModel
         movesCoordinator.start()
     }

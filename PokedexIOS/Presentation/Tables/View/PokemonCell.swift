@@ -10,7 +10,7 @@ import UIKit
 
 //
 class PokemonCell: UITableViewCell {
-
+    
     @IBOutlet private weak var pokemonName: UILabel!
     @IBOutlet private weak var pokemonID: UILabel!
     @IBOutlet private weak var pokemonImage: UIImageView!
@@ -19,6 +19,7 @@ class PokemonCell: UITableViewCell {
     @IBOutlet weak var favouriteImage: UIImageView!
     
     private let dbHelper: DBHelper = DefaultDBHelper.shared
+    private let apiHelper: APIHelper = DefaultAPIHelper.share
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -29,30 +30,17 @@ class PokemonCell: UITableViewCell {
         self.pokemonID.text = "#\(pokemonID)"
         self.pokemonName.text = pokemonName
         let urlString = "\(Constants.PokemonAPI.URL_POKEMON_IMAGE)\(pokemonID).png"
-        loadImage(from: urlString)
         favouriteImage.isHidden = dbHelper.isFavourite(pokemonId: pokemonID) ? false : true
-    }
-    
-    private func loadImage(from urlString: String) {
-        guard let url = URL(string: urlString) else {
-            print("Error converting URL object")
-            return
-        }
-        // Move to APIHelper
-        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let self = self else { return }
-            if let error = error {
-                print("Error obtaining pokemon's sprite: \(error)")
-                self.pokemonImage.image = UIImage(named: Constants.Images.MISSINGNO)
-            }
-            if let data = data {
-                DispatchQueue.main.async {
-                    if let image = UIImage(data: data){
-                        self.pokemonImage.image = image
-                    }
+        apiHelper.downloadImage(from: urlString) { image in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else {return}
+                if let image = image {
+                    self.pokemonImage.image = image
+                } else {
+                    self.pokemonImage.image = UIImage(named: Constants.Images.MISSINGNO)
                 }
             }
         }
-        task.resume()
     }
+    
 }

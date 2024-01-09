@@ -205,6 +205,9 @@
 		4585B3FD2B274CF9004D6B3B /* PokedexIOS */ = {
 			isa = PBXGroup;
 			children = (
+				ECED3CC32B4C6AD20041579D /* AppDependency.swift */,
+				ECED3CC52B4C6B4D0041579D /* PresentationDependency.swift */,
+				ECED3CC72B4C6E7B0041579D /* DataDependency.swift */,
 				45CCCE8B2B31F3C800109FFF /* Coordinator */,
 				452B467A2B32CFD60030A2B1 /* Domain */,
 				452B46792B32CFCD0030A2B1 /* Data */,
@@ -216,9 +219,6 @@
 				4585B4092B274CFA004D6B3B /* LaunchScreen.storyboard */,
 				4585B40C2B274CFA004D6B3B /* Info.plist */,
 				45CCCE832B31A4E600109FFF /* Localizable.strings */,
-				ECED3CC32B4C6AD20041579D /* AppDependency.swift */,
-				ECED3CC52B4C6B4D0041579D /* PresentationDependency.swift */,
-				ECED3CC72B4C6E7B0041579D /* DataDependency.swift */,
 			);
 			path = PokedexIOS;
 			sourceTree = "<group>";
