@@ -15,7 +15,7 @@ protocol PokemonCoordinator: Coordinator {
 
 class DefaultPokemonCoordinator: PokemonCoordinator {
     internal var childCoordinator: [Coordinator] = []
-    var navigationController: UINavigationController
+    internal var navigationController: UINavigationController
     private let presentationDependencies: PresentationDependency
     
     init(presentationDependencies: PresentationDependency){

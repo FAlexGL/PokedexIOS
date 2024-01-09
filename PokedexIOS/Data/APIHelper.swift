@@ -185,6 +185,7 @@ extension DefaultAPIHelper: APIHelper {
     func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
         guard let url = URL(string: urlString) else {
             print("Error converting URL object")
+            completion(nil)
             return
         }
         

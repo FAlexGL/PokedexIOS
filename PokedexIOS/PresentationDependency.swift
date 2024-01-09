@@ -41,5 +41,4 @@ extension PresentationDependency where Self: DefaultAppDependency {
     func resolve() -> MoveDetailVC {
         MoveDetailVC(nibName: Constants.NibNames.POKEMON_MOVE_DETAIL, bundle: nil)
     }
-    
 }
