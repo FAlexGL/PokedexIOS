@@ -8,15 +8,15 @@
 import UIKit
 
 class MovesListVC: UIViewController {
-    @IBOutlet weak private var tableView: UITableView!
+    @IBOutlet private weak var tableView: UITableView!
     
     private var pokemonModel: PokemonModel?
-    private var apiHelper = APIHelper.share
+    private var apiHelper: APIHelper = DefaultAPIHelper.share
     private var coordinator: MovesCoordinator
     
     init(coordinator: MovesCoordinator){
         self.coordinator = coordinator
-        super.init(nibName: K.NibNames.POKEMON_MOVES_LIST, bundle: nil)
+        super.init(nibName: Constants.NibNames.POKEMON_MOVES_LIST, bundle: nil)
     }
     
     @available(*, unavailable)
@@ -30,11 +30,11 @@ class MovesListVC: UIViewController {
         initTable()
     }
     
-    func setPokemonModel(pokemonModel: PokemonModel){
+    func setPokemonModel(pokemonModel: PokemonModel) {
         self.pokemonModel = pokemonModel
     }
     
-    private func initTable(){
+    private func initTable() {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
@@ -55,10 +55,10 @@ extension MovesListVC: UITableViewDataSource{
         var content = cell.defaultContentConfiguration()
         content.text = pokemonModel?.moves[indexPath.row].moveName.replacingOccurrences(of: "-", with: " ")
         content.textProperties.font = UIFont.systemFont(ofSize: 20)
-        content.textProperties.color = UIColor(named: K.Colours.YELLOW_POKEMON_TITLE) ?? UIColor.yellow
+        content.textProperties.color = UIColor(named: Constants.Colours.YELLOW_POKEMON_TITLE) ?? UIColor.yellow
         cell.contentConfiguration = content
         cell.accessoryType = .disclosureIndicator
-        cell.backgroundColor = UIColor(named: K.Colours.BLUE_POKEMON_TITLE)
+        cell.backgroundColor = UIColor(named: Constants.Colours.BLUE_POKEMON_TITLE)
         return cell
     }
 }

@@ -15,26 +15,28 @@ protocol PokemonCoordinator: Coordinator {
 
 class DefaultPokemonCoordinator: PokemonCoordinator {
     internal var childCoordinator: [Coordinator] = []
-    var navigationController: UINavigationController
+    internal var navigationController: UINavigationController
+    private let presentationDependencies: PresentationDependency
     
-    init(){
+    init(presentationDependencies: PresentationDependency){
+        self.presentationDependencies = presentationDependencies
         self.navigationController = UINavigationController()
     }
     
     func start() {
-        let mainVC = PokemonListVC(coordinator: self)
+        let mainVC: PokemonListVC = presentationDependencies.resolve(coordinator: self)
         navigationController.pushViewController(mainVC, animated: false)
     }
     
     func goToPokemonDetail(pokemonId: Int, delegate: PokemonDetailDelegate){
-        let pokemonDetailVC = PokemonDetailVC(pokemonCoordinator: self)
+        let pokemonDetailVC: PokemonDetailVC = presentationDependencies.resolve(coordinator: self)
         pokemonDetailVC.setPokemonId(pokemonId: pokemonId)
         pokemonDetailVC.delegate = delegate
         navigationController.pushViewController(pokemonDetailVC, animated: true)
     }
     
     func goToPokemonMoves(pokemonModel: PokemonModel){
-        var movesCoordinator: MovesCoordinator = DefaultMovesCoordinator(navigationController: self.navigationController)
+        var movesCoordinator: MovesCoordinator = presentationDependencies.resolve(navigationController: navigationController)
         movesCoordinator.pokemonModel = pokemonModel
         movesCoordinator.start()
     }

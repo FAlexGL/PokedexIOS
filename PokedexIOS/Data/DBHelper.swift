@@ -8,16 +8,16 @@
 import Foundation
 import RealmSwift
 
-protocol DBHelperProtocol {
-    func saveFavourite(favouritePokemon: FavouritePokemon)
+protocol DBHelper {
+    func saveFavourite(favouritePokemon: FavouritePokemon) -> Bool
     func isFavourite(pokemonId: Int) -> Bool
-    func deleteFavourite(pokemonId: Int)
+    func deleteFavourite(pokemonId: Int)  -> Bool
     func fetchFavourites() -> [(Int, String)]
 }
 
-class DBHelper {
+class DefaultDBHelper {
     
-    static let shared = DBHelper()
+    static let shared = DefaultDBHelper()
     
     private func obtainRealm() -> Realm? {
         var realm: Realm?
@@ -30,8 +30,8 @@ class DBHelper {
     }
 }
 
-extension DBHelper: DBHelperProtocol{
-    func saveFavourite(favouritePokemon: FavouritePokemon){
+extension DefaultDBHelper: DBHelper {
+    func saveFavourite(favouritePokemon: FavouritePokemon) -> Bool{
         do {
             if let realm = obtainRealm(){
                 try realm.write {
@@ -39,8 +39,10 @@ extension DBHelper: DBHelperProtocol{
                     print("Favourite saved.")
                 }
             }
+            return true
         } catch {
             print("Error traying save favourite Pokemon: \(error)")
+            return false
         }
     }
     
@@ -53,7 +55,7 @@ extension DBHelper: DBHelperProtocol{
         }
     }
     
-    func deleteFavourite(pokemonId: Int){
+    func deleteFavourite(pokemonId: Int) -> Bool {
         do {
             if let realm = obtainRealm(){
                 if let pokemonToDelete = realm.object(ofType: FavouritePokemon.self, forPrimaryKey: pokemonId){
@@ -63,17 +65,19 @@ extension DBHelper: DBHelperProtocol{
                     }
                 }
             }
+            return true
         } catch {
             print("Error trying to delete favourite Pokemon: \(error)")
+            return false
         }
     }
     
     func fetchFavourites() -> [(Int, String)] {
         var result: [(pokemonID: Int, pokemonName: String)] = []
         let realm = obtainRealm()
-        if let objetos = realm?.objects(FavouritePokemon.self).sorted(byKeyPath: "pokemonId", ascending: true){
-            for objeto in objetos {
-                result.append((pokemonID: objeto.pokemonId, pokemonName: objeto.pokemonName))
+        if let favouritePokemons = realm?.objects(FavouritePokemon.self).sorted(byKeyPath: "pokemonId", ascending: true){
+            for favouritePokemon in favouritePokemons {
+                result.append((pokemonID: favouritePokemon.pokemonId, pokemonName: favouritePokemon.pokemonName))
             }
         }
         return result

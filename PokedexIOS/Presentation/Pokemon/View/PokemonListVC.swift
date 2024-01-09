@@ -16,21 +16,22 @@ class PokemonListVC: UIViewController {
     private var pokemonsFetched: [String] = []
     private var favouritePokemonsFetched: [(pokemonID: Int, pokemonName: String)] = []
     private var pokemonListModel: PokemonListModel?
-    private var url = K.PokemonAPI.URL_POKEMON_LIST
-    private var apiHelper = APIHelper.share
-    private let dbHelper = DBHelper.shared
+    private var url = Constants.PokemonAPI.URL_POKEMON_LIST
+    private var apiHelper: APIHelper
+    private let dbHelper: DBHelper = DefaultDBHelper.shared
     private var positionOfFavouritePokemonSelected: IndexPath?
     private var isShowingOnlyFavourites = false
     
-    init(coordinator: PokemonCoordinator){
+    init(coordinator: PokemonCoordinator, apiHelper: APIHelper){
+        self.apiHelper = apiHelper
         self.coordinator = coordinator
-        super.init(nibName: K.NibNames.POKEMON_LIST, bundle: nil)
+        super.init(nibName: Constants.NibNames.POKEMON_LIST, bundle: nil)
     }
     
     @available(*, unavailable)
-        required init?(coder: NSCoder) {
-            fatalError()
-        }
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +47,7 @@ class PokemonListVC: UIViewController {
     
     private func setNavController(){
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = UIColor(named: K.Colours.BLUE_POKEMON_TITLE)
+        appearance.backgroundColor = UIColor(named: Constants.Colours.BLUE_POKEMON_TITLE)
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         navigationController?.navigationBar.tintColor = .white
@@ -76,10 +77,10 @@ class PokemonListVC: UIViewController {
         favouriteTableView.delegate = self
         tableView.rowHeight = 93.0
         favouriteTableView.rowHeight = 93.0
-        tableView.register(UINib(nibName: "PokemonCellVC", bundle: nil), forCellReuseIdentifier: K.Identifiers.POKEMON_CELL_IDENTIFIER)
-        favouriteTableView.register(UINib(nibName: "PokemonCellVC", bundle: nil), forCellReuseIdentifier: K.Identifiers.POKEMON_CELL_IDENTIFIER)
+        tableView.register(UINib(nibName: "PokemonCell", bundle: nil), forCellReuseIdentifier: Constants.Identifiers.POKEMON_CELL_IDENTIFIER)
+        favouriteTableView.register(UINib(nibName: "PokemonCell", bundle: nil), forCellReuseIdentifier: Constants.Identifiers.POKEMON_CELL_IDENTIFIER)
     }
-        
+    
     @objc private func favouriteButtonTapped(_ sender: UIButton!){
         if !isShowingOnlyFavourites {
             favouriteTableView.isHidden = false
@@ -87,7 +88,8 @@ class PokemonListVC: UIViewController {
             isShowingOnlyFavourites = true
             let buttonString = NSLocalizedString("ShowAll", comment: "")
             sender.setTitle(buttonString, for: .normal)
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.favouriteTableView.reloadData()
             }
         } else {
@@ -104,17 +106,17 @@ class PokemonListVC: UIViewController {
                 self.pokemonsFetched.append(pokemon)
             }
         }
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
         }
     }
     
     func resetApp(){
-        url = K.PokemonAPI.URL_POKEMON_LIST
+        url = Constants.PokemonAPI.URL_POKEMON_LIST
         pokemonsFetched = []
         apiHelper.fetchPokemonList(url: url)
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
         }
     }
 }
@@ -130,41 +132,66 @@ extension PokemonListVC: UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == favouriteTableView {
-            let cell = tableView.dequeueReusableCell(withIdentifier: K.Identifiers.POKEMON_CELL_IDENTIFIER, for: indexPath) as! PokemonCellVC
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Identifiers.POKEMON_CELL_IDENTIFIER, for: indexPath) as! PokemonCell
             cell.showData(pokemonID: self.favouritePokemonsFetched[indexPath.row].pokemonID, pokemonName: self.favouritePokemonsFetched[indexPath.row].pokemonName)
             return cell
         }
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.Identifiers.POKEMON_CELL_IDENTIFIER, for: indexPath) as! PokemonCellVC
-        cell.showData(pokemonID: indexPath.row+1, pokemonName: self.pokemonsFetched[indexPath.row])
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Identifiers.POKEMON_CELL_IDENTIFIER, for: indexPath) as! PokemonCell
+        cell.showData(pokemonID: indexPath.row + 1, pokemonName: self.pokemonsFetched[indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let stringFavourite = NSLocalizedString("Favourite", comment: "")
-        let item = UIContextualAction(style: .normal, title: stringFavourite) { (action, view, completionHandler) in
+        let item = UIContextualAction(style: .normal, title: stringFavourite) { [weak self] (action, view, completionHandler) in
+            guard let self = self else { return }
+            //Control errrors
+            var message = ""
+            var error = false
             if tableView == self.favouriteTableView {
-                self.dbHelper.deleteFavourite(pokemonId: self.favouritePokemonsFetched[indexPath.row].pokemonID)
+//                _ = self.dbHelper.deleteFavourite(pokemonId: self.favouritePokemonsFetched[indexPath.row].pokemonID)
+                if (!self.dbHelper.deleteFavourite(pokemonId: self.favouritePokemonsFetched[indexPath.row].pokemonID)) {
+                    message = "Error deletting favourite, try again."
+                    error = true
+                }
             } else {
-                if self.dbHelper.isFavourite(pokemonId: indexPath.row+1){
-                    self.dbHelper.deleteFavourite(pokemonId: indexPath.row+1)
+                if self.dbHelper.isFavourite(pokemonId: indexPath.row+1) {
+//                    _ = self.dbHelper.deleteFavourite(pokemonId: indexPath.row+1)
+                    if (!self.dbHelper.deleteFavourite(pokemonId: indexPath.row+1)) {
+                        message = "Error deletting favourite, try again."
+                        error = true
+                    }
                 } else {
                     let favouritePokemon = FavouritePokemon(pokemonId: indexPath.row+1, pokemonName: self.pokemonsFetched[indexPath.row])
-                    self.dbHelper.saveFavourite(favouritePokemon: favouritePokemon)
+//                    _ = self.dbHelper.saveFavourite(favouritePokemon: favouritePokemon)
+                    if (!self.dbHelper.saveFavourite(favouritePokemon: favouritePokemon)) {
+                        message = "Error adding favourite Pokemon, try again"
+                        error = true
+                    }
                 }
             }
-            DispatchQueue.main.async {
+            if error {
+                let alert = UIAlertController(title: "", message: message, preferredStyle: .actionSheet)
+                self.present(alert , animated: true)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    alert.dismiss(animated: true)
+                }
+            }
+            
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.tableView.reloadRows(at: [indexPath], with: .none)
                 if self.favouriteTableView.isHidden != true {
-                        self.favouriteTableView.beginUpdates()
-                        self.favouritePokemonsFetched.remove(at: indexPath.row)
-                        self.favouriteTableView.deleteRows(at: [indexPath], with: .automatic)
-                        self.favouriteTableView.endUpdates()
+                    self.favouriteTableView.beginUpdates()
+                    self.favouritePokemonsFetched.remove(at: indexPath.row)
+                    self.favouriteTableView.deleteRows(at: [indexPath], with: .automatic)
+                    self.favouriteTableView.endUpdates()
                 }
             }
             completionHandler(true)
         }
-        item.image = UIImage(named: K.Images.POKEBALL_FAVOURITE)
-        item.backgroundColor = UIColor(named: K.Colours.BLUE_POKEMON_TITLE)
+        item.image = UIImage(named: Constants.Images.POKEBALL_FAVOURITE)
+        item.backgroundColor = UIColor(named: Constants.Colours.BLUE_POKEMON_TITLE)
         let swipeActions = UISwipeActionsConfiguration(actions: [item])
         swipeActions.performsFirstActionWithFullSwipe = false
         
@@ -204,8 +231,9 @@ extension PokemonListVC: APIHelperDelegate{
     }
     
     func didFailWithError(error: Error) {
-        DispatchQueue.main.async {
-            let errorVC = ErrorVC(nibName: K.NibNames.POKEMON_ERROR, bundle: nil)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {return}
+            let errorVC = ErrorVC(nibName: Constants.NibNames.POKEMON_ERROR, bundle: nil)
             self.navigationController?.pushViewController(errorVC, animated: true)
         }
     }
@@ -214,7 +242,8 @@ extension PokemonListVC: APIHelperDelegate{
 extension PokemonListVC: PokemonDetailDelegate{
     func favouriteUpdated(pokemonID: Int, isFavourite: Bool) {
         let indexPath = IndexPath(row: pokemonID-1, section: 0)
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
             self.tableView.reloadRows(at: [indexPath], with: .none)
             if self.favouriteTableView.isHidden != true {
                 if let indexPath = self.positionOfFavouritePokemonSelected {
