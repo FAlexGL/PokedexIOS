@@ -13,6 +13,7 @@ protocol DBHelper {
     func isFavourite(pokemonId: Int) -> Bool
     func deleteFavourite(pokemonId: Int)  -> Bool
     func fetchFavourites() -> [(Int, String)]
+    func fetchFavouriteById(pokemonId: Int) -> FavouritePokemon?
 }
 
 class DefaultDBHelper {
@@ -31,6 +32,7 @@ class DefaultDBHelper {
 }
 
 extension DefaultDBHelper: DBHelper {
+    
     func saveFavourite(favouritePokemon: FavouritePokemon) -> Bool{
         do {
             if let realm = obtainRealm(){
@@ -81,6 +83,15 @@ extension DefaultDBHelper: DBHelper {
             }
         }
         return result
+    }
+    
+    func fetchFavouriteById(pokemonId: Int) -> FavouritePokemon? {
+        let realm = obtainRealm()
+        if let pokemon = realm?.object(ofType: FavouritePokemon.self, forPrimaryKey: pokemonId){
+            return pokemon
+        } else {
+            return nil
+        }
     }
 }
 

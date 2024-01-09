@@ -12,12 +12,14 @@ protocol PresentationDependency {
     func resolve() -> PokemonCoordinator
     func resolve(navigationController: UINavigationController) -> MovesCoordinator
     func resolve(coordinator: PokemonCoordinator) -> PokemonListVC
+    func resolve(coordinator: PokemonCoordinator) -> PokemonListPresenter
     func resolve(coordinator: PokemonCoordinator) -> PokemonDetailVC
     func resolve(coordinator: MovesCoordinator) -> MovesListVC
     func resolve() -> MoveDetailVC
 }
 
 extension PresentationDependency where Self: DefaultAppDependency {
+    
     func resolve() -> PokemonCoordinator {
         DefaultPokemonCoordinator(presentationDependencies: self)
     }
@@ -27,7 +29,11 @@ extension PresentationDependency where Self: DefaultAppDependency {
     }
     
     func resolve(coordinator: PokemonCoordinator) -> PokemonListVC {
-        PokemonListVC(coordinator: coordinator, apiHelper: resolve())
+        PokemonListVC(presenter: resolve(coordinator: coordinator))
+    }
+    
+    func resolve(coordinator: PokemonCoordinator) -> PokemonListPresenter {
+        DefaultPokemonListPresenter(apiHelper: resolve(), dbHelper: resolve(), coordinator: coordinator)
     }
     
     func resolve(coordinator: PokemonCoordinator) -> PokemonDetailVC {

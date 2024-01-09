@@ -9,10 +9,15 @@ import Foundation
 
 protocol DataDependency {
     func resolve() -> APIHelper
+    func resolve() -> DBHelper
 }
 
 extension DataDependency where Self: DefaultAppDependency {
     func resolve() -> APIHelper {
-        DefaultAPIHelper()
+        DefaultAPIHelper.share
+    }
+    
+    func resolve() -> DBHelper {
+        DefaultDBHelper.shared
     }
 }
