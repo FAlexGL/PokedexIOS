@@ -19,7 +19,7 @@ protocol PresentationDependency {
 }
 
 extension PresentationDependency where Self: DefaultAppDependency {
-    
+
     func resolve() -> PokemonCoordinator {
         DefaultPokemonCoordinator(presentationDependencies: self)
     }
@@ -36,8 +36,12 @@ extension PresentationDependency where Self: DefaultAppDependency {
         DefaultPokemonListPresenter(apiHelper: resolve(), dbHelper: resolve(), coordinator: coordinator)
     }
     
+    func resolve(coordinator: PokemonCoordinator) -> PokemonDetailPresenter {
+        DefaultPokemonDetailPresenter(apiHelper: resolve(), dbHelper: resolve())
+    }
+    
     func resolve(coordinator: PokemonCoordinator) -> PokemonDetailVC {
-        PokemonDetailVC(pokemonCoordinator: coordinator)
+        PokemonDetailVC(presenter: resolve(coordinator: coordinator))
     }
     
     func resolve(coordinator: MovesCoordinator) -> MovesListVC {

@@ -61,18 +61,17 @@ class PokemonDetailVC: UIViewController {
     
     private var coordinator: PokemonCoordinator?
     private var pokemonModel: PokemonModel?
-    private let dbHelper: DBHelper = DefaultDBHelper.shared
-    private var apiHelper: APIHelper = DefaultAPIHelper.share
     private var isFavourite: Bool?
     private var spritesArray: [String] = []
-    private var spriteArrayPosition = 1
+    private var spriteArrayPosition: Int = -1
     private let defaultAlphaTypes = 0.1
     private var pokemonId: Int?
+    private var presenter: PokemonDetailPresenter
     
     var delegate: PokemonDetailDelegate?
     
-    init(pokemonCoordinator: PokemonCoordinator){
-        self.coordinator = pokemonCoordinator
+    init(presenter: PokemonDetailPresenter){
+        self.presenter = presenter
         super.init(nibName: Constants.NibNames.POKEMON_DETAIL, bundle: nil)
     }
     
@@ -83,13 +82,14 @@ class PokemonDetailVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        apiHelper.delegate = self
+        initDelegates()
         translateViews()
         self.navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.boldSystemFont(ofSize: 22),
             .foregroundColor: UIColor(named: Constants.Colours.BLUE_POKEMON_TITLE) ?? UIColor.systemBlue
         ]
         getPokemonDetail()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -99,14 +99,17 @@ class PokemonDetailVC: UIViewController {
         }
     }
     
-    
     func setPokemonId(pokemonId: Int){
         self.pokemonId = pokemonId
     }
     
+    private func initDelegates(){
+        presenter.delegate = self
+    }
+    
     private func getPokemonDetail(){
         if let pokemonId = pokemonId{
-            apiHelper.fetchPokemonDetail(pokemonId: pokemonId)
+            presenter.getPokemonDetail(pokemonId: pokemonId)
         }
     }
     
@@ -139,7 +142,6 @@ class PokemonDetailVC: UIViewController {
     
     private func showData(pokemonModel: PokemonModel){
         print("Accesing to \(pokemonModel.pokemonName)'s data...")
-        spritesArray = []
         spriteArrayPosition = 1
         
         DispatchQueue.main.async { [weak self] in
@@ -167,131 +169,16 @@ class PokemonDetailVC: UIViewController {
                     print("Unknow stat: \(stat.statName) - \(stat.baseStat)")
                 }
             }
-            favouriteSwitch.isOn = dbHelper.isFavourite(pokemonId: pokemonModel.pokemonId) ? true : false
-            apiHelper.downloadImage(from: pokemonModel.sprites.frontDefault) { [weak self] (image) in
-                guard let self = self else {return}
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    if let image = image {
-                        self.pokemonImage.image = image
-                    } else {
-                        self.pokemonImage.image = UIImage(named: Constants.Images.MISSINGNO)
-                    }
-                }
-            }
-            showTypes(types: pokemonModel.types)
+            presenter.isFavourite(pokemonId: pokemonModel.pokemonId)
+            presenter.downloadImage(urlString: pokemonModel.sprites.frontDefault)
+            presenter.getTypesValues(types: pokemonModel.types)
         }
-        getSprites(pokemonModel.sprites)
+        presenter.getSprites(pokemonSprites: pokemonModel.sprites)
         print("Total sprites: \(spritesArray.count)")
     }
     
-    private func showTypes(types: [String]) {
-        normalImage.alpha = defaultAlphaTypes
-        fightingImage.alpha = defaultAlphaTypes
-        flyingImage.alpha = defaultAlphaTypes
-        poisonImage.alpha = defaultAlphaTypes
-        groundImage.alpha = defaultAlphaTypes
-        rockImage.alpha = defaultAlphaTypes
-        bugImage.alpha = defaultAlphaTypes
-        ghostImage.alpha = defaultAlphaTypes
-        steelImage.alpha = defaultAlphaTypes
-        fireImage.alpha = defaultAlphaTypes
-        waterImage.alpha = defaultAlphaTypes
-        grassImage.alpha = defaultAlphaTypes
-        electricImage.alpha = defaultAlphaTypes
-        psychicImage.alpha = defaultAlphaTypes
-        iceImage.alpha = defaultAlphaTypes
-        dragonImage.alpha = defaultAlphaTypes
-        darkImage.alpha = defaultAlphaTypes
-        fairyImage.alpha = defaultAlphaTypes
-        
-        for type in types {
-            switch type {
-            case "normal":
-                normalImage.alpha = 1.0
-            case "fighting":
-                fightingImage.alpha = 1.0
-            case "flying":
-                flyingImage.alpha = 1.0
-            case "poison":
-                poisonImage.alpha = 1.0
-            case "ground":
-                groundImage.alpha = 1.0
-            case "rock":
-                rockImage.alpha = 1.0
-            case "bug":
-                bugImage.alpha = 1.0
-            case "ghost":
-                ghostImage.alpha = 1.0
-            case "steel":
-                steelImage.alpha = 1.0
-            case "fire":
-                fireImage.alpha = 1.0
-            case "water":
-                waterImage.alpha = 1.0
-            case "grass":
-                grassImage.alpha = 1.0
-            case "electric":
-                electricImage.alpha = 1.0
-            case "psychic":
-                psychicImage.alpha = 1.0
-            case "ice":
-                iceImage.alpha = 1.0
-            case "dragon":
-                dragonImage.alpha = 1.0
-            case "dark":
-                darkImage.alpha = 1.0
-            case "fairy":
-                fairyImage.alpha = 1.0
-            default:
-                print("error con el typo: \(type)")
-            }
-        }
-    }
-    
-    
-    private func getSprites(_ sprites: PokemonModel.Sprites){
-        spritesArray.append(sprites.frontDefault)
-        if let backDefault = sprites.backDefault {
-            spritesArray.append(backDefault)
-        }
-        if let backFemale = sprites.backFemale {
-            spritesArray.append(backFemale)
-        }
-        if let backShiny = sprites.backShiny {
-            spritesArray.append(backShiny)
-        }
-        if let backShinyFemale = sprites.backShinyFemale{
-            spritesArray.append(backShinyFemale)
-        }
-        if let frontFemale = sprites.frontFemale {
-            spritesArray.append(frontFemale)
-        }
-        if let frontShiny = sprites.frontShiny {
-            spritesArray.append(frontShiny)
-        }
-        if let frontShinyFemale = sprites.frontShinyFemale {
-            spritesArray.append(frontShinyFemale)
-        }
-        if let officialFront = sprites.officialFront{
-            spritesArray.append(officialFront)
-        }
-        if let officialFrontShiny = sprites.officialFrontShiny {
-            spritesArray.append(officialFrontShiny)
-        }
-    }
-    
     @IBAction private func switchChanged(_ sender: UISwitch) {
-        if let pokemonModel = self.pokemonModel {
-            // Control error
-            if sender.isOn{
-                let favouritePokemon = FavouritePokemon(pokemonId: pokemonModel.pokemonId, pokemonName: pokemonModel.pokemonName)
-                _ = dbHelper.saveFavourite(favouritePokemon: favouritePokemon)
-            } else {
-                _ = dbHelper.deleteFavourite(pokemonId: pokemonModel.pokemonId)
-            }
-            self.isFavourite = sender.isOn
-        }
+        presenter.switchChanged(sender, pokemonModel: pokemonModel)
     }
     
     @IBAction private func movesButtonPushed(_ sender: UIButton) {
@@ -303,32 +190,63 @@ class PokemonDetailVC: UIViewController {
     }
     
     @IBAction private func imageTapped(_ sender: UITapGestureRecognizer) {
-        if spritesArray.count > 1 {
-            apiHelper.downloadImage(from: spritesArray[spriteArrayPosition]) { image in
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    if let image = image {
-                        self.pokemonImage.image = image
-                    } else {
-                        self.pokemonImage.image = UIImage(named: Constants.Images.MISSINGNO)
-                    }
-                }
-            }
-            if spriteArrayPosition < spritesArray.count-1{
-                spriteArrayPosition += 1
-            } else {
-                spriteArrayPosition = 0
-            }
-        }
+        presenter.imageTapped(sender, sprites: spritesArray, spritePosition: spriteArrayPosition)
     }
 }
 
-extension PokemonDetailVC: APIHelperDelegate{
-    func didFailWithError(error: Error) {
-        print("error: \(error)")
+extension PokemonDetailVC: PokemonDetailViewDelegate {
+    func setSpritePosition(spritePosition: Int) {
+        spriteArrayPosition = spritePosition
     }
+    
+    
+    func setFavourite(isFavourite: Bool) {
+        self.isFavourite = isFavourite
+    }
+    
+    func typesValuesFetched(types: [String : Double]) {
+        normalImage.alpha = types["normal"] ?? 0.1
+        fightingImage.alpha = types["fighting"] ?? 0.1
+        flyingImage.alpha = types["flying"] ?? 0.1
+        poisonImage.alpha = types["poison"] ?? 0.1
+        groundImage.alpha = types["ground"] ?? 0.1
+        rockImage.alpha = types["rock"] ?? 0.1
+        bugImage.alpha = types["bug"] ?? 0.1
+        ghostImage.alpha = types["ghost"] ?? 0.1
+        steelImage.alpha = types["steel"] ?? 0.1
+        fireImage.alpha = types["fire"] ?? 0.1
+        waterImage.alpha = types["water"] ?? 0.1
+        grassImage.alpha = types["grass"] ?? 0.1
+        electricImage.alpha = types["electric"] ?? 0.1
+        psychicImage.alpha = types["psychic"] ?? 0.1
+        iceImage.alpha = types["ice"] ?? 0.1
+        dragonImage.alpha = types["dragon"] ?? 0.1
+        darkImage.alpha = types["dark"] ?? 0.1
+        fairyImage.alpha = types["fairy"] ?? 0.1
+    }
+    
+    func didUpdateSprites(spritesArray: [String]) {
+        self.spritesArray = spritesArray
+    }
+    
     
     func didUpdatePokemonDetail(pokemonModel: PokemonModel) {
         showData(pokemonModel: pokemonModel)
     }
+    
+    func didFailWithError(error: Error) {
+        print("error: \(error)")
+    }
+    
+    func showImage(image: UIImage) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {return}
+            self.pokemonImage.image = image
+        }
+    }
+    
+    func setSwitchStatus(switchStatus: Bool) {
+        favouriteSwitch.isOn = switchStatus
+    }
+    
 }

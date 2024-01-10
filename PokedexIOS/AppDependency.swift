@@ -13,7 +13,7 @@ protocol AppDependency {
 }
 
 class DefaultAppDependency {
-    
+
 }
 
 extension DefaultAppDependency : AppDependency, PresentationDependency, DataDependency {
