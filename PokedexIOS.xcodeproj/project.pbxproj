@@ -28,6 +28,7 @@
 		4585B4342B274E1E004D6B3B /* PokemonListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4585B4322B274E1E004D6B3B /* PokemonListVC.swift */; };
 		4585C4312B2A0BC8007483A1 /* MovesListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4585C42F2B2A0BC8007483A1 /* MovesListVC.swift */; };
 		4585C4322B2A0BC8007483A1 /* MovesListVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4585C4302B2A0BC8007483A1 /* MovesListVC.xib */; };
+		458BF9BD2B4FEB700088037C /* MovesListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458BF9BC2B4FEB700088037C /* MovesListPresenter.swift */; };
 		45BAF5272B2C682F0043A95E /* MoveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BAF5262B2C682F0043A95E /* MoveData.swift */; };
 		45BAF5292B2C6CEA0043A95E /* MoveModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BAF5282B2C6CEA0043A95E /* MoveModel.swift */; };
 		45CCCE772B31A1B300109FFF /* ErrorVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45CCCE792B31A1B300109FFF /* ErrorVC.xib */; };
@@ -90,6 +91,7 @@
 		4585B4322B274E1E004D6B3B /* PokemonListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonListVC.swift; sourceTree = "<group>"; };
 		4585C42F2B2A0BC8007483A1 /* MovesListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovesListVC.swift; sourceTree = "<group>"; };
 		4585C4302B2A0BC8007483A1 /* MovesListVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovesListVC.xib; sourceTree = "<group>"; };
+		458BF9BC2B4FEB700088037C /* MovesListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovesListPresenter.swift; sourceTree = "<group>"; };
 		45BAF5262B2C682F0043A95E /* MoveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveData.swift; sourceTree = "<group>"; };
 		45BAF5282B2C6CEA0043A95E /* MoveModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveModel.swift; sourceTree = "<group>"; };
 		45CCCE782B31A1B300109FFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ErrorVC.xib; sourceTree = "<group>"; };
@@ -251,6 +253,57 @@
 			path = PokedexIOSUITests;
 			sourceTree = "<group>";
 		};
+		458BF9B62B4FE76E0088037C /* MovesList */ = {
+			isa = PBXGroup;
+			children = (
+				458BF9B72B4FE77C0088037C /* View */,
+				458BF9B82B4FE78E0088037C /* Presenter */,
+			);
+			path = MovesList;
+			sourceTree = "<group>";
+		};
+		458BF9B72B4FE77C0088037C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4585C42F2B2A0BC8007483A1 /* MovesListVC.swift */,
+				4585C4302B2A0BC8007483A1 /* MovesListVC.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		458BF9B82B4FE78E0088037C /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				458BF9BC2B4FEB700088037C /* MovesListPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		458BF9B92B4FE7AD0088037C /* MoveDetail */ = {
+			isa = PBXGroup;
+			children = (
+				458BF9BA2B4FE7B80088037C /* View */,
+				458BF9BB2B4FE7C50088037C /* Presenter */,
+			);
+			path = MoveDetail;
+			sourceTree = "<group>";
+		};
+		458BF9BA2B4FE7B80088037C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				454FC9FF2B2AE81400575F87 /* MoveDetailVC.swift */,
+				45CCCE882B31F37C00109FFF /* MoveDetailVC.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		458BF9BB2B4FE7C50088037C /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
 		45B2A1CC2B4C0ED5003A9D75 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -266,6 +319,8 @@
 		45B2A1CD2B4C0F39003A9D75 /* Moves */ = {
 			isa = PBXGroup;
 			children = (
+				458BF9B62B4FE76E0088037C /* MovesList */,
+				458BF9B92B4FE7AD0088037C /* MoveDetail */,
 				45B2A1CF2B4C0F65003A9D75 /* Model */,
 				45B2A1CE2B4C0F4D003A9D75 /* View */,
 			);
@@ -275,10 +330,6 @@
 		45B2A1CE2B4C0F4D003A9D75 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				4585C42F2B2A0BC8007483A1 /* MovesListVC.swift */,
-				454FC9FF2B2AE81400575F87 /* MoveDetailVC.swift */,
-				4585C4302B2A0BC8007483A1 /* MovesListVC.xib */,
-				45CCCE882B31F37C00109FFF /* MoveDetailVC.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -523,6 +574,7 @@
 				45F1C8FC2B275C49006AAD3C /* Constants.swift in Sources */,
 				ECED3CC62B4C6B4D0041579D /* PresentationDependency.swift in Sources */,
 				450F51642B285FB400A53D50 /* PokemonModel.swift in Sources */,
+				458BF9BD2B4FEB700088037C /* MovesListPresenter.swift in Sources */,
 				45BAF5292B2C6CEA0043A95E /* MoveModel.swift in Sources */,
 				4585B3FF2B274CF9004D6B3B /* AppDelegate.swift in Sources */,
 				45CCCE8A2B31F3BF00109FFF /* Coordinator.swift in Sources */,

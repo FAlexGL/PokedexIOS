@@ -26,11 +26,11 @@ class DefaultMovesCoordinator: MovesCoordinator {
     }
     
     func start() {
-        let listMovesVC: MovesListVC = presentationDependencies.resolve(coordinator: self)
+        let movesListVC: MovesListVC = presentationDependencies.resolve(coordinator: self)
         if let pokemonModel = pokemonModel {
-            listMovesVC.setPokemonModel(pokemonModel: pokemonModel)
+            movesListVC.setPokemonModel(pokemonModel: pokemonModel)
         }
-        navigationController.pushViewController(listMovesVC, animated: true)
+        navigationController.pushViewController(movesListVC, animated: true)
     }
     
     func goToMoveDetail(moveName: String, levelsMove: PokemonModel.Move) {

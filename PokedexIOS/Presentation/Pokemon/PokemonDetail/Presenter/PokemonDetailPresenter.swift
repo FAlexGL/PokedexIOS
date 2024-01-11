@@ -21,6 +21,7 @@ protocol PokemonDetailViewDelegate {
 
 protocol PokemonDetailPresenter {
     var delegate: PokemonDetailViewDelegate? { get set }
+    func movesButtonPushed(pokemonModel: PokemonModel)
     func getPokemonDetail(pokemonId: Int)
     func downloadImage(urlString: String)
     func getSprites(pokemonSprites: PokemonModel.Sprites)
@@ -32,10 +33,12 @@ protocol PokemonDetailPresenter {
 
 class DefaultPokemonDetailPresenter {
     var delegate: PokemonDetailViewDelegate?
+    private var coordinator: PokemonCoordinator
     private var apiHelper: APIHelper
     private var dbHelper: DBHelper
     
-    init(apiHelper: APIHelper, dbHelper: DBHelper) {
+    init(apiHelper: APIHelper, dbHelper: DBHelper, coordinator: PokemonCoordinator) {
+        self.coordinator = coordinator
         self.apiHelper = apiHelper
         self.dbHelper = dbHelper
         self.apiHelper.delegate = self
@@ -44,6 +47,10 @@ class DefaultPokemonDetailPresenter {
 
 //MARK: - ext. PokemonDetailPresenter
 extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
+    func movesButtonPushed(pokemonModel: PokemonModel) {
+        coordinator.goToPokemonMoves(pokemonModel: pokemonModel)
+    }
+    
     
     func isFavourite(pokemonId: Int) {
         let isFavourite = dbHelper.isFavourite(pokemonId: pokemonId)

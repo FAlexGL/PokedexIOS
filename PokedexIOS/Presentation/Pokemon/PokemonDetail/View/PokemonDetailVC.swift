@@ -182,9 +182,11 @@ class PokemonDetailVC: UIViewController {
     }
     
     @IBAction private func movesButtonPushed(_ sender: UIButton) {
-        if let pokemonModel = self.pokemonModel, let coordinator = self.coordinator {
+        if let pokemonModel = self.pokemonModel {
+//            if let pokemonModel = self.pokemonModel, let coordinator = self.coordinator {
             DispatchQueue.main.async {
-                coordinator.goToPokemonMoves(pokemonModel: pokemonModel)
+//                coordinator.goToPokemonMoves(pokemonModel: pokemonModel)
+                self.presenter.movesButtonPushed(pokemonModel: pokemonModel)
             }
         }
     }
