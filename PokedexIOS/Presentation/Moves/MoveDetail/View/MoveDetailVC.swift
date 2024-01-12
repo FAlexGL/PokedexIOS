@@ -32,13 +32,27 @@ class MoveDetailVC: UIViewController {
     private var levelsMove: PokemonModel.Move?
     private var effectChance = 0
     private var moveName: String?
-    private var apiHelper: APIHelper = DefaultAPIHelper.share
+    private var presenter: MoveDetailPresenter
+    
+    init(presenter: MoveDetailPresenter){
+        self.presenter = presenter
+        super.init(nibName: Constants.NibNames.POKEMON_MOVE_DETAIL, bundle: nil)
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        apiHelper.delegate = self
+        initDelegates()
         translateViews()
         getMoveDetail()
+    }
+    
+    func initDelegates() {
+        presenter.delegate = self
     }
     
     func setMoves(moveName: String, levelsMove: PokemonModel.Move){
@@ -47,9 +61,7 @@ class MoveDetailVC: UIViewController {
     }
     
     private func getMoveDetail(){
-        if let moveName = moveName {
-            apiHelper.fetchMoveDetail(moveName: moveName)
-        }
+        presenter.getMoveDetail(moveName: moveName)
     }
     
     private func translateViews(){
@@ -71,51 +83,26 @@ class MoveDetailVC: UIViewController {
     private func showData(moveModel: MoveModel){
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            if let levelsMove = self.levelsMove {
-                self.moveNameLabel.text = (moveModel.name).replacingOccurrences(of: "-", with: " ").uppercased()
-                switch moveModel.damageClass {
-                case "physical":
-                    self.imageMoveClass.image = UIImage(named: Constants.Images.PHYSICAL_MOVE)
-                case "special":
-                    self.imageMoveClass.image = UIImage(named: Constants.Images.SPECIAL_MOVE)
-                default:
-                    self.imageMoveClass.image = UIImage(named: Constants.Images.STATUS_MOVE)
-                }
-                self.imageMoveType.image = UIImage(named: moveModel.moveType)
-                self.descriptionTextView.text = moveModel.effect.replacingOccurrences(of: "$effect_chance", with: "\(moveModel.effectChance ?? -1)")
-                self.targetLabel.text = moveModel.target.replacingOccurrences(of: "-", with: " ")
-                self.powerLabel.text = "\(moveModel.power ?? 0)"
-                self.ppLabel.text = "\(moveModel.pp)"
-                self.priorityLabel.text = "\(moveModel.priority)"
-                self.accuracyLabel.text = "\(moveModel.accuracy ?? 0)"
-                var games: [Int : [String]] = [:]
-                for move in levelsMove.moveVersionDetails{
-                    if games.keys.contains(move.level){
-                        games[move.level]?.append(move.game.replacingOccurrences(of: "-", with: " "))
-                    } else {
-                        games[move.level] = [move.game.replacingOccurrences(of: "-", with: " ")]
-                    }
-                }
-                let levelGamesOrdered = games.sorted { $0.key < $1.key}
-                let levelGameStringAttribute = NSMutableAttributedString(string: "")
-                for levelGames in levelGamesOrdered {
-                    let level = NSAttributedString(string: "Level \(levelGames.key):\n", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: Constants.Colours.BLUE_POKEMON_TITLE) ?? UIColor.blue, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 19)])
-                    levelGameStringAttribute.append(level)
-                    for game in levelGames.value {
-                        let gameTitle = NSAttributedString(string: "\u{2022} \(game)\n", attributes: [NSAttributedString.Key.foregroundColor: UIColor.black, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 19)])
-                        levelGameStringAttribute.append(gameTitle)
-                    }
-                }
-                self.levelGamesTextView.attributedText = levelGameStringAttribute
-            }
+            presenter.showData(moveModel: moveModel, levelsMove: levelsMove)
         }
     }
 }
 
-extension MoveDetailVC: APIHelperDelegate{
-    func didFailWithError(error: Error) {
-        print("error: \(error)")
+extension MoveDetailVC: MoveDetailViewDelegate {
+    func showData(moveData: [String : String], levelGames: NSMutableAttributedString) {
+        self.moveNameLabel.text = moveData["name"]
+        self.imageMoveClass.image = UIImage(named: moveData["damageClass"] ?? "")
+        self.imageMoveType.image = UIImage(named: moveData["moveType"] ?? "")
+        self.descriptionTextView.text = moveData["description"]
+        self.targetLabel.text = moveData["target"]
+        self.powerLabel.text = moveData["power"]
+        self.ppLabel.text = moveData["pp"]
+        self.priorityLabel.text = moveData["priority"]
+        self.accuracyLabel.text = moveData["accuracy"]
+        self.levelGamesTextView.attributedText = levelGames
     }
+    
+    
     func didUpdatePokemonMove(moveModel: MoveModel) {
         showData(moveModel: moveModel)
     }

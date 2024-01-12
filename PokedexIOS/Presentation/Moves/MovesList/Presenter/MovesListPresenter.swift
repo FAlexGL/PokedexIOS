@@ -8,25 +8,34 @@
 import Foundation
 import UIKit
 
-protocol MovesListViewDelegate {
-    
-}
-
 protocol MovesListPresenter {
-    var delegate: MovesListViewDelegate? { get set }
+    func numberOfRowsInSection(pokemonModel: PokemonModel?) -> Int
+    func didSelectRowAt(pokemonModel: PokemonModel?, movePosition: Int)
     
 }
 
 class DefaultMovesListPresenter {
-    var delegate: MovesListViewDelegate?
-    let dbHelper: DBHelper
+    private let dbHelper: DBHelper
+    private let coordinator: MovesCoordinator
     
-    init(dbHelper: DBHelper) {
+    init(dbHelper: DBHelper, coordinator: MovesCoordinator) {
         self.dbHelper = dbHelper
+        self.coordinator = coordinator
     }
 }
 
 extension DefaultMovesListPresenter: MovesListPresenter {
+    func numberOfRowsInSection(pokemonModel: PokemonModel?) -> Int {
+        if let pokemonModel = pokemonModel{
+            return pokemonModel.moves.count
+        }
+        return 0
+    }
     
+    func didSelectRowAt(pokemonModel: PokemonModel?, movePosition: Int) {
+        if let pokemonModel = pokemonModel {
+            coordinator.goToMoveDetail(moveName: pokemonModel.moves[movePosition].moveName, levelsMove: pokemonModel.moves[movePosition])
+        }
+    }
 }
 

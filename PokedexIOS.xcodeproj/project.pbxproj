@@ -29,6 +29,7 @@
 		4585C4312B2A0BC8007483A1 /* MovesListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4585C42F2B2A0BC8007483A1 /* MovesListVC.swift */; };
 		4585C4322B2A0BC8007483A1 /* MovesListVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4585C4302B2A0BC8007483A1 /* MovesListVC.xib */; };
 		458BF9BD2B4FEB700088037C /* MovesListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458BF9BC2B4FEB700088037C /* MovesListPresenter.swift */; };
+		458BF9C02B50463E0088037C /* MoveDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458BF9BF2B50463E0088037C /* MoveDetailPresenter.swift */; };
 		45BAF5272B2C682F0043A95E /* MoveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BAF5262B2C682F0043A95E /* MoveData.swift */; };
 		45BAF5292B2C6CEA0043A95E /* MoveModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BAF5282B2C6CEA0043A95E /* MoveModel.swift */; };
 		45CCCE772B31A1B300109FFF /* ErrorVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45CCCE792B31A1B300109FFF /* ErrorVC.xib */; };
@@ -92,6 +93,7 @@
 		4585C42F2B2A0BC8007483A1 /* MovesListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovesListVC.swift; sourceTree = "<group>"; };
 		4585C4302B2A0BC8007483A1 /* MovesListVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovesListVC.xib; sourceTree = "<group>"; };
 		458BF9BC2B4FEB700088037C /* MovesListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovesListPresenter.swift; sourceTree = "<group>"; };
+		458BF9BF2B50463E0088037C /* MoveDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveDetailPresenter.swift; sourceTree = "<group>"; };
 		45BAF5262B2C682F0043A95E /* MoveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveData.swift; sourceTree = "<group>"; };
 		45BAF5282B2C6CEA0043A95E /* MoveModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveModel.swift; sourceTree = "<group>"; };
 		45CCCE782B31A1B300109FFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ErrorVC.xib; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 		458BF9BB2B4FE7C50088037C /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
+				458BF9BF2B50463E0088037C /* MoveDetailPresenter.swift */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -569,6 +572,7 @@
 			files = (
 				ECED3CC42B4C6AD20041579D /* AppDependency.swift in Sources */,
 				454FCA012B2AE81400575F87 /* MoveDetailVC.swift in Sources */,
+				458BF9C02B50463E0088037C /* MoveDetailPresenter.swift in Sources */,
 				EC9F5A442B4D9EC1003DEF0F /* PokemonListPresenter.swift in Sources */,
 				45F1C8F92B275B90006AAD3C /* PokemonCell.swift in Sources */,
 				45F1C8FC2B275C49006AAD3C /* Constants.swift in Sources */,

@@ -15,7 +15,7 @@ protocol PresentationDependency {
     func resolve(coordinator: PokemonCoordinator) -> PokemonListPresenter
     func resolve(coordinator: PokemonCoordinator) -> PokemonDetailVC
     func resolve(coordinator: MovesCoordinator) -> MovesListVC
-    func resolve(coordinator: PokemonCoordinator) -> MovesListPresenter
+    func resolve(coordinator: MovesCoordinator) -> MovesListPresenter
     func resolve() -> MoveDetailVC
 }
 
@@ -42,18 +42,22 @@ extension PresentationDependency where Self: DefaultAppDependency {
     }
     
     func resolve(coordinator: PokemonCoordinator) -> PokemonDetailPresenter {
-        DefaultPokemonDetailPresenter(apiHelper: resolve(), dbHelper: resolve(), coordinator: resolve())
+        DefaultPokemonDetailPresenter(apiHelper: resolve(), dbHelper: resolve(), coordinator: coordinator)
     }
     
     func resolve(coordinator: MovesCoordinator) -> MovesListVC {
-        MovesListVC(presenter: resolve(coordinator: resolve()))
+        MovesListVC(presenter: resolve(coordinator: coordinator))
     }
     
-    func resolve(coordinator: PokemonCoordinator) -> MovesListPresenter {
-        DefaultMovesListPresenter(dbHelper: resolve())
+    func resolve(coordinator: MovesCoordinator) -> MovesListPresenter {
+        DefaultMovesListPresenter(dbHelper: resolve(), coordinator: coordinator)
+    }
+    
+    func resolve() -> MoveDetailPresenter {
+        DefaultMoveDetailPresenter(apiHelper: resolve())
     }
     
     func resolve() -> MoveDetailVC {
-        MoveDetailVC(nibName: Constants.NibNames.POKEMON_MOVE_DETAIL, bundle: nil)
+        MoveDetailVC(presenter: resolve())
     }
 }

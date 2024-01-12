@@ -11,14 +11,7 @@ class MovesListVC: UIViewController {
     @IBOutlet private weak var tableView: UITableView!
     
     private var pokemonModel: PokemonModel?
-    private var apiHelper: APIHelper = DefaultAPIHelper.share
     private var presenter: MovesListPresenter
-//    private var coordinator: MovesCoordinator
-    
-//    init(coordinator: MovesCoordinator){
-//        self.coordinator = coordinator
-//        super.init(nibName: Constants.NibNames.POKEMON_MOVES_LIST, bundle: nil)
-//    }
     
     init(presenter: MovesListPresenter){
         self.presenter = presenter
@@ -26,13 +19,12 @@ class MovesListVC: UIViewController {
     }
     
     @available(*, unavailable)
-        required init?(coder: NSCoder) {
-            fatalError()
-        }
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        apiHelper.delegate = self
         initTable()
     }
     
@@ -50,10 +42,7 @@ class MovesListVC: UIViewController {
 extension MovesListVC: UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let pokemonModel = self.pokemonModel{
-            return pokemonModel.moves.count
-        }
-        return 0
+        presenter.numberOfRowsInSection(pokemonModel: pokemonModel)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -72,15 +61,7 @@ extension MovesListVC: UITableViewDataSource{
 extension MovesListVC: UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let pokemonModel = self.pokemonModel {
-//            coordinator.goToMoveDetail(moveName: pokemonModel.moves[indexPath.row].moveName, levelsMove: pokemonModel.moves[indexPath.row])
-        }
+        presenter.didSelectRowAt(pokemonModel: pokemonModel, movePosition: indexPath.row)
         tableView.deselectRow(at: indexPath, animated: true)
-    }
-}
-
-extension MovesListVC: APIHelperDelegate{
-    func didFailWithError(error: Error) {
-        print("Error: \(error)")
     }
 }
