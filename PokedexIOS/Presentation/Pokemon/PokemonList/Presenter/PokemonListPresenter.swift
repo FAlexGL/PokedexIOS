@@ -83,7 +83,7 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
 //                message = "Error deletting favourite, try again."
 //                error = true
 //            }
-//        } else {
+//        } else { 
 //            if !dbHelper.saveFavourite(favouritePokemon: FavouritePokemon(pokemonId: pokemonId, pokemonName: pokemonName)) {
 //                message = "Error adding favourite Pokemon, try again"
 //                error = true
