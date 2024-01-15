@@ -21,9 +21,9 @@ protocol MoveDetailPresenter {
 
 class DefaultMoveDetailPresenter {
     var delegate: MoveDetailViewDelegate?
-    private var apiHelper: APIHelper
+    private var apiHelper: APIRepository
     
-    init(apiHelper: APIHelper) {
+    init(apiHelper: APIRepository) {
         self.apiHelper = apiHelper
         self.apiHelper.delegate = self
     }

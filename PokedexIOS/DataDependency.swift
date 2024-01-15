@@ -8,16 +8,16 @@
 import Foundation
 
 protocol DataDependency {
-    func resolve() -> APIHelper
-    func resolve() -> DBHelper
+    func resolve() -> APIRepository
+    func resolve() -> DefaultDBHelper
 }
 
 extension DataDependency where Self: DefaultAppDependency {
-    func resolve() -> APIHelper {
+    func resolve() -> APIRepository {
         DefaultAPIHelper.share
     }
     
-    func resolve() -> DBHelper {
+    func resolve() -> DefaultDBHelper {
         DefaultDBHelper.shared
     }
 }

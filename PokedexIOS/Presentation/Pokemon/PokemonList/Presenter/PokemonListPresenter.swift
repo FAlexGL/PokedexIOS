@@ -27,11 +27,11 @@ protocol PokemonListPresenter {
 
 class DefaultPokemonListPresenter {
     var delegate: PokemonListViewDelegate?
-    private var apiHelper: APIHelper
-    private let dbHelper: DBHelper
+    private var apiHelper: APIRepository
+    private let dbHelper: DefaultDBHelper
     private let coordinator: PokemonCoordinator
     
-    init(apiHelper: APIHelper, dbHelper: DBHelper, coordinator: PokemonCoordinator) {
+    init(apiHelper: APIRepository, dbHelper: DefaultDBHelper, coordinator: PokemonCoordinator) {
         self.apiHelper = apiHelper
         self.dbHelper = dbHelper
         self.coordinator = coordinator

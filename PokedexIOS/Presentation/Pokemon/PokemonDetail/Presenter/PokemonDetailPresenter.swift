@@ -34,10 +34,10 @@ protocol PokemonDetailPresenter {
 class DefaultPokemonDetailPresenter {
     var delegate: PokemonDetailViewDelegate?
     private var coordinator: PokemonCoordinator
-    private var apiHelper: APIHelper
-    private var dbHelper: DBHelper
+    private var apiHelper: APIRepository
+    private var dbHelper: DefaultDBHelper
     
-    init(apiHelper: APIHelper, dbHelper: DBHelper, coordinator: PokemonCoordinator) {
+    init(apiHelper: APIRepository, dbHelper: DefaultDBHelper, coordinator: PokemonCoordinator) {
         self.coordinator = coordinator
         self.apiHelper = apiHelper
         self.dbHelper = dbHelper

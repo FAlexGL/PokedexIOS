@@ -28,11 +28,11 @@ extension APIHelperDelegate {
 }
 
 protocol APIHelper {
-    var delegate: APIHelperDelegate? { get set}
-    func fetchPokemonList(url: String)
-    func fetchPokemonDetail(pokemonId: Int)
-    func fetchMoveDetail(moveName: String)
-    func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void)
+//    var delegate: APIHelperDelegate? { get set}
+//    func fetchPokemonList(url: String)
+//    func fetchPokemonDetail(pokemonId: Int)
+//    func fetchMoveDetail(moveName: String)
+//    func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void)
 }
 
 struct DefaultAPIHelper {
@@ -169,7 +169,8 @@ struct DefaultAPIHelper {
     
 }
 
-extension DefaultAPIHelper: APIHelper {
+extension DefaultAPIHelper: APIRepository {
+    
     func fetchPokemonList(url: String) {
         performRequest(with: url, type: .pokemonList)
     }
@@ -202,4 +203,40 @@ extension DefaultAPIHelper: APIHelper {
         }
         task.resume()
     }
+    
 }
+
+//extension DefaultAPIHelper: APIHelper {
+//    func fetchPokemonList(url: String) {
+//        performRequest(with: url, type: .pokemonList)
+//    }
+//    
+//    func fetchPokemonDetail(pokemonId: Int) {
+//        performRequest(with: "\(Constants.PokemonAPI.URL_POKEMON_DETAIL)\(pokemonId)", type: .pokemonDetail)
+//    }
+//    
+//    func fetchMoveDetail(moveName: String) {
+//        performRequest(with: "\(Constants.PokemonAPI.URL_POKEMON_MOVE)\(moveName)", type: .pokemonMove)
+//    }
+//    
+//    func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
+//        guard let url = URL(string: urlString) else {
+//            print("Error converting URL object")
+//            completion(nil)
+//            return
+//        }
+//        
+//        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+//            if let data = data {
+//                if let image = UIImage(data: data){
+//                    completion(image)
+//                } else {
+//                    completion(nil)
+//                }
+//            } else {
+//                completion(nil)
+//            }
+//        }
+//        task.resume()
+//    }
+//}

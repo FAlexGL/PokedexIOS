@@ -15,10 +15,10 @@ protocol MovesListPresenter {
 }
 
 class DefaultMovesListPresenter {
-    private let dbHelper: DBHelper
+    private let dbHelper: any DBRepository
     private let coordinator: MovesCoordinator
     
-    init(dbHelper: DBHelper, coordinator: MovesCoordinator) {
+    init(dbHelper: any DBRepository, coordinator: MovesCoordinator) {
         self.dbHelper = dbHelper
         self.coordinator = coordinator
     }
