@@ -16,7 +16,7 @@ class DefaultAppDependency {
 
 }
 
-extension DefaultAppDependency : AppDependency, PresentationDependency, DataDependency {
+extension DefaultAppDependency : AppDependency, PresentationDependency, DomainDependency, DataDependency {
     
     
 }

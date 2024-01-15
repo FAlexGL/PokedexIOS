@@ -27,15 +27,14 @@ protocol PokemonListPresenter {
 
 class DefaultPokemonListPresenter {
     var delegate: PokemonListViewDelegate?
-    private var apiHelper: APIRepository
-    private let dbHelper: DefaultDBHelper
     private let coordinator: PokemonCoordinator
+    private let fetchPokemonsUseCase: FetchPokemonsUseCase
+    private let fetchFavouritesPokemonsUseCase: FetchFavouritesPokemonsUseCase
     
-    init(apiHelper: APIRepository, dbHelper: DefaultDBHelper, coordinator: PokemonCoordinator) {
-        self.apiHelper = apiHelper
-        self.dbHelper = dbHelper
+    init(coordinator: PokemonCoordinator, fetchPokemonsUseCase: FetchPokemonsUseCase, fetchFavouritesPokemonsUseCase: FetchFavouritesPokemonsUseCase) {
         self.coordinator = coordinator
-        self.apiHelper.delegate = self
+        self.fetchPokemonsUseCase = fetchPokemonsUseCase
+        self.fetchFavouritesPokemonsUseCase = fetchFavouritesPokemonsUseCase
     }
 }
 
@@ -52,47 +51,56 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
     }
     
     func viewDidLoad() {
-        apiHelper.fetchPokemonList(url: Constants.PokemonAPI.URL_POKEMON_LIST)
+        fetchPokemonsUseCase.fetchPokemons { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let success):
+                self.delegate?.didUpdatePokemonList(pokemonListModel: success)
+            case .failure(let failure):
+                self.delegate?.didFailWithError(error: failure)
+            }
+        }
     }
     
     func willDisplay(url: String) {
-        apiHelper.fetchPokemonList(url: url)
+        fetchPokemonsUseCase.fetchPokemons(url: url) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let success):
+                self.delegate?.didUpdatePokemonList(pokemonListModel: success)
+            case .failure(let failure):
+                self.delegate?.didFailWithError(error: failure)
+            }
+        }
     }
     
     func trailingSwipeActionsConfigurationForRowAt(pokemonId: Int, pokemonName: String, indexPath: IndexPath) {
-        var message = ""
-        var error = false
-        let isFavourite = dbHelper.isFavourite(pokemonId: pokemonId)
-        if isFavourite {
-            if !dbHelper.deleteFavourite(pokemonId: pokemonId) {
-                message = "Error deletting favourite, try again."
-                error = true
-            }
-        } else {
-            if !dbHelper.saveFavourite(favouritePokemon: FavouritePokemon(pokemonId: pokemonId, pokemonName: pokemonName)) {
-                message = "Error adding favourite Pokemon, try again"
-                error = true
-            }
-        }
-        delegate?.favouriteChanged(error: error, message: message, indexPath: indexPath)
+//        var message = ""
+//        var error = false
+//        let isFavourite = dbHelper.isFavourite(pokemonId: pokemonId)
+//        if isFavourite {
+//            if !dbHelper.deleteFavourite(pokemonId: pokemonId) {
+//                message = "Error deletting favourite, try again."
+//                error = true
+//            }
+//        } else {
+//            if !dbHelper.saveFavourite(favouritePokemon: FavouritePokemon(pokemonId: pokemonId, pokemonName: pokemonName)) {
+//                message = "Error adding favourite Pokemon, try again"
+//                error = true
+//            }
+//        }
+//        delegate?.favouriteChanged(error: error, message: message, indexPath: indexPath)
     }
     
     func favouriteButtonTapped() {
-        delegate?.favouriteLoaded(pokemons: dbHelper.fetchFavourites())
+        let result = fetchFavouritesPokemonsUseCase.fetFavouritesPokemons()
+        switch result {
+        case .success(let success):
+            delegate?.favouriteLoaded(pokemons: success)
+        case .failure(let failure):
+            self.delegate?.didFailWithError(error: failure)
+        }
     }
-}
-
-//MARK: - Api delegate
-extension DefaultPokemonListPresenter: APIHelperDelegate {
-    
-    func didUpdatePokemonList(pokemonListModel: PokemonListModel) {
-        delegate?.didUpdatePokemonList(pokemonListModel: pokemonListModel)
-    }
-    
-    func didFailWithError(error: Error) {
-        delegate?.didFailWithError(error: error)
-    }
-    
 }
 
 //MARK: - Favourite delegate
