@@ -10,7 +10,7 @@ import Foundation
 protocol PokemonListViewDelegate {
     func didUpdatePokemonList(pokemonListModel: PokemonListModel)
     func favouriteUpdated(pokemonID: Int, isFavourite: Bool)
-    func favouriteLoaded(pokemons: [(pokemonID: Int, pokemonName: String)])
+    func favouriteLoaded(pokemons: [FavouritePokemon])
     func favouriteChanged(error: Bool, message: String, indexPath: IndexPath)
     func didFailWithError(error: Error)
 }
@@ -22,7 +22,6 @@ protocol PokemonListPresenter {
     func trailingSwipeActionsConfigurationForRowAt(pokemonId: Int, pokemonName: String, indexPath: IndexPath)
     func favouriteButtonTapped()
     func didSelectRowAt(pokemonId: Int)
-    func didSelectRowAt(pokemonModel: PokemonModel)
 }
 
 class DefaultPokemonListPresenter {
@@ -36,6 +35,7 @@ class DefaultPokemonListPresenter {
         self.fetchPokemonsUseCase = fetchPokemonsUseCase
         self.fetchFavouritesPokemonsUseCase = fetchFavouritesPokemonsUseCase
     }
+    
 }
 
 
@@ -44,10 +44,6 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
     
     func didSelectRowAt(pokemonId: Int) {
         coordinator.goToPokemonDetail(pokemonId: pokemonId, delegate: self)
-    }
-    
-    func didSelectRowAt(pokemonModel: PokemonModel) {
-        
     }
     
     func viewDidLoad() {
@@ -79,7 +75,7 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
 //        var error = false
 //        let isFavourite = dbHelper.isFavourite(pokemonId: pokemonId)
 //        if isFavourite {
-//            if !dbHelper.deleteFavourite(pokemonId: pokemonId) {
+//            if !isFavourite(pokemonId: pokemonId) {
 //                message = "Error deletting favourite, try again."
 //                error = true
 //            }

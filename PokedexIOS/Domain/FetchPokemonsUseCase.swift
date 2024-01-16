@@ -28,7 +28,7 @@ class DefaultFetchPokemonsUseCase {
 
 extension DefaultFetchPokemonsUseCase: FetchPokemonsUseCase {
     
-    func fetchPokemons(url: String?,handler: @escaping (Result<PokemonListModel, Error>) -> Void) {
+    func fetchPokemons(url: String?, handler: @escaping (Result<PokemonListModel, Error>) -> Void) {
         if let url = url {
             pokemonRepository.fetchMorePokemons(url: url, handler: handler)
         } else {
@@ -37,3 +37,4 @@ extension DefaultFetchPokemonsUseCase: FetchPokemonsUseCase {
     }
     
 }
+

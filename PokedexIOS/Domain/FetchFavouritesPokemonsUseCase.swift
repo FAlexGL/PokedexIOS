@@ -8,7 +8,7 @@
 import Foundation
 
 protocol FetchFavouritesPokemonsUseCase {
-    func fetFavouritesPokemons() -> Result<[(Int, String)], Error>
+    func fetFavouritesPokemons() -> Result<[FavouritePokemon], Error>
 }
 
 class DefaultFetchFavouritesPokemonsUseCase {
@@ -20,7 +20,7 @@ class DefaultFetchFavouritesPokemonsUseCase {
 }
 
 extension DefaultFetchFavouritesPokemonsUseCase: FetchFavouritesPokemonsUseCase {
-    func fetFavouritesPokemons() -> Result<[(Int, String)], Error> {
+    func fetFavouritesPokemons() -> Result<[FavouritePokemon], Error> {
         //TODO: update to Result
 //        .success(pokemonRepository.fetFavouritesPokemons())
         return Result.success(pokemonRepository.fetFavouritesPokemons())

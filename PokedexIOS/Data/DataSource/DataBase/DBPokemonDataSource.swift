@@ -8,7 +8,8 @@
 import Foundation
 
 protocol DBPokemonDataSource {
-    func fetchFavouritesPokemons() -> [(Int, String)]
+    func fetchFavouritesPokemons() -> [FavouritePokemon]
+    func isFavourite(pokemonId: Int) -> Bool
 }
 
 class DefaultDBPokemonDataSource {
@@ -22,8 +23,12 @@ class DefaultDBPokemonDataSource {
 
 extension DefaultDBPokemonDataSource: DBPokemonDataSource {
     
-    func fetchFavouritesPokemons() -> [(Int, String)] {
+    func fetchFavouritesPokemons() -> [FavouritePokemon] {
         dbHelper.fetchFavourites()
+    }
+    
+    func isFavourite(pokemonId: Int) -> Bool {
+        dbHelper.isFavourite(pokemonId: pokemonId)
     }
 
 }
