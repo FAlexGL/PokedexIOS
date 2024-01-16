@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PokemonListModel{
+struct PokemonListModel {
     let nextURL: String
     let previousURL: String?
     let pokemons: [String]

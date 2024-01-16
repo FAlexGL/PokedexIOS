@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct PokemonData: Decodable{
+//TODO: Rename: DTO(Data transfer object)
+struct PokemonData: Decodable {
     let id: Int
     let name: String
     let base_experience: Int?

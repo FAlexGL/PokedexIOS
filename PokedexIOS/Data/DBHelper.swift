@@ -12,7 +12,7 @@ protocol DBHelper {
     func saveFavourite(favouritePokemon: FavouritePokemon) -> Bool
     func isFavourite(pokemonId: Int) -> Bool
     func deleteFavourite(pokemonId: Int)  -> Bool
-    func fetchFavourites() -> [(Int, String)]
+    func fetchFavourites() -> [FavouritePokemon]
     func fetchFavouriteById(pokemonId: Int) -> FavouritePokemon?
 }
 
@@ -74,15 +74,12 @@ extension DefaultDBHelper: DBHelper {
         }
     }
     
-    func fetchFavourites() -> [(Int, String)] {
-        var result: [(pokemonID: Int, pokemonName: String)] = []
+    func fetchFavourites() -> [FavouritePokemon] {
         let realm = obtainRealm()
         if let favouritePokemons = realm?.objects(FavouritePokemon.self).sorted(byKeyPath: "pokemonId", ascending: true){
-            for favouritePokemon in favouritePokemons {
-                result.append((pokemonID: favouritePokemon.pokemonId, pokemonName: favouritePokemon.pokemonName))
-            }
+            return Array(favouritePokemons)
         }
-        return result
+        return []
     }
     
     func fetchFavouriteById(pokemonId: Int) -> FavouritePokemon? {

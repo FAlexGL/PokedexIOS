@@ -169,6 +169,7 @@
 		452B46792B32CFCD0030A2B1 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				EC501EE12B56765A004ABBAA /* Model */,
 				ECFB905D2B55595200AA741D /* DataSource */,
 				ECFB905A2B55589E00AA741D /* Repository */,
 				45F1C9022B276073006AAD3C /* APIHelper.swift */,
@@ -183,7 +184,6 @@
 				45CCCE8B2B31F3C800109FFF /* Coordinator */,
 				EC9F5A402B4D9DF1003DEF0F /* PokemonDetail */,
 				EC9F5A3F2B4D9DE0003DEF0F /* PokemonList */,
-				45B2A1CC2B4C0ED5003A9D75 /* Model */,
 			);
 			path = Pokemon;
 			sourceTree = "<group>";
@@ -318,11 +318,8 @@
 		45B2A1CC2B4C0ED5003A9D75 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				45F1C8FE2B275E18006AAD3C /* PokemonListData.swift */,
 				45F1C9002B275F46006AAD3C /* PokemonListModel.swift */,
-				450F51612B285DD500A53D50 /* PokemonData.swift */,
 				450F51632B285FB400A53D50 /* PokemonModel.swift */,
-				450F516C2B28876100A53D50 /* FavouritePokemon.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -387,6 +384,32 @@
 				452B46802B3310900030A2B1 /* MovesCoordinator.swift */,
 			);
 			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		EC501EE12B56765A004ABBAA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				EC501EE32B5676FE004ABBAA /* Dto */,
+				EC501EE22B5676F1004ABBAA /* Entity */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		EC501EE22B5676F1004ABBAA /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				450F516C2B28876100A53D50 /* FavouritePokemon.swift */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		EC501EE32B5676FE004ABBAA /* Dto */ = {
+			isa = PBXGroup;
+			children = (
+				45F1C8FE2B275E18006AAD3C /* PokemonListData.swift */,
+				450F51612B285DD500A53D50 /* PokemonData.swift */,
+			);
+			path = Dto;
 			sourceTree = "<group>";
 		};
 		EC9F5A3F2B4D9DE0003DEF0F /* PokemonList */ = {
@@ -469,6 +492,7 @@
 		ECFB90642B55679600AA741D /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				45B2A1CC2B4C0ED5003A9D75 /* Model */,
 				ECFB90652B5567E800AA741D /* FetchPokemonsUseCase.swift */,
 				ECFB90672B556B4E00AA741D /* FetchFavouritesPokemonsUseCase.swift */,
 			);

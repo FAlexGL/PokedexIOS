@@ -8,6 +8,7 @@
 import Foundation
 import RealmSwift
 
+// TODO: Rename to Entity
 class FavouritePokemon: Object {
     @Persisted(primaryKey: true) var pokemonId: Int
     @Persisted var pokemonName: String
