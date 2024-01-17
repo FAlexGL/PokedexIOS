@@ -18,13 +18,13 @@ protocol PokemonListViewDelegate {
 
 protocol PokemonListPresenter {
     var delegate: PokemonListViewDelegate? { get set }
+    func didSelectRowAt(showFavouritesButtonTitle: String?, indexPath: IndexPath, favouritePokemonsFetched: [FavouritePokemon])
     func viewDidLoad()
-    func willDisplay(url: String)
-    func numberOfRowsInSection (isShowingOnlyFavourites: Bool, favouritePokemonsFetched: Int, pokemonsFetched: Int) -> Int
-    func cellForRowAt (tableView: UITableView, indexPath: IndexPath, isShowingOnlyFavourites: Bool, favouritePokemonsFetched: [FavouritePokemon], pokemonsFetched: [String]) -> UITableViewCell
+    func willDisplay(showFavouritesButtonTitle: String?, totalRows: Int, indexPath: IndexPath, url: String)
+    func numberOfRowsInSection (showFavouritesButtonTitle: String?, favouritePokemonsFetched: Int, pokemonsFetched: Int) -> Int
+    func cellForRowAt (tableView: UITableView, indexPath: IndexPath, showFavouritesButtonTitle: String?, favouritePokemonsFetched: [FavouritePokemon], pokemonsFetched: [String]) -> UITableViewCell
     func trailingSwipeActionsConfigurationForRowAt(pokemonId: Int, pokemonName: String, indexPath: IndexPath)
-    func favouriteButtonTapped()
-    func didSelectRowAt(pokemonId: Int)
+    func favouriteButtonTapped(showFavouritesButtonTitle: String?) -> String?
 }
 
 class DefaultPokemonListPresenter {
@@ -45,7 +45,13 @@ class DefaultPokemonListPresenter {
 //MARK: - Presenter delegate
 extension DefaultPokemonListPresenter: PokemonListPresenter {
     
-    func didSelectRowAt(pokemonId: Int) {
+    func didSelectRowAt(showFavouritesButtonTitle: String?, indexPath: IndexPath, favouritePokemonsFetched: [FavouritePokemon]) {
+        let pokemonId: Int
+        if showFavouritesButtonTitle == NSLocalizedString("ShowAll", comment: "") {
+            pokemonId = favouritePokemonsFetched[indexPath.row].pokemonId
+        } else {
+            pokemonId = indexPath.row + 1
+        }
         coordinator.goToPokemonDetail(pokemonId: pokemonId, delegate: self)
     }
     
@@ -61,27 +67,31 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
         }
     }
     
-    func willDisplay(url: String) {
-        fetchPokemonsUseCase.fetchPokemons(url: url) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let success):
-                self.delegate?.didUpdatePokemonList(pokemonListModel: success)
-            case .failure(let failure):
-                self.delegate?.didFailWithError(error: failure)
+    func willDisplay(showFavouritesButtonTitle: String?, totalRows: Int, indexPath: IndexPath, url: String) {
+        if showFavouritesButtonTitle != NSLocalizedString("ShowAll", comment: "") {
+            if indexPath.row == totalRows - 1 && url != "" {
+                fetchPokemonsUseCase.fetchPokemons(url: url) { [weak self] result in
+                    guard let self = self else { return }
+                    switch result {
+                    case .success(let success):
+                        self.delegate?.didUpdatePokemonList(pokemonListModel: success)
+                    case .failure(let failure):
+                        self.delegate?.didFailWithError(error: failure)
+                    }
+                }
             }
         }
     }
     
-    func numberOfRowsInSection (isShowingOnlyFavourites: Bool, favouritePokemonsFetched: Int, pokemonsFetched: Int) -> Int {
-        if isShowingOnlyFavourites == true {
+    func numberOfRowsInSection (showFavouritesButtonTitle: String?, favouritePokemonsFetched: Int, pokemonsFetched: Int) -> Int {
+        if showFavouritesButtonTitle == NSLocalizedString("ShowAll", comment: "") {
             return favouritePokemonsFetched
         }
         return pokemonsFetched
     }
     
-    func cellForRowAt (tableView: UITableView, indexPath: IndexPath, isShowingOnlyFavourites: Bool, favouritePokemonsFetched: [FavouritePokemon], pokemonsFetched: [String]) -> UITableViewCell {
-        if isShowingOnlyFavourites == true {
+    func cellForRowAt (tableView: UITableView, indexPath: IndexPath, showFavouritesButtonTitle: String?, favouritePokemonsFetched: [FavouritePokemon], pokemonsFetched: [String]) -> UITableViewCell {
+        if showFavouritesButtonTitle == NSLocalizedString("ShowAll", comment: "") {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Identifiers.POKEMON_CELL_IDENTIFIER, for: indexPath) as! PokemonCell
             cell.showData(pokemonID: favouritePokemonsFetched[indexPath.row].pokemonId, pokemonName: favouritePokemonsFetched[indexPath.row].pokemonName)
             return cell
@@ -109,13 +119,20 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
 //        delegate?.favouriteChanged(error: error, message: message, indexPath: indexPath)
     }
     
-    func favouriteButtonTapped() {
-        let result = fetchFavouritesPokemonsUseCase.fetchFavouritesPokemons()
-        switch result {
-        case .success(let success):
-            delegate?.favouriteLoaded(pokemons: success)
-        case .failure(let failure):
-            self.delegate?.didFailWithError(error: failure)
+    func favouriteButtonTapped(showFavouritesButtonTitle: String?) -> String? {
+        if showFavouritesButtonTitle == NSLocalizedString("ShowFavourites", comment: "") || showFavouritesButtonTitle == nil {
+            let buttonString = NSLocalizedString("ShowAll", comment: "")
+            let result = fetchFavouritesPokemonsUseCase.fetchFavouritesPokemons()
+            switch result {
+            case .success(let success):
+                delegate?.favouriteLoaded(pokemons: success)
+            case .failure(let failure):
+                self.delegate?.didFailWithError(error: failure)
+            }
+            return buttonString
+        } else {
+            let buttonString = NSLocalizedString("ShowFavourites", comment: "")
+            return buttonString
         }
     }
 }

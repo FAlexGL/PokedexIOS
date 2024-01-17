@@ -16,7 +16,6 @@ class PokemonListVC: UIViewController {
     private var pokemonListModel: PokemonListModel?
     private var url = Constants.PokemonAPI.URL_POKEMON_LIST
     private var positionOfFavouritePokemonSelected: IndexPath?
-    private var isShowingOnlyFavourites = false
     private var presenter: PokemonListPresenter
     
     init(presenter: PokemonListPresenter){
@@ -32,7 +31,7 @@ class PokemonListVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initDelegates()
-        initTables()
+        initTable()
         initNavigationControllerFavouriteButton()
         presenter.viewDidLoad()
     }
@@ -66,7 +65,7 @@ class PokemonListVC: UIViewController {
         self.navigationItem.rightBarButtonItem = buttonItem
     }
     
-    private func initTables(){
+    private func initTable(){
         tableView.dataSource = self
         tableView.delegate = self
         tableView.rowHeight = 93.0
@@ -74,15 +73,9 @@ class PokemonListVC: UIViewController {
     }
     
     @objc private func favouriteButtonTapped(_ sender: UIButton!){
-        if !isShowingOnlyFavourites {
-            let buttonString = NSLocalizedString("ShowAll", comment: "")
-            sender.setTitle(buttonString, for: .normal)
-            presenter.favouriteButtonTapped()
-        } else {
-            let buttonString = NSLocalizedString("ShowFavourites", comment: "")
-            sender.setTitle(buttonString, for: .normal)
-            isShowingOnlyFavourites = false
-        }
+        let showFavouritesButtonTitle = navigationItem.rightBarButtonItem?.title
+        navigationItem.rightBarButtonItem?.title = presenter.favouriteButtonTapped(showFavouritesButtonTitle: showFavouritesButtonTitle)
+        
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
@@ -103,18 +96,20 @@ class PokemonListVC: UIViewController {
 
 extension PokemonListVC: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter.numberOfRowsInSection(isShowingOnlyFavourites: isShowingOnlyFavourites, favouritePokemonsFetched: favouritePokemonsFetched.count, pokemonsFetched: pokemonsFetched.count)
+        let showFavouritesButtonTitle = self.navigationItem.rightBarButtonItem?.title
+        return presenter.numberOfRowsInSection(showFavouritesButtonTitle: showFavouritesButtonTitle, favouritePokemonsFetched: favouritePokemonsFetched.count, pokemonsFetched: pokemonsFetched.count)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return presenter.cellForRowAt(tableView: tableView, indexPath: indexPath, isShowingOnlyFavourites: isShowingOnlyFavourites, favouritePokemonsFetched: favouritePokemonsFetched, pokemonsFetched: pokemonsFetched)
+        let showFavouritesButtonTitle = self.navigationItem.rightBarButtonItem?.title
+        return presenter.cellForRowAt(tableView: tableView, indexPath: indexPath, showFavouritesButtonTitle: showFavouritesButtonTitle, favouritePokemonsFetched: favouritePokemonsFetched, pokemonsFetched: pokemonsFetched)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let stringFavourite = NSLocalizedString("Favourite", comment: "")
         let item = UIContextualAction(style: .normal, title: stringFavourite) { [weak self] (action, view, completionHandler) in
             guard let self = self else { return }
-            let pokemonId = isShowingOnlyFavourites == true ? favouritePokemonsFetched[indexPath.row].pokemonId : indexPath.row + 1
+            let pokemonId = self.navigationItem.rightBarButtonItem?.title ==  NSLocalizedString("ShowAll", comment: "") ? favouritePokemonsFetched[indexPath.row].pokemonId : indexPath.row + 1
             
             self.presenter.trailingSwipeActionsConfigurationForRowAt(pokemonId: pokemonId, pokemonName: self.pokemonsFetched[indexPath.row], indexPath: indexPath)
             completionHandler(true)
@@ -131,21 +126,15 @@ extension PokemonListVC: UITableViewDataSource{
 
 extension PokemonListVC: UITableViewDelegate{
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if isShowingOnlyFavourites == false {
-            let totalRows = tableView.numberOfRows(inSection: indexPath.section)
-            if indexPath.row == totalRows - 1 && url != "" {
-                presenter.willDisplay(url: url)
-            }
-        }
+        let showFavouritesButtonTitle = self.navigationItem.rightBarButtonItem?.title
+        let totalRows = tableView.numberOfRows(inSection: indexPath.section)
+        presenter.willDisplay(showFavouritesButtonTitle: showFavouritesButtonTitle, totalRows: totalRows, indexPath: indexPath, url: url)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if isShowingOnlyFavourites == true {
-            self.positionOfFavouritePokemonSelected = indexPath
-            presenter.didSelectRowAt(pokemonId: favouritePokemonsFetched[indexPath.row].pokemonId)
-        } else {
-            presenter.didSelectRowAt(pokemonId: indexPath.row + 1)
-        }
+        self.positionOfFavouritePokemonSelected = indexPath
+        let showFavouritesButtonTitle = self.navigationItem.rightBarButtonItem?.title
+        presenter.didSelectRowAt(showFavouritesButtonTitle: showFavouritesButtonTitle, indexPath: indexPath, favouritePokemonsFetched: favouritePokemonsFetched)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
@@ -164,7 +153,7 @@ extension PokemonListVC: PokemonListViewDelegate {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             self.tableView.reloadRows(at: [indexPath], with: .none)
-            if isShowingOnlyFavourites == true {
+            if self.navigationItem.rightBarButtonItem?.title ==  NSLocalizedString("ShowAll", comment: "") {
                 if let indexPath = self.positionOfFavouritePokemonSelected {
                     self.tableView.beginUpdates()
                     self.favouritePokemonsFetched.remove(at: indexPath.row)
@@ -177,7 +166,6 @@ extension PokemonListVC: PokemonListViewDelegate {
     
     func favouriteLoaded(pokemons: [FavouritePokemon]) {
         favouritePokemonsFetched = pokemons
-        isShowingOnlyFavourites = true
         let buttonString = NSLocalizedString("ShowAll", comment: "")
         self.navigationItem.rightBarButtonItem?.title = buttonString
         DispatchQueue.main.async { [weak self] in
@@ -197,7 +185,7 @@ extension PokemonListVC: PokemonListViewDelegate {
         
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            if isShowingOnlyFavourites == true {
+            if  self.navigationItem.rightBarButtonItem?.title ==  NSLocalizedString("ShowAll", comment: "") {
                 self.tableView.beginUpdates()
                 self.favouritePokemonsFetched.remove(at: indexPath.row)
                 self.tableView.deleteRows(at: [indexPath], with: .automatic)
