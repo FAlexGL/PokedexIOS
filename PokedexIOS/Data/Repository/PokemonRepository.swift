@@ -10,7 +10,7 @@ import Foundation
 protocol PokemonRepository {
     func fetchPokemons(handler: @escaping (Result<PokemonListModel, Error>) -> Void)
     func fetchMorePokemons(url: String, handler: @escaping (Result<PokemonListModel, Error>) -> Void)
-    func fetFavouritesPokemons() -> [FavouritePokemon]
+    func fetchFavouritesPokemons() -> [FavouritePokemon]
 }
 
 class DefaultPokemonRepository {
@@ -33,7 +33,7 @@ extension DefaultPokemonRepository: PokemonRepository {
         apiDataSource.fetchMorePokemons(url: url, handler: handler)
     }
     
-    func fetFavouritesPokemons() -> [FavouritePokemon] {
+    func fetchFavouritesPokemons() -> [FavouritePokemon] {
         dbDataSource.fetchFavouritesPokemons()
     }
 }

@@ -14,23 +14,22 @@ protocol ApiPokemonDataSource {
 
 class DefaultApiPokemonDataSource {
     private var apiHelper: APIHelper
-    private var pokemonHanlder: ((Result<PokemonListModel, Error>) -> Void)?
+    private var pokemonHandler: ((Result<PokemonListModel, Error>) -> Void)?
     
     init(apiHelper: APIHelper) {
         self.apiHelper = apiHelper
         self.apiHelper.delegate = self
     }
-    
 }
 
 extension DefaultApiPokemonDataSource: ApiPokemonDataSource {
     func fetchPokemons(handler: @escaping (Result<PokemonListModel, Error>) -> Void) {
-        self.pokemonHanlder = handler
+        self.pokemonHandler = handler
         apiHelper.fetchPokemonList(url: Constants.PokemonAPI.URL_POKEMON_LIST)
     }
     
-    func fetchMorePokemons( url: String, handler: @escaping (Result<PokemonListModel, Error>) -> Void) {
-        self.pokemonHanlder = handler
+    func fetchMorePokemons(url: String, handler: @escaping (Result<PokemonListModel, Error>) -> Void) {
+        self.pokemonHandler = handler
         apiHelper.fetchPokemonList(url: url)
     }
     
@@ -38,10 +37,10 @@ extension DefaultApiPokemonDataSource: ApiPokemonDataSource {
 
 extension DefaultApiPokemonDataSource: APIHelperDelegate {
     func didFailWithError(error: Error) {
-        pokemonHanlder?(.failure(error))
+        pokemonHandler?(.failure(error))
     }
     
     func didUpdatePokemonList(pokemonListModel: PokemonListModel) {
-        pokemonHanlder?(.success(pokemonListModel))
+        pokemonHandler?(.success(pokemonListModel))
     }
 }

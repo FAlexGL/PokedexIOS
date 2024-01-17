@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol PokemonListViewDelegate {
     func didUpdatePokemonList(pokemonListModel: PokemonListModel)
@@ -19,6 +20,8 @@ protocol PokemonListPresenter {
     var delegate: PokemonListViewDelegate? { get set }
     func viewDidLoad()
     func willDisplay(url: String)
+    func numberOfRowsInSection (isShowingOnlyFavourites: Bool, favouritePokemonsFetched: Int, pokemonsFetched: Int) -> Int
+    func cellForRowAt (tableView: UITableView, indexPath: IndexPath, isShowingOnlyFavourites: Bool, favouritePokemonsFetched: [FavouritePokemon], pokemonsFetched: [String]) -> UITableViewCell
     func trailingSwipeActionsConfigurationForRowAt(pokemonId: Int, pokemonName: String, indexPath: IndexPath)
     func favouriteButtonTapped()
     func didSelectRowAt(pokemonId: Int)
@@ -70,6 +73,24 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
         }
     }
     
+    func numberOfRowsInSection (isShowingOnlyFavourites: Bool, favouritePokemonsFetched: Int, pokemonsFetched: Int) -> Int {
+        if isShowingOnlyFavourites == true {
+            return favouritePokemonsFetched
+        }
+        return pokemonsFetched
+    }
+    
+    func cellForRowAt (tableView: UITableView, indexPath: IndexPath, isShowingOnlyFavourites: Bool, favouritePokemonsFetched: [FavouritePokemon], pokemonsFetched: [String]) -> UITableViewCell {
+        if isShowingOnlyFavourites == true {
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Identifiers.POKEMON_CELL_IDENTIFIER, for: indexPath) as! PokemonCell
+            cell.showData(pokemonID: favouritePokemonsFetched[indexPath.row].pokemonId, pokemonName: favouritePokemonsFetched[indexPath.row].pokemonName)
+            return cell
+        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Identifiers.POKEMON_CELL_IDENTIFIER, for: indexPath) as! PokemonCell
+        cell.showData(pokemonID: indexPath.row + 1, pokemonName: pokemonsFetched[indexPath.row])
+        return cell
+    }
+    
     func trailingSwipeActionsConfigurationForRowAt(pokemonId: Int, pokemonName: String, indexPath: IndexPath) {
 //        var message = ""
 //        var error = false
@@ -89,7 +110,7 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
     }
     
     func favouriteButtonTapped() {
-        let result = fetchFavouritesPokemonsUseCase.fetFavouritesPokemons()
+        let result = fetchFavouritesPokemonsUseCase.fetchFavouritesPokemons()
         switch result {
         case .success(let success):
             delegate?.favouriteLoaded(pokemons: success)
