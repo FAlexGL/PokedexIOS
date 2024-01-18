@@ -19,7 +19,7 @@ class PokemonCell: UITableViewCell {
     @IBOutlet weak var favouriteImage: UIImageView!
     
     private let dbHelper:  DBHelper = DefaultDBHelper.shared
-    private let apiHelper: APIHelper = DefaultAPIHelper.share
+    private let apiHelper: APIHelper = DefaultAPIHelper.shared
     
     override func awakeFromNib() {
         super.awakeFromNib()
