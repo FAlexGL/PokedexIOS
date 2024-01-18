@@ -1,0 +1,67 @@
+//
+//  MovesListVC.swift
+//  PokedexIOS
+//
+//  Created by Fernando Alejandro Garcia Lopez on 13/12/23.
+//
+
+import UIKit
+
+class MovesListVC: UIViewController {
+    @IBOutlet private weak var tableView: UITableView!
+    
+    private var pokemonModel: PokemonModel?
+    private var presenter: MovesListPresenter
+    
+    init(presenter: MovesListPresenter){
+        self.presenter = presenter
+        super.init(nibName: Constants.NibNames.POKEMON_MOVES_LIST, bundle: nil)
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        initTable()
+    }
+    
+    func setPokemonModel(pokemonModel: PokemonModel) {
+        self.pokemonModel = pokemonModel
+    }
+    
+    private func initTable() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
+    }
+}
+
+extension MovesListVC: UITableViewDataSource{
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        presenter.numberOfRowsInSection(pokemonModel: pokemonModel)
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier", for: indexPath)
+        var content = cell.defaultContentConfiguration()
+        content.text = pokemonModel?.moves[indexPath.row].moveName.replacingOccurrences(of: "-", with: " ")
+        content.textProperties.font = UIFont.systemFont(ofSize: 20)
+        content.textProperties.color = UIColor(named: Constants.Colours.YELLOW_POKEMON_TITLE) ?? UIColor.yellow
+        cell.contentConfiguration = content
+        cell.accessoryType = .disclosureIndicator
+        cell.backgroundColor = UIColor(named: Constants.Colours.BLUE_POKEMON_TITLE)
+        return cell
+    }
+}
+
+extension MovesListVC: UITableViewDelegate{
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter.didSelectRowAt(pokemonModel: pokemonModel, movePosition: indexPath.row)
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}

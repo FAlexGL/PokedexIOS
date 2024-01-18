@@ -159,8 +159,7 @@ struct DefaultAPIHelper {
             let officialFront = decodeData.sprites.other.officialArtwork.front_default ?? nil
             let officialFrontShiny = decodeData.sprites.other.officialArtwork.front_shiny ?? nil
             let sprites = PokemonModel.Sprites(frontDefault: frontDefault, backDefault: backDefault, backFemale: backFemale, backShiny: backShiny, backShinyFemale: backShinyFemale, frontFemale: frontFemale, frontShiny: frontShiny, frontShinyFemale: frontShinyFemale, officialFront: officialFront, officialFrontShiny: officialFrontShiny)
-            
-            return PokemonModel(pokemonId: pokemonId, pokemonName: pokemonName, baseExperience: baseExperience, height: height, weight: weight, types: types, stats: stats, sprites: sprites, moves: moves)
+            return PokemonModel(pokemonId: pokemonId, pokemonName: pokemonName, baseExperience: baseExperience, isFavourite: false, height: height, weight: weight, types: types, stats: stats, sprites: sprites, moves: moves)
         } catch {
             delegate?.didFailWithError(error: error)
             return nil
