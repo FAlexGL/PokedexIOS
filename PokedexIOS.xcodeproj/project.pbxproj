@@ -32,7 +32,6 @@
 		458BF9C02B50463E0088037C /* MoveDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458BF9BF2B50463E0088037C /* MoveDetailPresenter.swift */; };
 		45BAF5272B2C682F0043A95E /* MoveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BAF5262B2C682F0043A95E /* MoveData.swift */; };
 		45BAF5292B2C6CEA0043A95E /* MoveModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BAF5282B2C6CEA0043A95E /* MoveModel.swift */; };
-		45C94A6D2B5E68DE0034ECA5 /* GenericDataModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C94A6C2B5E68DE0034ECA5 /* GenericDataModelType.swift */; };
 		45CCCE772B31A1B300109FFF /* ErrorVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45CCCE792B31A1B300109FFF /* ErrorVC.xib */; };
 		45CCCE7B2B31A2E000109FFF /* PokemonListVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45CCCE7D2B31A2E000109FFF /* PokemonListVC.xib */; };
 		45CCCE812B31A4E600109FFF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 45CCCE832B31A4E600109FFF /* Localizable.strings */; };
@@ -103,7 +102,6 @@
 		458BF9BF2B50463E0088037C /* MoveDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveDetailPresenter.swift; sourceTree = "<group>"; };
 		45BAF5262B2C682F0043A95E /* MoveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveData.swift; sourceTree = "<group>"; };
 		45BAF5282B2C6CEA0043A95E /* MoveModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveModel.swift; sourceTree = "<group>"; };
-		45C94A6C2B5E68DE0034ECA5 /* GenericDataModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericDataModelType.swift; sourceTree = "<group>"; };
 		45CCCE782B31A1B300109FFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ErrorVC.xib; sourceTree = "<group>"; };
 		45CCCE7C2B31A2E000109FFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PokemonListVC.xib; sourceTree = "<group>"; };
 		45CCCE822B31A4E600109FFF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -176,7 +174,6 @@
 				ECFB905A2B55589E00AA741D /* Repository */,
 				45F1C9022B276073006AAD3C /* APIHelper.swift */,
 				450F516A2B287C9E00A53D50 /* DBHelper.swift */,
-				45C94A6C2B5E68DE0034ECA5 /* GenericDataModelType.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -650,7 +647,6 @@
 				450F51702B28C41000A53D50 /* ErrorVC.swift in Sources */,
 				450F516D2B28876100A53D50 /* FavouritePokemon.swift in Sources */,
 				45F1C9032B276073006AAD3C /* APIHelper.swift in Sources */,
-				45C94A6D2B5E68DE0034ECA5 /* GenericDataModelType.swift in Sources */,
 				4585C4312B2A0BC8007483A1 /* MovesListVC.swift in Sources */,
 				45F1C9012B275F46006AAD3C /* PokemonListModel.swift in Sources */,
 				45CCCE8D2B31F87600109FFF /* PokemonCoordinator.swift in Sources */,
