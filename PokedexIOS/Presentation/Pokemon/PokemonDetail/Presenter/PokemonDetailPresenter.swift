@@ -7,8 +7,9 @@
 
 import Foundation
 import UIKit
+import Combine
 
-protocol PokemonDetailViewDelegate {
+protocol PokemonDetailViewDelegate: AnyObject {
     func didUpdatePokemonDetail(pokemonModel: PokemonModel)
     func didFailWithError(error: Error)
     func showImage(image: UIImage)
@@ -32,16 +33,18 @@ protocol PokemonDetailPresenter {
 }
 
 class DefaultPokemonDetailPresenter {
-    var delegate: PokemonDetailViewDelegate?
+    weak var delegate: PokemonDetailViewDelegate?
+    private var subscriptions: [AnyCancellable] = []
     private var coordinator: PokemonCoordinator
     private var apiHelper: APIHelper
     private var dbHelper: DBHelper
+    private let fetchPokemonsUseCase: FetchPokemonsUseCase
     
-    init(apiHelper: APIHelper, dbHelper: DBHelper, coordinator: PokemonCoordinator) {
+    init(apiHelper: APIHelper, dbHelper: DBHelper, coordinator: PokemonCoordinator, fetchPokemonsUseCase: FetchPokemonsUseCase) {
         self.coordinator = coordinator
         self.apiHelper = apiHelper
         self.dbHelper = dbHelper
-        self.apiHelper.delegate = self
+        self.fetchPokemonsUseCase = fetchPokemonsUseCase
     }
 }
 
@@ -156,7 +159,16 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
     
     
     func getPokemonDetail(pokemonId: Int) {
-        apiHelper.fetchPokemonDetail(pokemonId: pokemonId)
+        fetchPokemonsUseCase.fetchPokemonDetail(pokemonId: pokemonId)
+            .sink { [weak self] pokemonModel in
+                guard let self = self else {return}
+                guard let pokemonModel = pokemonModel else {
+                    print("Error obtaining Pokemon's Details")
+                    return
+                }
+                self.delegate?.didUpdatePokemonDetail(pokemonModel: pokemonModel)
+            }
+            .store(in: &subscriptions)
     }
     
     func switchChanged(_ sender: UISwitch, pokemonModel: PokemonModel?) {
@@ -181,18 +193,6 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
             nextSpritePosition = 0
         }
         delegate?.setSpritePosition(spritePosition: nextSpritePosition)
-    }
-    
-}
-
-//MARK: - Ext. APIHelperDelegate
-extension DefaultPokemonDetailPresenter: APIHelperDelegate{
-    func didFailWithError(error: Error) {
-        //TODO: finalizar
-    }
-    
-    func didUpdatePokemonDetail(pokemonModel: PokemonModel) {
-        delegate?.didUpdatePokemonDetail(pokemonModel: pokemonModel)
     }
     
 }

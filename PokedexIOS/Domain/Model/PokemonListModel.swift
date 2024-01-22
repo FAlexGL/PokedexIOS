@@ -11,7 +11,7 @@ struct PokemonListModel {
     let nextURL: String
     let previousURL: String?
     let pokemons: [String]
-    //TODO: haser algo
+    //TODO: hacer algo
 //    let pokemons: [PokemonItemModel]
     
 }

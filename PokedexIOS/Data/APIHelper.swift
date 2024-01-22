@@ -7,67 +7,53 @@
 
 import Foundation
 import UIKit
-
-enum ParseType {
-    case pokemonList
-    case pokemonDetail
-    case pokemonMove
-}
-
-protocol APIHelperDelegate {
-    func didUpdatePokemonList(pokemonListModel: PokemonListModel)
-    func didUpdatePokemonDetail(pokemonModel: PokemonModel)
-    func didUpdatePokemonMove(moveModel: MoveModel)
-    func didFailWithError(error: Error)
-}
-
-extension APIHelperDelegate {
-    func didUpdatePokemonList(pokemonListModel: PokemonListModel) {}
-    func didUpdatePokemonDetail(pokemonModel: PokemonModel) {}
-    func didUpdatePokemonMove(moveModel: MoveModel) {}
-}
+import Combine
 
 protocol APIHelper {
-    var delegate: APIHelperDelegate? { get set}
-    func fetchPokemonList(url: String)
-    func fetchPokemonDetail(pokemonId: Int)
-    func fetchMoveDetail(moveName: String)
+    func fetchPokemonList(url: String)  -> AnyPublisher<PokemonListModel?, Never>
+    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never>
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveModel?, Never>
     func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void)
 }
 
 struct DefaultAPIHelper {
     
-    var delegate: APIHelperDelegate?
-    static let share = DefaultAPIHelper()
+    static let shared = DefaultAPIHelper()
     
-    private func performRequest(with urlString: String, type: ParseType) {
-        if let url = URL(string: urlString) {
-            let session = URLSession(configuration: .default)
-            let task = session.dataTask(with: url) { data, response, error in
-                print("Calling API...")
-                if error != nil {
-                    delegate?.didFailWithError(error: error!)
-                    return
-                }
-                if let safeData = data {
-                    switch type {
-                    case .pokemonList:
-                        if let pokemonListModel = parseJSONPokemonList(safeData){
-                            delegate?.didUpdatePokemonList(pokemonListModel: pokemonListModel)
-                        }
-                    case .pokemonDetail:
-                        if let pokemonModel = parseJSONPokemonDetail(safeData) {
-                            delegate?.didUpdatePokemonDetail(pokemonModel: pokemonModel)
-                        }
-                    case .pokemonMove:
-                        if let moveModel = parseJSONPokemonMove(safeData){
-                            delegate?.didUpdatePokemonMove(moveModel: moveModel)
-                        }
-                    }
-                }
-            }
-            task.resume()
+    private func performRequestPokemonList(urlString: String) -> AnyPublisher<PokemonListModel?, Never> {
+        guard let url = URL(string: urlString) else {
+            return Just(nil).eraseToAnyPublisher()
         }
+        
+        return URLSession(configuration: .default)
+            .dataTaskPublisher(for: url)
+            .map { parseJSONPokemonList($0.data) }
+            .replaceError(with: nil)
+            .eraseToAnyPublisher()
+    }
+    
+    private func performRequestPokemonDetail(urlString: String) -> AnyPublisher<PokemonModel?, Never> {
+        guard let url = URL(string: urlString) else {
+            return Just(nil).eraseToAnyPublisher()
+        }
+        
+        return URLSession(configuration: .default)
+            .dataTaskPublisher(for: url)
+            .map { parseJSONPokemonDetail($0.data) }
+            .replaceError(with: nil)
+            .eraseToAnyPublisher()
+    }
+    
+    private func performRequestPokemonMove(urlString: String) -> AnyPublisher<MoveModel?, Never> {
+        guard let url = URL(string: urlString) else {
+            return Just(nil).eraseToAnyPublisher()
+        }
+        
+        return URLSession(configuration: .default)
+            .dataTaskPublisher(for: url)
+            .map { parseJSONPokemonMove($0.data) }
+            .replaceError(with: nil)
+            .eraseToAnyPublisher()
     }
     
     private func parseJSONPokemonMove(_ moveData: Data) -> MoveModel? {
@@ -89,7 +75,6 @@ struct DefaultAPIHelper {
             return moveModel
         } catch {
             print("error\(error)")
-            delegate?.didFailWithError(error: error)
             return nil
         }
     }
@@ -107,7 +92,6 @@ struct DefaultAPIHelper {
             let pokemonListModel = PokemonListModel(nextURL: nextURL, previousURL: previousURL, pokemons: pokemons)
             return pokemonListModel
         } catch {
-            delegate?.didFailWithError(error: error)
             return nil
         }
     }
@@ -161,7 +145,6 @@ struct DefaultAPIHelper {
             let sprites = PokemonModel.Sprites(frontDefault: frontDefault, backDefault: backDefault, backFemale: backFemale, backShiny: backShiny, backShinyFemale: backShinyFemale, frontFemale: frontFemale, frontShiny: frontShiny, frontShinyFemale: frontShinyFemale, officialFront: officialFront, officialFrontShiny: officialFrontShiny)
             return PokemonModel(pokemonId: pokemonId, pokemonName: pokemonName, baseExperience: baseExperience, isFavourite: false, height: height, weight: weight, types: types, stats: stats, sprites: sprites, moves: moves)
         } catch {
-            delegate?.didFailWithError(error: error)
             return nil
         }
     }
@@ -169,16 +152,17 @@ struct DefaultAPIHelper {
 }
 
 extension DefaultAPIHelper: APIHelper {
-    func fetchPokemonList(url: String) {
-        performRequest(with: url, type: .pokemonList)
+    
+    func fetchPokemonList(url: String)  -> AnyPublisher<PokemonListModel?, Never> {
+        performRequestPokemonList(urlString: url)
     }
     
-    func fetchPokemonDetail(pokemonId: Int) {
-        performRequest(with: "\(Constants.PokemonAPI.URL_POKEMON_DETAIL)\(pokemonId)", type: .pokemonDetail)
+    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never> {
+        performRequestPokemonDetail(urlString: "\(Constants.PokemonAPI.URL_POKEMON_DETAIL)\(pokemonId)")
     }
     
-    func fetchMoveDetail(moveName: String) {
-        performRequest(with: "\(Constants.PokemonAPI.URL_POKEMON_MOVE)\(moveName)", type: .pokemonMove)
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveModel?, Never> {
+        performRequestPokemonMove(urlString: "\(Constants.PokemonAPI.URL_POKEMON_MOVE)\(urlString)")
     }
     
     func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {

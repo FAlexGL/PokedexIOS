@@ -6,15 +6,18 @@
 //
 
 import Foundation
+import Combine
 
 protocol FetchPokemonsUseCase {
-    func fetchPokemons(handler: @escaping (Result<PokemonListModel, Error>) -> Void)
-    func fetchPokemons(url: String?, handler: @escaping (Result<PokemonListModel, Error>) -> Void)
+    func fetchPokemonList() -> AnyPublisher<PokemonListModel?, Never>
+    func fetchPokemonList(url: String?) -> AnyPublisher<PokemonListModel?, Never>
+    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never>
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveModel?, Never>
 }
 
 extension FetchPokemonsUseCase {
-    func fetchPokemons(handler: @escaping (Result<PokemonListModel, Error>) -> Void) {
-        fetchPokemons(url: nil, handler: handler)
+    func fetchPokemonList() -> AnyPublisher<PokemonListModel?, Never> {
+        fetchPokemonList(url: nil)
     }
 }
 
@@ -28,12 +31,20 @@ class DefaultFetchPokemonsUseCase {
 
 extension DefaultFetchPokemonsUseCase: FetchPokemonsUseCase {
     
-    func fetchPokemons(url: String?, handler: @escaping (Result<PokemonListModel, Error>) -> Void) {
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveModel?, Never> {
+        pokemonRepository.fetchPokemonMove(urlString: urlString)
+    }
+    
+    func fetchPokemonList(url: String?) -> AnyPublisher<PokemonListModel?, Never> {
         if let url = url {
-            pokemonRepository.fetchMorePokemons(url: url, handler: handler)
+            pokemonRepository.fetchPokemonList(url: url)
         } else {
-            pokemonRepository.fetchPokemons(handler: handler)
+            pokemonRepository.fetchPokemonList(url: Constants.PokemonAPI.URL_POKEMON_LIST)
         }
+    }
+    
+    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never> {
+        pokemonRepository.fetchPokemonDetail(pokemonId: pokemonId)
     }
     
 }

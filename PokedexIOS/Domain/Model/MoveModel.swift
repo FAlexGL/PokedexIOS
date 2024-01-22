@@ -18,5 +18,5 @@ struct MoveModel {
     let damageClass: String
     let effect: String
     let target: String
-    let moveType: String
+    let moveType: String    
 }

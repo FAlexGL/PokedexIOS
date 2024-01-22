@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import Combine
 
 protocol ApiPokemonDataSource {
-    func fetchPokemons(handler: @escaping (Result<PokemonListModel, Error>) -> Void)
-    func fetchMorePokemons( url: String, handler: @escaping (Result<PokemonListModel, Error>) -> Void)
+    func fetchPokemonList(url: String) -> AnyPublisher<PokemonListModel?, Never>
+    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never>
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveModel?, Never>
 }
 
 class DefaultApiPokemonDataSource {
@@ -18,29 +20,20 @@ class DefaultApiPokemonDataSource {
     
     init(apiHelper: APIHelper) {
         self.apiHelper = apiHelper
-        self.apiHelper.delegate = self
     }
 }
 
 extension DefaultApiPokemonDataSource: ApiPokemonDataSource {
-    func fetchPokemons(handler: @escaping (Result<PokemonListModel, Error>) -> Void) {
-        self.pokemonHandler = handler
-        apiHelper.fetchPokemonList(url: Constants.PokemonAPI.URL_POKEMON_LIST)
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveModel?, Never> {
+        apiHelper.fetchPokemonMove(urlString: urlString)
     }
     
-    func fetchMorePokemons(url: String, handler: @escaping (Result<PokemonListModel, Error>) -> Void) {
-        self.pokemonHandler = handler
+    func fetchPokemonList(url: String) -> AnyPublisher<PokemonListModel?, Never> {
         apiHelper.fetchPokemonList(url: url)
     }
     
-}
-
-extension DefaultApiPokemonDataSource: APIHelperDelegate {
-    func didFailWithError(error: Error) {
-        pokemonHandler?(.failure(error))
+    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never> {
+        apiHelper.fetchPokemonDetail(pokemonId: pokemonId)
     }
     
-    func didUpdatePokemonList(pokemonListModel: PokemonListModel) {
-        pokemonHandler?(.success(pokemonListModel))
-    }
 }

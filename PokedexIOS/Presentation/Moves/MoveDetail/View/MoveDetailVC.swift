@@ -102,7 +102,6 @@ extension MoveDetailVC: MoveDetailViewDelegate {
         self.levelGamesTextView.attributedText = levelGames
     }
     
-    
     func didUpdatePokemonMove(moveModel: MoveModel) {
         showData(moveModel: moveModel)
     }

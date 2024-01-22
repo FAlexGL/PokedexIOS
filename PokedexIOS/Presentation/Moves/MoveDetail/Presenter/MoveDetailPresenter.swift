@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Combine
 
 protocol MoveDetailViewDelegate {
     func didUpdatePokemonMove(moveModel: MoveModel)
@@ -22,10 +23,12 @@ protocol MoveDetailPresenter {
 class DefaultMoveDetailPresenter {
     var delegate: MoveDetailViewDelegate?
     private var apiHelper: APIHelper
+    private let fetchPokemonUseCase: FetchPokemonsUseCase
+    private var subscriptions: [AnyCancellable] = []
     
-    init(apiHelper: APIHelper) {
+    init(apiHelper: APIHelper, fetchPokemonUseCase: FetchPokemonsUseCase) {
+        self.fetchPokemonUseCase = fetchPokemonUseCase
         self.apiHelper = apiHelper
-        self.apiHelper.delegate = self
     }
 }
 
@@ -73,17 +76,15 @@ extension DefaultMoveDetailPresenter: MoveDetailPresenter {
     
     func getMoveDetail(moveName: String?) {
         if let moveName = moveName {
-            apiHelper.fetchMoveDetail(moveName: moveName)
+            //            apiHelper.fetchMoveDetail(moveName: moveName)
+            fetchPokemonUseCase.fetchPokemonMove(urlString: moveName)
+                .sink { moveModel in
+                    if let moveModel = moveModel {
+                        self.delegate?.didUpdatePokemonMove(moveModel: moveModel)
+                    }
+                }
+                .store(in: &subscriptions)
+            
         }
-    }
-}
-
-extension DefaultMoveDetailPresenter: APIHelperDelegate {
-    func didFailWithError(error: Error) {
-        //TODO: TERMINAR
-    }
-    
-    func didUpdatePokemonMove(moveModel: MoveModel) {
-        delegate?.didUpdatePokemonMove(moveModel: moveModel)
     }
 }

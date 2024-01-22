@@ -22,7 +22,6 @@ class DefaultFetchFavouritesPokemonsUseCase {
 extension DefaultFetchFavouritesPokemonsUseCase: FetchFavouritesPokemonsUseCase {
     func fetchFavouritesPokemons() -> Result<[FavouritePokemon], Error> {
         //TODO: update to Result
-//        .success(pokemonRepository.fetchFavouritesPokemons())
         return Result.success(pokemonRepository.fetchFavouritesPokemons())
     }
 }

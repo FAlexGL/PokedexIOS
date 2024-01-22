@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Combine
 
 protocol PokemonListViewDelegate {
     func didUpdatePokemonList(pokemonListModel: PokemonListModel)
@@ -29,6 +30,8 @@ protocol PokemonListPresenter {
 
 class DefaultPokemonListPresenter {
     var delegate: PokemonListViewDelegate?
+    
+    private var subscriptions: [AnyCancellable] = []
     private let coordinator: PokemonCoordinator
     private let fetchPokemonsUseCase: FetchPokemonsUseCase
     private let fetchFavouritesPokemonsUseCase: FetchFavouritesPokemonsUseCase
@@ -56,29 +59,28 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
     }
     
     func viewDidLoad() {
-        fetchPokemonsUseCase.fetchPokemons { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let success):
-                self.delegate?.didUpdatePokemonList(pokemonListModel: success)
-            case .failure(let failure):
-                self.delegate?.didFailWithError(error: failure)
+        fetchPokemonsUseCase.fetchPokemonList()
+            .sink { pokemonListModel in
+                if let pokemonListModel = pokemonListModel {
+                    self.delegate?.didUpdatePokemonList(pokemonListModel: pokemonListModel)
+                }
             }
-        }
+            .store(in: &subscriptions)
     }
     
     func willDisplay(showFavouritesButtonTitle: String?, totalRows: Int, indexPath: IndexPath, url: String) {
         if showFavouritesButtonTitle != NSLocalizedString("ShowAll", comment: "") {
             if indexPath.row == totalRows - 1 && url != "" {
-                fetchPokemonsUseCase.fetchPokemons(url: url) { [weak self] result in
-                    guard let self = self else { return }
-                    switch result {
-                    case .success(let success):
-                        self.delegate?.didUpdatePokemonList(pokemonListModel: success)
-                    case .failure(let failure):
-                        self.delegate?.didFailWithError(error: failure)
+
+                subscriptions = []
+
+                fetchPokemonsUseCase.fetchPokemonList(url: url)
+                    .sink { pokemonListModel in
+                        if let pokemonListModel = pokemonListModel {
+                            self.delegate?.didUpdatePokemonList(pokemonListModel: pokemonListModel)
+                        }
                     }
-                }
+                    .store(in: &subscriptions)
             }
         }
     }
@@ -102,21 +104,21 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
     }
     
     func trailingSwipeActionsConfigurationForRowAt(pokemonId: Int, pokemonName: String, indexPath: IndexPath) {
-//        var message = ""
-//        var error = false
-//        let isFavourite = dbHelper.isFavourite(pokemonId: pokemonId)
-//        if isFavourite {
-//            if !isFavourite(pokemonId: pokemonId) {
-//                message = "Error deletting favourite, try again."
-//                error = true
-//            }
-//        } else { 
-//            if !dbHelper.saveFavourite(favouritePokemon: FavouritePokemon(pokemonId: pokemonId, pokemonName: pokemonName)) {
-//                message = "Error adding favourite Pokemon, try again"
-//                error = true
-//            }
-//        }
-//        delegate?.favouriteChanged(error: error, message: message, indexPath: indexPath)
+        //        var message = ""
+        //        var error = false
+        //        let isFavourite = dbHelper.isFavourite(pokemonId: pokemonId)
+        //        if isFavourite {
+        //            if !isFavourite(pokemonId: pokemonId) {
+        //                message = "Error deletting favourite, try again."
+        //                error = true
+        //            }
+        //        } else {
+        //            if !dbHelper.saveFavourite(favouritePokemon: FavouritePokemon(pokemonId: pokemonId, pokemonName: pokemonName)) {
+        //                message = "Error adding favourite Pokemon, try again"
+        //                error = true
+        //            }
+        //        }
+        //        delegate?.favouriteChanged(error: error, message: message, indexPath: indexPath)
     }
     
     func favouriteButtonTapped(showFavouritesButtonTitle: String?) -> String? {

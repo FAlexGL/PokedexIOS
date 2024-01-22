@@ -6,11 +6,13 @@
 //
 
 import Foundation
+import Combine
 
 protocol PokemonRepository {
-    func fetchPokemons(handler: @escaping (Result<PokemonListModel, Error>) -> Void)
-    func fetchMorePokemons(url: String, handler: @escaping (Result<PokemonListModel, Error>) -> Void)
     func fetchFavouritesPokemons() -> [FavouritePokemon]
+    func fetchPokemonList(url: String) -> AnyPublisher<PokemonListModel?, Never>
+    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never>
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveModel?, Never>
 }
 
 class DefaultPokemonRepository {
@@ -25,15 +27,19 @@ class DefaultPokemonRepository {
 
 extension DefaultPokemonRepository: PokemonRepository {
     
-    func fetchPokemons(handler: @escaping (Result<PokemonListModel, Error>) -> Void) {
-        apiDataSource.fetchPokemons(handler: handler)
-    }
-    
-    func fetchMorePokemons(url: String, handler: @escaping (Result<PokemonListModel, Error>) -> Void) {
-        apiDataSource.fetchMorePokemons(url: url, handler: handler)
-    }
-    
     func fetchFavouritesPokemons() -> [FavouritePokemon] {
         dbDataSource.fetchFavouritesPokemons()
+    }
+    
+    func fetchPokemonList(url: String) -> AnyPublisher<PokemonListModel?, Never> {
+        apiDataSource.fetchPokemonList(url: url)
+    }
+    
+    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never> {
+        apiDataSource.fetchPokemonDetail(pokemonId: pokemonId)
+    }
+    
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveModel?, Never> {
+        apiDataSource.fetchPokemonMove(urlString: urlString)
     }
 }
