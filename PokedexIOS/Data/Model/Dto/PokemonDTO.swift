@@ -8,7 +8,7 @@
 import Foundation
 
 //TODO: Rename: DTO(Data transfer object)
-struct PokemonData: Decodable {
+struct PokemonDTO: Decodable {
     let id: Int
     let name: String
     let base_experience: Int?
@@ -88,3 +88,13 @@ struct OfficialArtwork: Decodable{
     let front_default: String?
     let front_shiny: String?
 }
+
+//struct OfficialArtwork: Decodable {
+//    let frontDefault: String?
+//    let frontShiny: String?
+//    
+//    enum CodingKeys: String, CodingKey {
+//        case frontDefault = "front_default"
+//        case frontShiny = "front_shiny"
+//    }
+//}

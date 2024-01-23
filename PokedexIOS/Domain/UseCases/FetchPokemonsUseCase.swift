@@ -12,7 +12,7 @@ protocol FetchPokemonsUseCase {
     func fetchPokemonList() -> AnyPublisher<PokemonListModel?, Never>
     func fetchPokemonList(url: String?) -> AnyPublisher<PokemonListModel?, Never>
     func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never>
-    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveModel?, Never>
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error>
 }
 
 extension FetchPokemonsUseCase {
@@ -31,7 +31,7 @@ class DefaultFetchPokemonsUseCase {
 
 extension DefaultFetchPokemonsUseCase: FetchPokemonsUseCase {
     
-    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveModel?, Never> {
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error> {
         pokemonRepository.fetchPokemonMove(urlString: urlString)
     }
     

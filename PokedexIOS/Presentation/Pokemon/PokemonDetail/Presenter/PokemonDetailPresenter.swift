@@ -58,7 +58,6 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
     
     
     func isFavourite(pokemonId: Int) {
-        let isFavourite = false
         let favouritePokemons = fetchFavouritesPokemonsUseCase.fetchFavouritesPokemons()
         switch favouritePokemons {
         case .success(let pokemons):

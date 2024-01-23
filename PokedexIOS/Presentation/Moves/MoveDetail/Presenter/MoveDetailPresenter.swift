@@ -10,13 +10,13 @@ import UIKit
 import Combine
 
 protocol MoveDetailViewDelegate {
-    func didUpdatePokemonMove(moveModel: MoveModel)
+    func didUpdatePokemonMove(moveDTO: MoveDTO)
     func showData(moveData: [String : String], levelGames: NSMutableAttributedString)
 }
 
 protocol MoveDetailPresenter {
     var delegate: MoveDetailViewDelegate? { get set }
-    func showData(moveModel: MoveModel, levelsMove: PokemonModel.Move?)
+    func showData(moveDTO: MoveDTO, levelsMove: PokemonModel.Move?)
     func getMoveDetail(moveName: String?)
 }
 
@@ -33,11 +33,11 @@ class DefaultMoveDetailPresenter {
 }
 
 extension DefaultMoveDetailPresenter: MoveDetailPresenter {
-    func showData(moveModel: MoveModel, levelsMove: PokemonModel.Move?) {
+    func showData(moveDTO: MoveDTO, levelsMove: PokemonModel.Move?) {
         var result: [String : String] = [:]
         if let levelsMove = levelsMove {
-            result["name"] = (moveModel.name).replacingOccurrences(of: "-", with: " ").uppercased()
-            switch moveModel.damageClass {
+            result["name"] = (moveDTO.name).replacingOccurrences(of: "-", with: " ").uppercased()
+            switch moveDTO.damageClass.name {
             case "physical":
                 result["damageClass"] = Constants.Images.PHYSICAL_MOVE
             case "special":
@@ -45,13 +45,13 @@ extension DefaultMoveDetailPresenter: MoveDetailPresenter {
             default:
                 result["damageClass"] = Constants.Images.STATUS_MOVE
             }
-            result["moveType"] = moveModel.moveType
-            result["description"] = moveModel.effect.replacingOccurrences(of: "$effect_chance", with: "\(moveModel.effectChance ?? -1)")
-            result["target"] = moveModel.target.replacingOccurrences(of: "-", with: " ")
-            result["power"] = "\(moveModel.power ?? 0)"
-            result["pp"] = "\(moveModel.pp)"
-            result["priority"] = "\(moveModel.priority)"
-            result["accuracy"] = "\(moveModel.accuracy ?? 0)"
+            result["moveType"] = moveDTO.type.name
+            result["description"] = moveDTO.effectEntries[0].effect.replacingOccurrences(of: "$effect_chance", with: "\(moveDTO.effectChance ?? -1)")
+            result["target"] = moveDTO.target.name.replacingOccurrences(of: "-", with: " ")
+            result["power"] = "\(moveDTO.power ?? 0)"
+            result["pp"] = "\(moveDTO.pp)"
+            result["priority"] = "\(moveDTO.priority)"
+            result["accuracy"] = "\(moveDTO.accuracy ?? 0)"
             var games: [Int : [String]] = [:]
             for move in levelsMove.moveVersionDetails{
                 if games.keys.contains(move.level){
@@ -76,12 +76,16 @@ extension DefaultMoveDetailPresenter: MoveDetailPresenter {
     
     func getMoveDetail(moveName: String?) {
         if let moveName = moveName {
-            //            apiHelper.fetchMoveDetail(moveName: moveName)
             fetchPokemonUseCase.fetchPokemonMove(urlString: moveName)
-                .sink { moveModel in
-                    if let moveModel = moveModel {
-                        self.delegate?.didUpdatePokemonMove(moveModel: moveModel)
+                .sink { completion in
+                    switch completion {
+                    case .finished:
+                        print("Error decoding pokemon's Move: \(moveName)")
+                    case .failure(let error):
+                        print("Error decoding pokemon's move ',\(moveName)' \(error.localizedDescription)")
                     }
+                } receiveValue: { moveDTO in
+                    self.delegate?.didUpdatePokemonMove(moveDTO: moveDTO)
                 }
                 .store(in: &subscriptions)
             

@@ -26,7 +26,7 @@ extension PokemonListModel: ModelType {
     init(data: Data) {
         let decoder = JSONDecoder()
         do{
-            let decodeData = try decoder.decode(PokemonListData.self, from: data)
+            let decodeData = try decoder.decode(PokemonListDTO.self, from: data)
             self.nextURL = decodeData.next ?? ""
             self.previousURL = decodeData.previous ?? ""
             self.pokemons = []

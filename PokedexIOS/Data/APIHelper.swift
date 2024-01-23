@@ -20,7 +20,7 @@ enum NetError: Error {
 protocol APIHelper {
     func fetchPokemonList(url: String)  -> AnyPublisher<PokemonListModel?, Never>
     func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never>
-    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveModel?, Never>
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error>
     func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void)
 }
 
@@ -39,6 +39,20 @@ struct DefaultAPIHelper {
             .replaceError(with: nil)
             .eraseToAnyPublisher()
     }
+    
+    func performRequest2<T: Decodable>(urlString: String) -> AnyPublisher<T, Error> {
+            guard let url = URL(string: urlString) else {
+                fatalError("Error con URL")
+            }
+            
+            return URLSession(configuration: .default)
+                .dataTaskPublisher(for: url)
+                .map({ data, response in
+                    return data
+                })
+                .decode(type: T.self, decoder: JSONDecoder())
+                .eraseToAnyPublisher()
+        }
 }
 
 extension DefaultAPIHelper: APIHelper {
@@ -51,8 +65,8 @@ extension DefaultAPIHelper: APIHelper {
         performRequest(urlString: "\(Constants.PokemonAPI.URL_POKEMON_DETAIL)\(pokemonId)")
     }
     
-    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveModel?, Never> {
-        performRequest(urlString: "\(Constants.PokemonAPI.URL_POKEMON_MOVE)\(urlString)")
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error> {
+        performRequest2(urlString: "\(Constants.PokemonAPI.URL_POKEMON_MOVE)\(urlString)")
     }
     
     func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {

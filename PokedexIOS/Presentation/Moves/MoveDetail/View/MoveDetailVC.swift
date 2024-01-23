@@ -28,7 +28,6 @@ class MoveDetailVC: UIViewController {
     @IBOutlet private weak var accuracyCILable: UILabel!
     @IBOutlet private weak var learnedAtCILable: UILabel!
     
-    private var moveModel: MoveModel?
     private var levelsMove: PokemonModel.Move?
     private var effectChance = 0
     private var moveName: String?
@@ -80,10 +79,10 @@ class MoveDetailVC: UIViewController {
         learnedAtCILable.text = learnedAtString
     }
     
-    private func showData(moveModel: MoveModel){
+    private func showData(moveDTO: MoveDTO){
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            presenter.showData(moveModel: moveModel, levelsMove: levelsMove)
+            presenter.showData(moveDTO: moveDTO, levelsMove: levelsMove)
         }
     }
 }
@@ -102,7 +101,7 @@ extension MoveDetailVC: MoveDetailViewDelegate {
         self.levelGamesTextView.attributedText = levelGames
     }
     
-    func didUpdatePokemonMove(moveModel: MoveModel) {
-        showData(moveModel: moveModel)
+    func didUpdatePokemonMove(moveDTO: MoveDTO) {
+        showData(moveDTO: moveDTO)
     }
 }

@@ -45,7 +45,7 @@ extension PokemonModel: ModelType {
         
         let decoder = JSONDecoder()
         do {
-            let decodeData = try decoder.decode(PokemonData.self, from: data)
+            let decodeData = try decoder.decode(PokemonDTO.self, from: data)
             self.pokemonId = decodeData.id
             self.pokemonName = decodeData.name
             if let baseExperienceContent = decodeData.base_experience { //some Pokemons doesnt have base experience
