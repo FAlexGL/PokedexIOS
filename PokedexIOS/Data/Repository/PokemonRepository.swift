@@ -13,6 +13,7 @@ protocol PokemonRepository {
     func fetchPokemonList(url: String) -> AnyPublisher<PokemonListModel?, Never>
     func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never>
     func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveModel?, Never>
+    func updateFavourite(favouritePokemon: FavouritePokemon) -> Bool
 }
 
 class DefaultPokemonRepository {
@@ -41,5 +42,8 @@ extension DefaultPokemonRepository: PokemonRepository {
     
     func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveModel?, Never> {
         apiDataSource.fetchPokemonMove(urlString: urlString)
+    }
+    func updateFavourite(favouritePokemon: FavouritePokemon) -> Bool {
+        dbDataSource.updateFavourite(favouritePokemon: favouritePokemon)
     }
 }

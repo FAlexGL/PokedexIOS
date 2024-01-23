@@ -34,7 +34,7 @@ extension PresentationDependency where Self: DefaultAppDependency {
     }
     
     func resolve(coordinator: PokemonCoordinator) -> PokemonListPresenter {
-        DefaultPokemonListPresenter(coordinator: coordinator, fetchPokemonsUseCase: resolve(), fetchFavouritesPokemonsUseCase: resolve())
+        DefaultPokemonListPresenter(coordinator: coordinator, fetchPokemonsUseCase: resolve(), fetchFavouritesPokemonsUseCase: resolve(), updateFavouritePokemonsUseCase: resolve())
     }
     
     func resolve(coordinator: PokemonCoordinator) -> PokemonDetailVC {
@@ -42,7 +42,7 @@ extension PresentationDependency where Self: DefaultAppDependency {
     }
     
     func resolve(coordinator: PokemonCoordinator) -> PokemonDetailPresenter {
-        DefaultPokemonDetailPresenter(apiHelper: resolve(), dbHelper: resolve(), coordinator: coordinator, fetchPokemonsUseCase: resolve())
+        DefaultPokemonDetailPresenter(apiHelper: resolve(), coordinator: coordinator, fetchPokemonsUseCase: resolve(), updateFavouritePokemonsUseCase: resolve(), fetchFavouritesPokemonsUseCase: resolve())
     }
     
     func resolve(coordinator: MovesCoordinator) -> MovesListVC {

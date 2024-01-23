@@ -17,6 +17,7 @@
 		450F51702B28C41000A53D50 /* ErrorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450F516E2B28C41000A53D50 /* ErrorVC.swift */; };
 		452B46812B3310900030A2B1 /* MovesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B46802B3310900030A2B1 /* MovesCoordinator.swift */; };
 		454FCA012B2AE81400575F87 /* MoveDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454FC9FF2B2AE81400575F87 /* MoveDetailVC.swift */; };
+		45676E572B5FB6A60000DA88 /* UpdateFavouritePokemonsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45676E562B5FB6A60000DA88 /* UpdateFavouritePokemonsUseCase.swift */; };
 		456A01912B4E980A00F40C48 /* PokemonDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456A01902B4E980A00F40C48 /* PokemonDetailPresenter.swift */; };
 		4585B3FF2B274CF9004D6B3B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4585B3FE2B274CF9004D6B3B /* AppDelegate.swift */; };
 		4585B4012B274CF9004D6B3B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4585B4002B274CF9004D6B3B /* SceneDelegate.swift */; };
@@ -83,6 +84,7 @@
 		450F516E2B28C41000A53D50 /* ErrorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorVC.swift; sourceTree = "<group>"; };
 		452B46802B3310900030A2B1 /* MovesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovesCoordinator.swift; sourceTree = "<group>"; };
 		454FC9FF2B2AE81400575F87 /* MoveDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveDetailVC.swift; sourceTree = "<group>"; };
+		45676E562B5FB6A60000DA88 /* UpdateFavouritePokemonsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFavouritePokemonsUseCase.swift; sourceTree = "<group>"; };
 		456A01902B4E980A00F40C48 /* PokemonDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonDetailPresenter.swift; sourceTree = "<group>"; };
 		4585B3FB2B274CF9004D6B3B /* PokedexIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PokedexIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4585B3FE2B274CF9004D6B3B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -195,6 +197,16 @@
 				45CCCE862B31C95F00109FFF /* PokemonDetailVC.xib */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		45676E582B5FB6AB0000DA88 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				ECFB90652B5567E800AA741D /* FetchPokemonsUseCase.swift */,
+				ECFB90672B556B4E00AA741D /* FetchFavouritesPokemonsUseCase.swift */,
+				45676E562B5FB6A60000DA88 /* UpdateFavouritePokemonsUseCase.swift */,
+			);
+			path = UseCases;
 			sourceTree = "<group>";
 		};
 		456A018F2B4E96CF00F40C48 /* Presenter */ = {
@@ -318,9 +330,9 @@
 		45B2A1CC2B4C0ED5003A9D75 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				45BAF5282B2C6CEA0043A95E /* MoveModel.swift */,
 				45F1C9002B275F46006AAD3C /* PokemonListModel.swift */,
 				450F51632B285FB400A53D50 /* PokemonModel.swift */,
+				45BAF5282B2C6CEA0043A95E /* MoveModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -477,8 +489,7 @@
 			isa = PBXGroup;
 			children = (
 				45B2A1CC2B4C0ED5003A9D75 /* Model */,
-				ECFB90652B5567E800AA741D /* FetchPokemonsUseCase.swift */,
-				ECFB90672B556B4E00AA741D /* FetchFavouritesPokemonsUseCase.swift */,
+				45676E582B5FB6AB0000DA88 /* UseCases */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -650,6 +661,7 @@
 				4585C4312B2A0BC8007483A1 /* MovesListVC.swift in Sources */,
 				45F1C9012B275F46006AAD3C /* PokemonListModel.swift in Sources */,
 				45CCCE8D2B31F87600109FFF /* PokemonCoordinator.swift in Sources */,
+				45676E572B5FB6A60000DA88 /* UpdateFavouritePokemonsUseCase.swift in Sources */,
 				456A01912B4E980A00F40C48 /* PokemonDetailPresenter.swift in Sources */,
 				ECED3CC82B4C6E7B0041579D /* DataDependency.swift in Sources */,
 				450F516B2B287C9E00A53D50 /* DBHelper.swift in Sources */,

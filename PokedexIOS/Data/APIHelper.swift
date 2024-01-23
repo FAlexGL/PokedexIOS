@@ -13,6 +13,10 @@ protocol ModelType {
     init(data: Data)
 }
 
+enum NetError: Error {
+    case badUrl
+}
+
 protocol APIHelper {
     func fetchPokemonList(url: String)  -> AnyPublisher<PokemonListModel?, Never>
     func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never>
@@ -35,7 +39,6 @@ struct DefaultAPIHelper {
             .replaceError(with: nil)
             .eraseToAnyPublisher()
     }
-    
 }
 
 extension DefaultAPIHelper: APIHelper {

@@ -13,7 +13,7 @@ protocol PokemonListViewDelegate {
     func didUpdatePokemonList(pokemonListModel: PokemonListModel)
     func favouriteUpdated(pokemonID: Int, isFavourite: Bool)
     func favouriteLoaded(pokemons: [FavouritePokemon])
-    func favouriteChanged(error: Bool, message: String, indexPath: IndexPath)
+    func favouriteChanged(result: Bool, messageError: String, indexPath: IndexPath)
     func didFailWithError(error: Error)
 }
 
@@ -35,11 +35,13 @@ class DefaultPokemonListPresenter {
     private let coordinator: PokemonCoordinator
     private let fetchPokemonsUseCase: FetchPokemonsUseCase
     private let fetchFavouritesPokemonsUseCase: FetchFavouritesPokemonsUseCase
+    private let updateFavouritePokemonsUseCase: UpdateFavouritePokemonsUseCase
     
-    init(coordinator: PokemonCoordinator, fetchPokemonsUseCase: FetchPokemonsUseCase, fetchFavouritesPokemonsUseCase: FetchFavouritesPokemonsUseCase) {
+    init(coordinator: PokemonCoordinator, fetchPokemonsUseCase: FetchPokemonsUseCase, fetchFavouritesPokemonsUseCase: FetchFavouritesPokemonsUseCase, updateFavouritePokemonsUseCase: UpdateFavouritePokemonsUseCase) {
         self.coordinator = coordinator
         self.fetchPokemonsUseCase = fetchPokemonsUseCase
         self.fetchFavouritesPokemonsUseCase = fetchFavouritesPokemonsUseCase
+        self.updateFavouritePokemonsUseCase = updateFavouritePokemonsUseCase
     }
     
 }
@@ -71,9 +73,9 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
     func willDisplay(showFavouritesButtonTitle: String?, totalRows: Int, indexPath: IndexPath, url: String) {
         if showFavouritesButtonTitle != NSLocalizedString("ShowAll", comment: "") {
             if indexPath.row == totalRows - 1 && url != "" {
-
+                
                 subscriptions = []
-
+                
                 fetchPokemonsUseCase.fetchPokemonList(url: url)
                     .sink { pokemonListModel in
                         if let pokemonListModel = pokemonListModel {
@@ -104,21 +106,10 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
     }
     
     func trailingSwipeActionsConfigurationForRowAt(pokemonId: Int, pokemonName: String, indexPath: IndexPath) {
-        //        var message = ""
-        //        var error = false
-        //        let isFavourite = dbHelper.isFavourite(pokemonId: pokemonId)
-        //        if isFavourite {
-        //            if !isFavourite(pokemonId: pokemonId) {
-        //                message = "Error deletting favourite, try again."
-        //                error = true
-        //            }
-        //        } else {
-        //            if !dbHelper.saveFavourite(favouritePokemon: FavouritePokemon(pokemonId: pokemonId, pokemonName: pokemonName)) {
-        //                message = "Error adding favourite Pokemon, try again"
-        //                error = true
-        //            }
-        //        }
-        //        delegate?.favouriteChanged(error: error, message: message, indexPath: indexPath)
+        let favouritePokemon = FavouritePokemon(pokemonId: pokemonId, pokemonName: pokemonName)
+        let result = updateFavouritePokemonsUseCase.updateFavourite(favouritePokemon: favouritePokemon)
+        
+        delegate?.favouriteChanged(result: result, messageError: "Error updating favourite", indexPath: indexPath)
     }
     
     func favouriteButtonTapped(showFavouritesButtonTitle: String?) -> String? {

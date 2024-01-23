@@ -19,4 +19,8 @@ extension DomainDependency where Self: DefaultAppDependency {
     func resolve() -> FetchFavouritesPokemonsUseCase {
         DefaultFetchFavouritesPokemonsUseCase(pokemonRepository: resolve())
     }
+    
+    func resolve() -> UpdateFavouritePokemonsUseCase {
+        DefaultUpdateFavouritePokemonsUseCase(pokemonRepository: resolve())
+    }
 }

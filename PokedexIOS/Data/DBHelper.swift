@@ -9,11 +9,10 @@ import Foundation
 import RealmSwift
 
 protocol DBHelper {
-    func saveFavourite(favouritePokemon: FavouritePokemon) -> Bool
     func isFavourite(pokemonId: Int) -> Bool
-    func deleteFavourite(pokemonId: Int)  -> Bool
     func fetchFavourites() -> [FavouritePokemon]
     func fetchFavouriteById(pokemonId: Int) -> FavouritePokemon?
+    func updateFavourite(favouritePokemon: FavouritePokemon) -> Bool
 }
 
 class DefaultDBHelper {
@@ -33,18 +32,11 @@ class DefaultDBHelper {
 
 extension DefaultDBHelper: DBHelper {
     
-    func saveFavourite(favouritePokemon: FavouritePokemon) -> Bool{
-        do {
-            if let realm = obtainRealm(){
-                try realm.write {
-                    realm.add(favouritePokemon)
-                    print("Favourite saved.")
-                }
-            }
-            return true
-        } catch {
-            print("Error traying save favourite Pokemon: \(error)")
-            return false
+    func updateFavourite(favouritePokemon: FavouritePokemon) -> Bool {
+        if isFavourite(pokemonId: favouritePokemon.pokemonId) {
+            deleteFavourite(pokemonId: favouritePokemon.pokemonId)
+        } else {
+            saveFavourite(favouritePokemon: favouritePokemon)
         }
     }
     
@@ -53,23 +45,6 @@ extension DefaultDBHelper: DBHelper {
         if let _ = realm?.object(ofType: FavouritePokemon.self, forPrimaryKey: pokemonId){
             return true
         } else {
-            return false
-        }
-    }
-    
-    func deleteFavourite(pokemonId: Int) -> Bool {
-        do {
-            if let realm = obtainRealm(){
-                if let pokemonToDelete = realm.object(ofType: FavouritePokemon.self, forPrimaryKey: pokemonId){
-                    try realm.write{
-                        realm.delete(pokemonToDelete)
-                        print("Favourite deleted")
-                    }
-                }
-            }
-            return true
-        } catch {
-            print("Error trying to delete favourite Pokemon: \(error)")
             return false
         }
     }
@@ -88,6 +63,38 @@ extension DefaultDBHelper: DBHelper {
             return pokemon
         } else {
             return nil
+        }
+    }
+    
+    private func saveFavourite(favouritePokemon: FavouritePokemon) -> Bool{
+        do {
+            if let realm = obtainRealm(){
+                try realm.write {
+                    realm.add(favouritePokemon)
+                    print("Favourite saved.")
+                }
+            }
+            return true
+        } catch {
+            print("Error traying save favourite Pokemon: \(error)")
+            return false
+        }
+    }
+    
+    private func deleteFavourite(pokemonId: Int) -> Bool {
+        do {
+            if let realm = obtainRealm(){
+                if let pokemonToDelete = realm.object(ofType: FavouritePokemon.self, forPrimaryKey: pokemonId){
+                    try realm.write{
+                        realm.delete(pokemonToDelete)
+                        print("Favourite deleted")
+                    }
+                }
+            }
+            return true
+        } catch {
+            print("Error trying to delete favourite Pokemon: \(error)")
+            return false
         }
     }
 }

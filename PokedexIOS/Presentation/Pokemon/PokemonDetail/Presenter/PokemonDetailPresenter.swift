@@ -37,14 +37,16 @@ class DefaultPokemonDetailPresenter {
     private var subscriptions: [AnyCancellable] = []
     private var coordinator: PokemonCoordinator
     private var apiHelper: APIHelper
-    private var dbHelper: DBHelper
     private let fetchPokemonsUseCase: FetchPokemonsUseCase
+    private let updateFavouritePokemonsUseCase: UpdateFavouritePokemonsUseCase
+    private let fetchFavouritesPokemonsUseCase: FetchFavouritesPokemonsUseCase
     
-    init(apiHelper: APIHelper, dbHelper: DBHelper, coordinator: PokemonCoordinator, fetchPokemonsUseCase: FetchPokemonsUseCase) {
+    init(apiHelper: APIHelper, coordinator: PokemonCoordinator, fetchPokemonsUseCase: FetchPokemonsUseCase, updateFavouritePokemonsUseCase: UpdateFavouritePokemonsUseCase, fetchFavouritesPokemonsUseCase: FetchFavouritesPokemonsUseCase) {
         self.coordinator = coordinator
         self.apiHelper = apiHelper
-        self.dbHelper = dbHelper
         self.fetchPokemonsUseCase = fetchPokemonsUseCase
+        self.updateFavouritePokemonsUseCase = updateFavouritePokemonsUseCase
+        self.fetchFavouritesPokemonsUseCase = fetchFavouritesPokemonsUseCase
     }
 }
 
@@ -56,8 +58,17 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
     
     
     func isFavourite(pokemonId: Int) {
-        let isFavourite = dbHelper.isFavourite(pokemonId: pokemonId)
-        delegate?.setSwitchStatus(switchStatus: isFavourite)
+        let isFavourite = false
+        let favouritePokemons = fetchFavouritesPokemonsUseCase.fetchFavouritesPokemons()
+        switch favouritePokemons {
+        case .success(let pokemons):
+            print(pokemons)
+            if pokemons.contains(where: { $0.pokemonId == pokemonId }) {
+                delegate?.setSwitchStatus(switchStatus: true)
+            }
+        case .failure(_):
+            print("Error searching favourite Pokemons")
+        }
     }
     
     func getSprites(pokemonSprites: PokemonModel.Sprites) {
@@ -173,13 +184,8 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
     
     func switchChanged(_ sender: UISwitch, pokemonModel: PokemonModel?) {
         if let pokemonModel = pokemonModel {
-            // Control error
-            if sender.isOn{
-                let favouritePokemon = FavouritePokemon(pokemonId: pokemonModel.pokemonId, pokemonName: pokemonModel.pokemonName)
-                _ = dbHelper.saveFavourite(favouritePokemon: favouritePokemon)
-            } else {
-                _ = dbHelper.deleteFavourite(pokemonId: pokemonModel.pokemonId)
-            }
+            let favouritePokemon = FavouritePokemon(pokemonId: pokemonModel.pokemonId, pokemonName: pokemonModel.pokemonName)
+            _ = updateFavouritePokemonsUseCase.updateFavourite(favouritePokemon: favouritePokemon)
             delegate?.setFavourite(isFavourite: sender.isOn)
         }
     }

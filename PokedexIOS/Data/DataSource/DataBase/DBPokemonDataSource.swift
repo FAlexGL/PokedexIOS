@@ -9,6 +9,7 @@ import Foundation
 
 protocol DBPokemonDataSource {
     func fetchFavouritesPokemons() -> [FavouritePokemon]
+    func updateFavourite(favouritePokemon: FavouritePokemon) -> Bool
 }
 
 class DefaultDBPokemonDataSource {
@@ -24,6 +25,9 @@ extension DefaultDBPokemonDataSource: DBPokemonDataSource {
     
     func fetchFavouritesPokemons() -> [FavouritePokemon] {
         dbHelper.fetchFavourites()
+    }
+    func updateFavourite(favouritePokemon: FavouritePokemon) -> Bool {
+        dbHelper.updateFavourite(favouritePokemon: favouritePokemon)
     }
 
 }
