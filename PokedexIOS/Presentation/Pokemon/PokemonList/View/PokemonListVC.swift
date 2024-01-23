@@ -13,7 +13,7 @@ class PokemonListVC: UIViewController {
     
     private var pokemonsFetched: [String] = []
     private var favouritePokemonsFetched: [FavouritePokemon] = []
-    private var pokemonListModel: PokemonListModel?
+    private var pokemonListDTO: PokemonListDTO?
     private var url = Constants.PokemonAPI.URL_POKEMON_LIST
     private var positionOfFavouritePokemonSelected: IndexPath?
     private var presenter: PokemonListPresenter
@@ -82,9 +82,9 @@ class PokemonListVC: UIViewController {
     }
     
     private func loadPokemonList() {
-        if let pokemonList = self.pokemonListModel {
-            for pokemon in pokemonList.pokemons {
-                self.pokemonsFetched.append(pokemon)
+        if let pokemonListDTO = self.pokemonListDTO {
+            for pokemon in pokemonListDTO.results {
+                self.pokemonsFetched.append(pokemon.name)
             }
         }
         DispatchQueue.main.async { [weak self] in
@@ -142,9 +142,9 @@ extension PokemonListVC: UITableViewDelegate{
 
 extension PokemonListVC: PokemonListViewDelegate {
     
-    func didUpdatePokemonList(pokemonListModel: PokemonListModel) {
-        self.pokemonListModel = pokemonListModel
-        self.url = pokemonListModel.nextURL
+    func didUpdatePokemonList(pokemonListDTO: PokemonListDTO) {
+        self.pokemonListDTO = pokemonListDTO
+        self.url = pokemonListDTO.next ?? ""
         self.loadPokemonList()
     }
     

@@ -84,11 +84,6 @@ struct Other: Decodable{
     }
 }
 
-struct OfficialArtwork: Decodable{
-    let front_default: String?
-    let front_shiny: String?
-}
-
 //struct OfficialArtwork: Decodable {
 //    let frontDefault: String?
 //    let frontShiny: String?
@@ -98,3 +93,8 @@ struct OfficialArtwork: Decodable{
 //        case frontShiny = "front_shiny"
 //    }
 //}
+
+struct OfficialArtwork: Decodable{
+    let front_default: String?
+    let front_shiny: String?
+}

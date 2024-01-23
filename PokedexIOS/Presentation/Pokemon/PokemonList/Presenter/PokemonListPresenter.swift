@@ -10,7 +10,7 @@ import UIKit
 import Combine
 
 protocol PokemonListViewDelegate {
-    func didUpdatePokemonList(pokemonListModel: PokemonListModel)
+    func didUpdatePokemonList(pokemonListDTO: PokemonListDTO)
     func favouriteUpdated(pokemonID: Int, isFavourite: Bool)
     func favouriteLoaded(pokemons: [FavouritePokemon])
     func favouriteChanged(result: Bool, messageError: String, indexPath: IndexPath)
@@ -62,11 +62,16 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
     
     func viewDidLoad() {
         fetchPokemonsUseCase.fetchPokemonList()
-            .sink { pokemonListModel in
-                if let pokemonListModel = pokemonListModel {
-                    self.delegate?.didUpdatePokemonList(pokemonListModel: pokemonListModel)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("New Pokemons fetched")
+                case .failure(let error):
+                    print("Fetching new Pokemons error: \(error.localizedDescription)")
                 }
-            }
+            }, receiveValue: { pokemonListDTO in
+                self.delegate?.didUpdatePokemonList(pokemonListDTO: pokemonListDTO)
+            })
             .store(in: &subscriptions)
     }
     
@@ -77,11 +82,16 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
                 subscriptions = []
                 
                 fetchPokemonsUseCase.fetchPokemonList(url: url)
-                    .sink { pokemonListModel in
-                        if let pokemonListModel = pokemonListModel {
-                            self.delegate?.didUpdatePokemonList(pokemonListModel: pokemonListModel)
+                    .sink(receiveCompletion: { completion in
+                        switch completion {
+                        case .finished:
+                            print("New Pokemons fetched")
+                        case .failure(let error):
+                            print("Fetching new Pokemons error: \(error.localizedDescription)")
                         }
-                    }
+                    }, receiveValue: { pokemonListDTO in
+                        self.delegate?.didUpdatePokemonList(pokemonListDTO: pokemonListDTO)
+                    })
                     .store(in: &subscriptions)
             }
         }

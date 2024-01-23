@@ -9,14 +9,14 @@ import Foundation
 import Combine
 
 protocol FetchPokemonsUseCase {
-    func fetchPokemonList() -> AnyPublisher<PokemonListModel?, Never>
-    func fetchPokemonList(url: String?) -> AnyPublisher<PokemonListModel?, Never>
+    func fetchPokemonList() -> AnyPublisher<PokemonListDTO, Error>
+    func fetchPokemonList(url: String?) -> AnyPublisher<PokemonListDTO, Error>
     func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never>
     func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error>
 }
 
 extension FetchPokemonsUseCase {
-    func fetchPokemonList() -> AnyPublisher<PokemonListModel?, Never> {
+    func fetchPokemonList() -> AnyPublisher<PokemonListDTO, Error> {
         fetchPokemonList(url: nil)
     }
 }
@@ -35,7 +35,7 @@ extension DefaultFetchPokemonsUseCase: FetchPokemonsUseCase {
         pokemonRepository.fetchPokemonMove(urlString: urlString)
     }
     
-    func fetchPokemonList(url: String?) -> AnyPublisher<PokemonListModel?, Never> {
+    func fetchPokemonList(url: String?) -> AnyPublisher<PokemonListDTO, Error> {
         if let url = url {
             pokemonRepository.fetchPokemonList(url: url)
         } else {

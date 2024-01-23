@@ -10,7 +10,7 @@ import Combine
 
 protocol PokemonRepository {
     func fetchFavouritesPokemons() -> [FavouritePokemon]
-    func fetchPokemonList(url: String) -> AnyPublisher<PokemonListModel?, Never>
+    func fetchPokemonList(url: String) -> AnyPublisher<PokemonListDTO, Error>
     func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never>
     func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error>
     func updateFavourite(favouritePokemon: FavouritePokemon) -> Bool
@@ -32,7 +32,7 @@ extension DefaultPokemonRepository: PokemonRepository {
         dbDataSource.fetchFavouritesPokemons()
     }
     
-    func fetchPokemonList(url: String) -> AnyPublisher<PokemonListModel?, Never> {
+    func fetchPokemonList(url: String) -> AnyPublisher<PokemonListDTO, Error> {
         apiDataSource.fetchPokemonList(url: url)
     }
     
