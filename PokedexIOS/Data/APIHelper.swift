@@ -19,7 +19,7 @@ enum NetError: Error {
 
 protocol APIHelper {
     func fetchPokemonList(url: String)  -> AnyPublisher<PokemonListDTO, Error>
-    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never>
+    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonDTO, Error>
     func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error>
     func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void)
 }
@@ -28,19 +28,7 @@ struct DefaultAPIHelper {
     
     static let shared = DefaultAPIHelper()
     
-    private func performRequest<T: ModelType>(urlString: String) -> AnyPublisher<T?, Never> {
-        guard let url = URL(string: urlString) else {
-            return Just(nil).eraseToAnyPublisher()
-        }
-        
-        return URLSession(configuration: .default)
-            .dataTaskPublisher(for: url)
-            .map { T.init(data: $0.data) }
-            .replaceError(with: nil)
-            .eraseToAnyPublisher()
-    }
-    
-    func performRequest2<T: Decodable>(urlString: String) -> AnyPublisher<T, Error> {
+    func performRequest<T: Decodable>(urlString: String) -> AnyPublisher<T, Error> {
             guard let url = URL(string: urlString) else {
                 fatalError("converting URL error")
             }
@@ -58,15 +46,15 @@ struct DefaultAPIHelper {
 extension DefaultAPIHelper: APIHelper {
     
     func fetchPokemonList(url: String)  -> AnyPublisher<PokemonListDTO, Error> {
-        performRequest2(urlString: url)
+        performRequest(urlString: url)
     }
     
-    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never> {
+    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonDTO, Error> {
         performRequest(urlString: "\(Constants.PokemonAPI.URL_POKEMON_DETAIL)\(pokemonId)")
     }
     
     func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error> {
-        performRequest2(urlString: "\(Constants.PokemonAPI.URL_POKEMON_MOVE)\(urlString)")
+        performRequest(urlString: "\(Constants.PokemonAPI.URL_POKEMON_MOVE)\(urlString)")
     }
     
     func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {

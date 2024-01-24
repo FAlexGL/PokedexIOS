@@ -10,7 +10,7 @@ import UIKit
 import Combine
 
 protocol PokemonDetailViewDelegate: AnyObject {
-    func didUpdatePokemonDetail(pokemonModel: PokemonModel)
+    func didUpdatePokemonDetail(pokemonDTO: PokemonDTO)
     func didFailWithError(error: Error)
     func showImage(image: UIImage)
     func didUpdateSprites(spritesArray: [String])
@@ -25,9 +25,9 @@ protocol PokemonDetailPresenter {
     func movesButtonPushed(pokemonModel: PokemonModel)
     func getPokemonDetail(pokemonId: Int)
     func downloadImage(urlString: String)
-    func getSprites(pokemonSprites: PokemonModel.Sprites)
+    func getSprites(pokemonSprites: Sprites)
     func getTypesValues(types: [String])
-    func switchChanged(_ sender: UISwitch, pokemonModel: PokemonModel?)
+    func switchChanged(_ sender: UISwitch, pokemonDTO: PokemonDTO?)
     func isFavourite(pokemonId: Int)
     func imageTapped(_ sender: UITapGestureRecognizer, sprites: [String], spritePosition: Int)
 }
@@ -52,6 +52,7 @@ class DefaultPokemonDetailPresenter {
 
 //MARK: - ext. PokemonDetailPresenter
 extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
+    
     func movesButtonPushed(pokemonModel: PokemonModel) {
         coordinator.goToPokemonMoves(pokemonModel: pokemonModel)
     }
@@ -69,7 +70,7 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
         }
     }
     
-    func getSprites(pokemonSprites: PokemonModel.Sprites) {
+    func getSprites(pokemonSprites: Sprites) {
         var sprites: [String] = []
         
         sprites.append(pokemonSprites.frontDefault)
@@ -94,10 +95,10 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
         if let frontShinyFemale = pokemonSprites.frontShinyFemale {
             sprites.append(frontShinyFemale)
         }
-        if let officialFront = pokemonSprites.officialFront{
+        if let officialFront = pokemonSprites.other.officialArtwork.frontDefault{
             sprites.append(officialFront)
         }
-        if let officialFrontShiny = pokemonSprites.officialFrontShiny {
+        if let officialFrontShiny = pokemonSprites.other.officialArtwork.frontShiny {
             sprites.append(officialFrontShiny)
         }
         delegate?.didUpdateSprites(spritesArray: sprites)
@@ -169,20 +170,20 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
     
     func getPokemonDetail(pokemonId: Int) {
         fetchPokemonsUseCase.fetchPokemonDetail(pokemonId: pokemonId)
-            .sink { [weak self] pokemonModel in
-                guard let self = self else {return}
-                guard let pokemonModel = pokemonModel else {
-                    print("Error obtaining Pokemon's Details")
-                    return
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("Pokemon's detail fetched")
+                case .failure(_):
+                    print("Error fetching Pokemon's Detail")
                 }
-                self.delegate?.didUpdatePokemonDetail(pokemonModel: pokemonModel)
-            }
+            }, receiveValue: { self.delegate?.didUpdatePokemonDetail(pokemonDTO: $0) })
             .store(in: &subscriptions)
     }
     
-    func switchChanged(_ sender: UISwitch, pokemonModel: PokemonModel?) {
-        if let pokemonModel = pokemonModel {
-            let favouritePokemon = FavouritePokemon(pokemonId: pokemonModel.pokemonId, pokemonName: pokemonModel.pokemonName)
+    func switchChanged(_ sender: UISwitch, pokemonDTO: PokemonDTO?) {
+        if let pokemonDTO = pokemonDTO {
+            let favouritePokemon = FavouritePokemon(pokemonId: pokemonDTO.id, pokemonName: pokemonDTO.name)
             _ = updateFavouritePokemonsUseCase.updateFavourite(favouritePokemon: favouritePokemon)
             delegate?.setFavourite(isFavourite: sender.isOn)
         }

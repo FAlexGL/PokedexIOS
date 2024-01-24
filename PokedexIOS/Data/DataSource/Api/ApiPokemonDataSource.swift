@@ -10,7 +10,7 @@ import Combine
 
 protocol ApiPokemonDataSource {
     func fetchPokemonList(url: String) -> AnyPublisher<PokemonListDTO, Error>
-    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never>
+    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonDTO, Error>
     func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error>
 }
 
@@ -31,7 +31,7 @@ extension DefaultApiPokemonDataSource: ApiPokemonDataSource {
         apiHelper.fetchPokemonList(url: url)
     }
     
-    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never> {
+    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonDTO, Error> {
         apiHelper.fetchPokemonDetail(pokemonId: pokemonId)
     }
     

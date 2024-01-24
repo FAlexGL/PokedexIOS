@@ -61,6 +61,7 @@ class PokemonDetailVC: UIViewController {
     
     private var coordinator: PokemonCoordinator?
     private var pokemonModel: PokemonModel?
+    private var pokemonDTO: PokemonDTO?
     private var isFavourite: Bool?
     private var spritesArray: [String] = []
     private var spriteArrayPosition: Int = -1
@@ -94,7 +95,7 @@ class PokemonDetailVC: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if let isFavourite = isFavourite, let pokemonId = pokemonModel?.pokemonId, isMovingFromParent{
+        if let isFavourite = isFavourite, let pokemonId = pokemonDTO?.id, isMovingFromParent {
             delegate?.favouriteUpdated(pokemonID: pokemonId, isFavourite: isFavourite)
         }
     }
@@ -140,18 +141,39 @@ class PokemonDetailVC: UIViewController {
         
     }
     
-    private func showData(pokemonModel: PokemonModel){
-        print("Accesing to \(pokemonModel.pokemonName)'s data...")
+    private func getStats(pokemonDTO: PokemonDTO) -> [(statName: String, baseStat: Int)]{
+        var stats: [(statName: String, baseStat: Int)] = []
+        for stat in pokemonDTO.stats {
+            let stat = (statName: stat.stat.name, baseStat: stat.baseStat)
+            stats.append(stat)
+        }
+        return stats
+    }
+    
+    private func getTypes(pokemonDTO: PokemonDTO) -> [String] {
+        var types: [String] = []
+        for type in pokemonDTO.types {
+            types.append(type.type.name)
+        }
+        return types
+    }
+    
+    private func showData(pokemonDTO: PokemonDTO){
+        print("Accesing to \(pokemonDTO.name)'s data...")
         spriteArrayPosition = 1
         
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            self.pokemonModel = pokemonModel
-            self.title = "#\(pokemonModel.pokemonId) \((pokemonModel.pokemonName).uppercased())"
-            self.heightLabel.text = "\(pokemonModel.height)"
-            weightLabel.text = "\(pokemonModel.weight)"
-            baseExperienceLabel.text = pokemonModel.baseExperience != -1 ? "\(pokemonModel.baseExperience)" : ""
-            for stat in pokemonModel.stats{
+            self.pokemonDTO = pokemonDTO
+            self.title = "#\(pokemonDTO.id) \((pokemonDTO.name).uppercased())"
+            self.heightLabel.text = "\(pokemonDTO.height)"
+            weightLabel.text = "\(pokemonDTO.weight)"
+            var baseExperience = ""
+            if pokemonDTO.baseExperience != nil {
+                baseExperience = "\(pokemonDTO.baseExperience!)"
+            }
+            baseExperienceLabel.text = baseExperience
+            for stat in getStats(pokemonDTO: pokemonDTO){
                 switch stat.statName {
                 case "hp":
                     hpLabel.text = "\(stat.baseStat)"
@@ -169,16 +191,16 @@ class PokemonDetailVC: UIViewController {
                     print("Unknow stat: \(stat.statName) - \(stat.baseStat)")
                 }
             }
-            presenter.isFavourite(pokemonId: pokemonModel.pokemonId)
-            presenter.downloadImage(urlString: pokemonModel.sprites.frontDefault)
-            presenter.getTypesValues(types: pokemonModel.types)
+            presenter.isFavourite(pokemonId: pokemonDTO.id)
+            presenter.downloadImage(urlString: pokemonDTO.sprites.frontDefault)
+            presenter.getTypesValues(types: getTypes(pokemonDTO: pokemonDTO))
         }
-        presenter.getSprites(pokemonSprites: pokemonModel.sprites)
+        presenter.getSprites(pokemonSprites: pokemonDTO.sprites)
         print("Total sprites: \(spritesArray.count)")
     }
     
     @IBAction private func switchChanged(_ sender: UISwitch) {
-        presenter.switchChanged(sender, pokemonModel: pokemonModel)
+        presenter.switchChanged(sender, pokemonDTO: pokemonDTO)
     }
     
     @IBAction private func movesButtonPushed(_ sender: UIButton) {
@@ -230,8 +252,8 @@ extension PokemonDetailVC: PokemonDetailViewDelegate {
     }
     
     
-    func didUpdatePokemonDetail(pokemonModel: PokemonModel) {
-        showData(pokemonModel: pokemonModel)
+    func didUpdatePokemonDetail(pokemonDTO: PokemonDTO) {
+        showData(pokemonDTO: pokemonDTO)
     }
     
     func didFailWithError(error: Error) {

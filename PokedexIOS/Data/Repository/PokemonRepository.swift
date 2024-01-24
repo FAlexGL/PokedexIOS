@@ -11,7 +11,7 @@ import Combine
 protocol PokemonRepository {
     func fetchFavouritesPokemons() -> [FavouritePokemon]
     func fetchPokemonList(url: String) -> AnyPublisher<PokemonListDTO, Error>
-    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never>
+    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonDTO, Error>
     func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error>
     func updateFavourite(favouritePokemon: FavouritePokemon) -> Bool
 }
@@ -36,7 +36,7 @@ extension DefaultPokemonRepository: PokemonRepository {
         apiDataSource.fetchPokemonList(url: url)
     }
     
-    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never> {
+    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonDTO, Error> {
         apiDataSource.fetchPokemonDetail(pokemonId: pokemonId)
     }
     

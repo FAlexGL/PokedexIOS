@@ -11,7 +11,7 @@ import Combine
 protocol FetchPokemonsUseCase {
     func fetchPokemonList() -> AnyPublisher<PokemonListDTO, Error>
     func fetchPokemonList(url: String?) -> AnyPublisher<PokemonListDTO, Error>
-    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never>
+    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonDTO, Error>
     func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error>
 }
 
@@ -43,7 +43,7 @@ extension DefaultFetchPokemonsUseCase: FetchPokemonsUseCase {
         }
     }
     
-    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonModel?, Never> {
+    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonDTO, Error> {
         pokemonRepository.fetchPokemonDetail(pokemonId: pokemonId)
     }
     
