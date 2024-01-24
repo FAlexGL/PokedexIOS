@@ -8,11 +8,15 @@
 import Foundation
 
 struct Constants {
-    struct PokemonAPI{
+    struct PokemonAPI {
         static let URL_POKEMON_LIST = "https://pokeapi.co/api/v2/pokemon-species/" //it uses pagination
         static let URL_POKEMON_DETAIL = "https://pokeapi.co/api/v2/pokemon/" //add the pokemon's name or id
         static let URL_POKEMON_IMAGE = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" //add [pokemon_id].png
         static let URL_POKEMON_MOVE = "https://pokeapi.co/api/v2/move/" //add move's name
+    }
+    
+    struct MoveLearnMethods {
+        static let LEVEL_METHOD = "level-up"
     }
     
     struct NibNames {

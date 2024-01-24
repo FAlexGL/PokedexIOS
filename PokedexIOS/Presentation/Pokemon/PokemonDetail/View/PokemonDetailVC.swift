@@ -60,7 +60,6 @@ class PokemonDetailVC: UIViewController {
     @IBOutlet private weak var fairyImage: UIImageView!
     
     private var coordinator: PokemonCoordinator?
-    private var pokemonModel: PokemonModel?
     private var pokemonDTO: PokemonDTO?
     private var isFavourite: Bool?
     private var spritesArray: [String] = []
@@ -199,14 +198,38 @@ class PokemonDetailVC: UIViewController {
         print("Total sprites: \(spritesArray.count)")
     }
     
+    private func getLevelMoves(pokemonDTO: PokemonDTO) -> [PokemonMove] {
+        let moves = pokemonDTO.moves
+        var pokemonMoves: [PokemonMove] = []
+        for move in moves {
+            let moveName = move.move.name
+            let moveURL = move.move.url
+            var moveVersionDetails: [(level: Int, game: String)] = []
+            for moveVersion in move.versionGroupDetails {
+                if moveVersion.moveLearnMethod.name == Constants.MoveLearnMethods.LEVEL_METHOD {
+                    moveVersionDetails.append((level: moveVersion.levelLearnedAt, game: moveVersion.versionGroup.name))
+                }
+            }
+            if moveVersionDetails.count > 0 {
+                let pokemonMove = PokemonMove(moveName: moveName, moveURL: moveURL, moves: [Constants.MoveLearnMethods.LEVEL_METHOD : moveVersionDetails])
+                pokemonMoves.append(pokemonMove)
+            }
+        }
+        return pokemonMoves
+    }
+    
     @IBAction private func switchChanged(_ sender: UISwitch) {
         presenter.switchChanged(sender, pokemonDTO: pokemonDTO)
     }
     
     @IBAction private func movesButtonPushed(_ sender: UIButton) {
-        if let pokemonModel = self.pokemonModel {
+        guard let pokemonDTO = pokemonDTO else {
+            return
+        }
+        let pokemonMoves = getLevelMoves(pokemonDTO: pokemonDTO)
+        if pokemonMoves.count > 0 {
             DispatchQueue.main.async {
-                self.presenter.movesButtonPushed(pokemonModel: pokemonModel)
+                self.presenter.movesButtonPushed(pokemonMoves: pokemonMoves)
             }
         }
     }

@@ -16,7 +16,7 @@ protocol MoveDetailViewDelegate {
 
 protocol MoveDetailPresenter {
     var delegate: MoveDetailViewDelegate? { get set }
-    func showData(moveDTO: MoveDTO, levelsMove: PokemonModel.Move?)
+    func showData(moveDTO: MoveDTO, pokemonMove: PokemonMove?)
     func getMoveDetail(moveName: String?)
 }
 
@@ -33,9 +33,9 @@ class DefaultMoveDetailPresenter {
 }
 
 extension DefaultMoveDetailPresenter: MoveDetailPresenter {
-    func showData(moveDTO: MoveDTO, levelsMove: PokemonModel.Move?) {
+    func showData(moveDTO: MoveDTO, pokemonMove: PokemonMove?) {
         var result: [String : String] = [:]
-        if let levelsMove = levelsMove {
+        if let pokemonMove = pokemonMove {
             result["name"] = (moveDTO.name).replacingOccurrences(of: "-", with: " ").uppercased()
             switch moveDTO.damageClass.name {
             case "physical":
@@ -53,13 +53,16 @@ extension DefaultMoveDetailPresenter: MoveDetailPresenter {
             result["priority"] = "\(moveDTO.priority)"
             result["accuracy"] = "\(moveDTO.accuracy ?? 0)"
             var games: [Int : [String]] = [:]
-            for move in levelsMove.moveVersionDetails{
-                if games.keys.contains(move.level){
-                    games[move.level]?.append(move.game.replacingOccurrences(of: "-", with: " "))
-                } else {
-                    games[move.level] = [move.game.replacingOccurrences(of: "-", with: " ")]
+            if let moves = pokemonMove.moves[Constants.MoveLearnMethods.LEVEL_METHOD] {
+                for move in moves {
+                    if games.keys.contains(move.level){
+                        games[move.level]?.append(move.game.replacingOccurrences(of: "-", with: " "))
+                    } else {
+                        games[move.level] = [move.game.replacingOccurrences(of: "-", with: " ")]
+                    }
                 }
             }
+            
             let levelGamesOrdered = games.sorted { $0.key < $1.key}
             let levelGameStringAttribute = NSMutableAttributedString(string: "")
             for levelGames in levelGamesOrdered {
@@ -80,9 +83,9 @@ extension DefaultMoveDetailPresenter: MoveDetailPresenter {
                 .sink { completion in
                     switch completion {
                     case .finished:
-                        print("Error decoding pokemon's Move: \(moveName)")
+                        print("Pokemon's Move: '\(moveName)' fetched")
                     case .failure(let error):
-                        print("Error decoding pokemon's move ',\(moveName)' \(error.localizedDescription)")
+                        print("Error decoding pokemon's move ',\(moveName): ' \(error)")
                     }
                 } receiveValue: { moveDTO in
                     self.delegate?.didUpdatePokemonMove(moveDTO: moveDTO)

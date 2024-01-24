@@ -28,9 +28,9 @@ class MoveDetailVC: UIViewController {
     @IBOutlet private weak var accuracyCILable: UILabel!
     @IBOutlet private weak var learnedAtCILable: UILabel!
     
-    private var levelsMove: PokemonModel.Move?
+    
+    private var pokemonMove: PokemonMove?
     private var effectChance = 0
-    private var moveName: String?
     private var presenter: MoveDetailPresenter
     
     init(presenter: MoveDetailPresenter){
@@ -54,13 +54,12 @@ class MoveDetailVC: UIViewController {
         presenter.delegate = self
     }
     
-    func setMoves(moveName: String, levelsMove: PokemonModel.Move){
-        self.moveName = moveName
-        self.levelsMove = levelsMove
+    func setMoves(moveName: String, pokemonMove: PokemonMove){
+        self.pokemonMove = pokemonMove
     }
     
     private func getMoveDetail(){
-        presenter.getMoveDetail(moveName: moveName)
+        presenter.getMoveDetail(moveName: pokemonMove?.moveName)
     }
     
     private func translateViews(){
@@ -82,7 +81,7 @@ class MoveDetailVC: UIViewController {
     private func showData(moveDTO: MoveDTO){
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            presenter.showData(moveDTO: moveDTO, levelsMove: levelsMove)
+            presenter.showData(moveDTO: moveDTO, pokemonMove: pokemonMove)
         }
     }
 }

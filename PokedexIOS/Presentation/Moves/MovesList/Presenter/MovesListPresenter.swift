@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 protocol MovesListPresenter {
-    func numberOfRowsInSection(pokemonModel: PokemonModel?) -> Int
-    func didSelectRowAt(pokemonModel: PokemonModel?, movePosition: Int)
+    func numberOfRowsInSection(pokemonMoves: [PokemonMove]?) -> Int
+    func didSelectRowAt(pokemonMoves: [PokemonMove]?, movePosition: Int)
     
 }
 
@@ -25,16 +25,17 @@ class DefaultMovesListPresenter {
 }
 
 extension DefaultMovesListPresenter: MovesListPresenter {
-    func numberOfRowsInSection(pokemonModel: PokemonModel?) -> Int {
-        if let pokemonModel = pokemonModel{
-            return pokemonModel.moves.count
+    
+    func numberOfRowsInSection(pokemonMoves: [PokemonMove]?) -> Int {
+        if let pokemonMoves = pokemonMoves{
+            return pokemonMoves.count
         }
         return 0
     }
     
-    func didSelectRowAt(pokemonModel: PokemonModel?, movePosition: Int) {
-        if let pokemonModel = pokemonModel {
-            coordinator.goToMoveDetail(moveName: pokemonModel.moves[movePosition].moveName, levelsMove: pokemonModel.moves[movePosition])
+    func didSelectRowAt(pokemonMoves: [PokemonMove]?, movePosition: Int) {
+        if let pokemonMoves = pokemonMoves {
+            coordinator.goToMoveDetail(moveName: pokemonMoves[movePosition].moveName, pokemonMove: pokemonMoves[movePosition])
         }
     }
 }

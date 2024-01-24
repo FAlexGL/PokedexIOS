@@ -10,7 +10,7 @@ import UIKit
 
 protocol PokemonCoordinator: Coordinator {
     func goToPokemonDetail(pokemonId: Int, delegate: PokemonDetailDelegate)
-    func goToPokemonMoves(pokemonModel: PokemonModel)
+    func goToPokemonMoves(pokemonMoves: [PokemonMove])
 }
 
 class DefaultPokemonCoordinator: PokemonCoordinator {
@@ -35,9 +35,9 @@ class DefaultPokemonCoordinator: PokemonCoordinator {
         navigationController.pushViewController(pokemonDetailVC, animated: true)
     }
     
-    func goToPokemonMoves(pokemonModel: PokemonModel){
+    func goToPokemonMoves(pokemonMoves: [PokemonMove]){
         var movesCoordinator: MovesCoordinator = presentationDependencies.resolve(navigationController: navigationController)
-        movesCoordinator.pokemonModel = pokemonModel
+        movesCoordinator.pokemonMoves = pokemonMoves
         movesCoordinator.start()
     }
 }

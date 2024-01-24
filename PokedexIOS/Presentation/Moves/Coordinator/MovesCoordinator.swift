@@ -9,12 +9,13 @@ import Foundation
 import UIKit
 
 protocol MovesCoordinator: Coordinator {
-    var pokemonModel: PokemonModel? { get set }
-    func goToMoveDetail(moveName: String, levelsMove: PokemonModel.Move)
+    var pokemonMoves: [PokemonMove]? { get set }
+    func goToMoveDetail(moveName: String, pokemonMove: PokemonMove)
 }
 
 class DefaultMovesCoordinator: MovesCoordinator {
-    var pokemonModel: PokemonModel?
+    
+    var pokemonMoves: [PokemonMove]?
     internal var childCoordinator: [Coordinator] = []
     var navigationController: UINavigationController
     private let presentationDependencies: PresentationDependency
@@ -27,15 +28,15 @@ class DefaultMovesCoordinator: MovesCoordinator {
     
     func start() {
         let movesListVC: MovesListVC = presentationDependencies.resolve(coordinator: self)
-        if let pokemonModel = pokemonModel {
-            movesListVC.setPokemonModel(pokemonModel: pokemonModel)
+        if let pokemonMoves = pokemonMoves {
+            movesListVC.setPokemonMoves(pokemonMoves: pokemonMoves)
         }
         navigationController.pushViewController(movesListVC, animated: true)
     }
     
-    func goToMoveDetail(moveName: String, levelsMove: PokemonModel.Move) {
+    func goToMoveDetail(moveName: String, pokemonMove: PokemonMove) {
         let moveDetailVC: MoveDetailVC = presentationDependencies.resolve()
-        moveDetailVC.setMoves(moveName: moveName, levelsMove: levelsMove)
+        moveDetailVC.setMoves(moveName: moveName, pokemonMove: pokemonMove)
         navigationController.pushViewController(moveDetailVC, animated: true)
     }
 }
