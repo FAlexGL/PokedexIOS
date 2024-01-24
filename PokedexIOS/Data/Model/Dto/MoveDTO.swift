@@ -16,7 +16,7 @@ struct MoveDTO: Decodable {
     let accuracy: Int?
     let damageClass: DamageClass
     let effectChance: Int?
-    let effectEntries: [EffectEntries]
+    let effectEntries: [EffectEntries]?
     let target: Target
     let type: MoveType
     

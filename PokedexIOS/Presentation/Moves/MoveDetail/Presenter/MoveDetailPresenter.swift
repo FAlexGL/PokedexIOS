@@ -11,12 +11,12 @@ import Combine
 
 protocol MoveDetailViewDelegate {
     func didUpdatePokemonMove(moveDTO: MoveDTO)
-    func showData(moveData: [String : String], levelGames: NSMutableAttributedString)
+    func didUpdateMoveData(moveData: [String : String], levelGames: NSMutableAttributedString)
 }
 
 protocol MoveDetailPresenter {
     var delegate: MoveDetailViewDelegate? { get set }
-    func showData(moveDTO: MoveDTO, pokemonMove: PokemonMove?)
+    func showData(moveDTO: MoveDTO, pokemonMove: PokemonMove?, learnMethod: String?)
     func getMoveDetail(moveName: String?)
 }
 
@@ -33,9 +33,10 @@ class DefaultMoveDetailPresenter {
 }
 
 extension DefaultMoveDetailPresenter: MoveDetailPresenter {
-    func showData(moveDTO: MoveDTO, pokemonMove: PokemonMove?) {
+    
+    func showData(moveDTO: MoveDTO, pokemonMove: PokemonMove?, learnMethod: String?) {
         var result: [String : String] = [:]
-        if let pokemonMove = pokemonMove {
+        if let pokemonMove = pokemonMove, let learnMethod = learnMethod {
             result["name"] = (moveDTO.name).replacingOccurrences(of: "-", with: " ").uppercased()
             switch moveDTO.damageClass.name {
             case "physical":
@@ -46,14 +47,16 @@ extension DefaultMoveDetailPresenter: MoveDetailPresenter {
                 result["damageClass"] = Constants.Images.STATUS_MOVE
             }
             result["moveType"] = moveDTO.type.name
-            result["description"] = moveDTO.effectEntries[0].effect.replacingOccurrences(of: "$effect_chance", with: "\(moveDTO.effectChance ?? -1)")
+            if let effectEntries = moveDTO.effectEntries, effectEntries.count > 0 {
+                result["description"] = effectEntries[0].effect.replacingOccurrences(of: "$effect_chance", with: "\(moveDTO.effectChance ?? -1)")
+            }
             result["target"] = moveDTO.target.name.replacingOccurrences(of: "-", with: " ")
             result["power"] = "\(moveDTO.power ?? 0)"
             result["pp"] = "\(moveDTO.pp)"
             result["priority"] = "\(moveDTO.priority)"
             result["accuracy"] = "\(moveDTO.accuracy ?? 0)"
             var games: [Int : [String]] = [:]
-            if let moves = pokemonMove.moves[Constants.MoveLearnMethods.LEVEL_METHOD] {
+            if let moves = pokemonMove.moves[learnMethod] {
                 for move in moves {
                     if games.keys.contains(move.level){
                         games[move.level]?.append(move.game.replacingOccurrences(of: "-", with: " "))
@@ -73,7 +76,7 @@ extension DefaultMoveDetailPresenter: MoveDetailPresenter {
                     levelGameStringAttribute.append(gameTitle)
                 }
             }
-            delegate?.showData(moveData: result, levelGames: levelGameStringAttribute)
+            delegate?.didUpdateMoveData(moveData: result, levelGames: levelGameStringAttribute)
         }
     }
     

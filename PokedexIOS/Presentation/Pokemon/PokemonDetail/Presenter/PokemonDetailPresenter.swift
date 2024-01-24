@@ -22,7 +22,7 @@ protocol PokemonDetailViewDelegate: AnyObject {
 
 protocol PokemonDetailPresenter {
     var delegate: PokemonDetailViewDelegate? { get set }
-    func movesButtonPushed(pokemonMoves: [PokemonMove])
+    func movesButtonPushed(pokemonMoves: [PokemonMove], learnMethod: String)
     func getPokemonDetail(pokemonId: Int)
     func downloadImage(urlString: String)
     func getSprites(pokemonSprites: Sprites)
@@ -53,8 +53,8 @@ class DefaultPokemonDetailPresenter {
 //MARK: - ext. PokemonDetailPresenter
 extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
     
-    func movesButtonPushed(pokemonMoves: [PokemonMove]) {
-        coordinator.goToPokemonMoves(pokemonMoves: pokemonMoves)
+    func movesButtonPushed(pokemonMoves: [PokemonMove], learnMethod: String) {
+        coordinator.goToPokemonMoves(pokemonMoves: pokemonMoves, learnMethod: learnMethod)
     }
     
     

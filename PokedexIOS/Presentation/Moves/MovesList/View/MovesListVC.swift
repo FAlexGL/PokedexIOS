@@ -11,6 +11,7 @@ class MovesListVC: UIViewController {
     @IBOutlet private weak var tableView: UITableView!
     
     private var pokemonMoves: [PokemonMove]?
+    private var learnMethod: String?
     private var presenter: MovesListPresenter
     
     init(presenter: MovesListPresenter){
@@ -28,8 +29,9 @@ class MovesListVC: UIViewController {
         initTable()
     }
     
-    func setPokemonMoves(pokemonMoves: [PokemonMove]) {
+    func setPokemonMoves(pokemonMoves: [PokemonMove], learnMethod: String) {
         self.pokemonMoves = pokemonMoves
+        self.learnMethod = learnMethod
     }
     
     private func initTable() {
@@ -66,7 +68,7 @@ extension MovesListVC: UITableViewDataSource{
 extension MovesListVC: UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter.didSelectRowAt(pokemonMoves: pokemonMoves, movePosition: indexPath.row)
+        presenter.didSelectRowAt(pokemonMoves: pokemonMoves, movePosition: indexPath.row, learnMethod: learnMethod)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

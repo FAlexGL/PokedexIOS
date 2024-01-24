@@ -62,6 +62,7 @@ class PokemonDetailVC: UIViewController {
     private var coordinator: PokemonCoordinator?
     private var pokemonDTO: PokemonDTO?
     private var isFavourite: Bool?
+    private var learnMethod: String?
     private var spritesArray: [String] = []
     private var spriteArrayPosition: Int = -1
     private let defaultAlphaTypes = 0.1
@@ -199,6 +200,10 @@ class PokemonDetailVC: UIViewController {
     }
     
     private func getLevelMoves(pokemonDTO: PokemonDTO) -> [PokemonMove] {
+        guard let learnMethod = learnMethod else {
+            return []
+        }
+        
         let moves = pokemonDTO.moves
         var pokemonMoves: [PokemonMove] = []
         for move in moves {
@@ -206,12 +211,12 @@ class PokemonDetailVC: UIViewController {
             let moveURL = move.move.url
             var moveVersionDetails: [(level: Int, game: String)] = []
             for moveVersion in move.versionGroupDetails {
-                if moveVersion.moveLearnMethod.name == Constants.MoveLearnMethods.LEVEL_METHOD {
+                if moveVersion.moveLearnMethod.name == learnMethod {
                     moveVersionDetails.append((level: moveVersion.levelLearnedAt, game: moveVersion.versionGroup.name))
                 }
             }
             if moveVersionDetails.count > 0 {
-                let pokemonMove = PokemonMove(moveName: moveName, moveURL: moveURL, moves: [Constants.MoveLearnMethods.LEVEL_METHOD : moveVersionDetails])
+                let pokemonMove = PokemonMove(moveName: moveName, moveURL: moveURL, moves: [learnMethod : moveVersionDetails])
                 pokemonMoves.append(pokemonMove)
             }
         }
@@ -226,10 +231,11 @@ class PokemonDetailVC: UIViewController {
         guard let pokemonDTO = pokemonDTO else {
             return
         }
+        learnMethod = Constants.MoveLearnMethods.LEVEL_METHOD // Injecting learn method
         let pokemonMoves = getLevelMoves(pokemonDTO: pokemonDTO)
-        if pokemonMoves.count > 0 {
+        if let learnMethod = learnMethod, pokemonMoves.count > 0 {
             DispatchQueue.main.async {
-                self.presenter.movesButtonPushed(pokemonMoves: pokemonMoves)
+                self.presenter.movesButtonPushed(pokemonMoves: pokemonMoves, learnMethod: learnMethod)
             }
         }
     }

@@ -10,7 +10,7 @@ import UIKit
 
 protocol PokemonCoordinator: Coordinator {
     func goToPokemonDetail(pokemonId: Int, delegate: PokemonDetailDelegate)
-    func goToPokemonMoves(pokemonMoves: [PokemonMove])
+    func goToPokemonMoves(pokemonMoves: [PokemonMove], learnMethod: String)
 }
 
 class DefaultPokemonCoordinator: PokemonCoordinator {
@@ -35,9 +35,10 @@ class DefaultPokemonCoordinator: PokemonCoordinator {
         navigationController.pushViewController(pokemonDetailVC, animated: true)
     }
     
-    func goToPokemonMoves(pokemonMoves: [PokemonMove]){
+    func goToPokemonMoves(pokemonMoves: [PokemonMove], learnMethod: String){
         var movesCoordinator: MovesCoordinator = presentationDependencies.resolve(navigationController: navigationController)
         movesCoordinator.pokemonMoves = pokemonMoves
+        movesCoordinator.learnMethod = learnMethod
         movesCoordinator.start()
     }
 }

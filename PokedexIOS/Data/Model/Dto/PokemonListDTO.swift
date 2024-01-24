@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PokemonListDTO: Decodable {
+struct PokemonListDTO: Decodable, PokemonListRepresentable {
     let next: String?
     let previous: String?
     let results: [PokemonListResult]

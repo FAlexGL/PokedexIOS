@@ -30,6 +30,7 @@ class MoveDetailVC: UIViewController {
     
     
     private var pokemonMove: PokemonMove?
+    private var learnMethod: String?
     private var effectChance = 0
     private var presenter: MoveDetailPresenter
     
@@ -54,8 +55,9 @@ class MoveDetailVC: UIViewController {
         presenter.delegate = self
     }
     
-    func setMoves(moveName: String, pokemonMove: PokemonMove){
+    func setMoves(pokemonMove: PokemonMove, learnMethod: String){
         self.pokemonMove = pokemonMove
+        self.learnMethod = learnMethod
     }
     
     private func getMoveDetail(){
@@ -81,13 +83,13 @@ class MoveDetailVC: UIViewController {
     private func showData(moveDTO: MoveDTO){
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            presenter.showData(moveDTO: moveDTO, pokemonMove: pokemonMove)
+            presenter.showData(moveDTO: moveDTO, pokemonMove: pokemonMove, learnMethod: learnMethod)
         }
     }
 }
 
 extension MoveDetailVC: MoveDetailViewDelegate {
-    func showData(moveData: [String : String], levelGames: NSMutableAttributedString) {
+    func didUpdateMoveData(moveData: [String : String], levelGames: NSMutableAttributedString) {
         self.moveNameLabel.text = moveData["name"]
         self.imageMoveClass.image = UIImage(named: moveData["damageClass"] ?? "")
         self.imageMoveType.image = UIImage(named: moveData["moveType"] ?? "")

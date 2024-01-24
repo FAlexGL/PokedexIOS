@@ -10,7 +10,7 @@ import UIKit
 
 protocol MovesListPresenter {
     func numberOfRowsInSection(pokemonMoves: [PokemonMove]?) -> Int
-    func didSelectRowAt(pokemonMoves: [PokemonMove]?, movePosition: Int)
+    func didSelectRowAt(pokemonMoves: [PokemonMove]?, movePosition: Int, learnMethod: String?)
     
 }
 
@@ -33,9 +33,9 @@ extension DefaultMovesListPresenter: MovesListPresenter {
         return 0
     }
     
-    func didSelectRowAt(pokemonMoves: [PokemonMove]?, movePosition: Int) {
-        if let pokemonMoves = pokemonMoves {
-            coordinator.goToMoveDetail(moveName: pokemonMoves[movePosition].moveName, pokemonMove: pokemonMoves[movePosition])
+    func didSelectRowAt(pokemonMoves: [PokemonMove]?, movePosition: Int, learnMethod: String?) {
+        if let pokemonMoves = pokemonMoves, let learnMethod = learnMethod {
+            coordinator.goToMoveDetail(moveName: pokemonMoves[movePosition].moveName, pokemonMove: pokemonMoves[movePosition], learnMethod: learnMethod)
         }
     }
 }
