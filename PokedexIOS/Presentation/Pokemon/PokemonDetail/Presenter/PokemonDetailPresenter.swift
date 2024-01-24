@@ -61,7 +61,6 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
         let favouritePokemons = fetchFavouritesPokemonsUseCase.fetchFavouritesPokemons()
         switch favouritePokemons {
         case .success(let pokemons):
-            print(pokemons)
             if pokemons.contains(where: { $0.pokemonId == pokemonId }) {
                 delegate?.setSwitchStatus(switchStatus: true)
             }

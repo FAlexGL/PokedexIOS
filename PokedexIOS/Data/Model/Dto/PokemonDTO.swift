@@ -7,17 +7,28 @@
 
 import Foundation
 
-//TODO: Rename: DTO(Data transfer object)
 struct PokemonDTO: Decodable {
     let id: Int
     let name: String
-    let base_experience: Int?
+    let baseExperience: Int?
     let height: Int
     let weight: Int
     let types: [Types]
     let stats: [Stats]
     let sprites: Sprites
     let moves: [Moves]
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case name = "name"
+        case baseExperience = "base_experience"
+        case height = "height"
+        case weight = "weight"
+        case types = "types"
+        case stats = "stats"
+        case sprites = "sprites"
+        case moves = "moves"
+    }
 }
 
 struct Types: Decodable{
@@ -31,8 +42,13 @@ struct Type: Decodable{
 }
 
 struct Stats: Decodable {
-    let base_stat: Int
+    let baseStat: Int
     let stat: Stat
+    
+    enum CodingKeys: String, CodingKey {
+        case baseStat = "base_stat"
+        case stat = "stat"
+    }
 }
 
 struct Stat: Decodable{
@@ -41,20 +57,37 @@ struct Stat: Decodable{
 }
 
 struct Sprites: Decodable{
-    let front_default: String
-    let back_default: String?
-    let back_female: String?
-    let back_shiny: String?
-    let back_shiny_female: String?
-    let front_female: String?
-    let front_shiny: String?
-    let front_shiny_female: String?
+    let frontDefault: String
+    let backDefault: String?
+    let backFemale: String?
+    let backShiny: String?
+    let backShinyFemale: String?
+    let frontFemale: String?
+    let frontShiny: String?
+    let frontShinyFemale: String?
     let other: Other
+    
+    enum CodingKeys: String, CodingKey {
+        case frontDefault = "front_default"
+        case backDefault = "back_default"
+        case backFemale = "back_female"
+        case backShiny = "back_shiny"
+        case backShinyFemale = "back_shiny_female"
+        case frontFemale = "front_female"
+        case frontShiny = "front_shiny"
+        case frontShinyFemale = "front_shiny_female"
+        case other = "other"
+    }
 }
 
 struct Moves: Decodable{
     let move: Move
-    let version_group_details: [VersionGroupDetails]
+    let versionGroupDetails: [VersionGroupDetails]
+    
+    enum CodingKeys: String, CodingKey {
+        case move = "move"
+        case versionGroupDetails = "version_group_details"
+    }
 }
 
 struct Move: Decodable{
@@ -63,9 +96,15 @@ struct Move: Decodable{
 }
 
 struct VersionGroupDetails: Decodable{
-    let level_learned_at: Int
-    let move_learn_method: MoveLearnMethod
-    let version_group: VersionGroup
+    let levelLearnedAt: Int
+    let moveLearnMethod: MoveLearnMethod
+    let versionGroup: VersionGroup
+    
+    enum CodingKeys: String, CodingKey {
+        case levelLearnedAt = "level_learned_at"
+        case moveLearnMethod = "move_learn_method"
+        case versionGroup = "version_group"
+    }
 }
 
 struct VersionGroup: Decodable{
@@ -84,17 +123,12 @@ struct Other: Decodable{
     }
 }
 
-//struct OfficialArtwork: Decodable {
-//    let frontDefault: String?
-//    let frontShiny: String?
-//    
-//    enum CodingKeys: String, CodingKey {
-//        case frontDefault = "front_default"
-//        case frontShiny = "front_shiny"
-//    }
-//}
-
-struct OfficialArtwork: Decodable{
-    let front_default: String?
-    let front_shiny: String?
+struct OfficialArtwork: Decodable {
+    let frontDefault: String?
+    let frontShiny: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case frontDefault = "front_default"
+        case frontShiny = "front_shiny"
+    }
 }

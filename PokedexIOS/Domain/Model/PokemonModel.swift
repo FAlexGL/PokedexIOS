@@ -11,7 +11,6 @@ struct PokemonModel {
     let pokemonId: Int
     let pokemonName: String
     let baseExperience: Int
-//    let isFavourite: Bool
     let height: Int
     let weight: Int
     var types: [String]
@@ -48,7 +47,7 @@ extension PokemonModel: ModelType {
             let decodeData = try decoder.decode(PokemonDTO.self, from: data)
             self.pokemonId = decodeData.id
             self.pokemonName = decodeData.name
-            if let baseExperienceContent = decodeData.base_experience { //some Pokemons doesnt have base experience
+            if let baseExperienceContent = decodeData.baseExperience { //some Pokemons doesnt have base experience
                 self.baseExperience = baseExperienceContent
             } else {
                 self.baseExperience = -1
@@ -61,7 +60,7 @@ extension PokemonModel: ModelType {
             }
             self.stats = []
             for stat in decodeData.stats {
-                let stat = (statName: stat.stat.name, baseStat: stat.base_stat)
+                let stat = (statName: stat.stat.name, baseStat: stat.baseStat)
                 self.stats.append(stat)
             }
             self.moves = []
@@ -69,9 +68,9 @@ extension PokemonModel: ModelType {
                 let moveName = move.move.name
                 let moveURL = move.move.url
                 var moveVersionDetails: [(level: Int, game: String)] = []
-                for moveVersion in move.version_group_details {
-                    if moveVersion.move_learn_method.name == "level-up" {
-                        moveVersionDetails.append((level: moveVersion.level_learned_at, game: moveVersion.version_group.name))
+                for moveVersion in move.versionGroupDetails {
+                    if moveVersion.moveLearnMethod.name == "level-up" {
+                        moveVersionDetails.append((level: moveVersion.levelLearnedAt, game: moveVersion.versionGroup.name))
                     }
                 }
                 if moveVersionDetails.count > 0 {
@@ -79,16 +78,16 @@ extension PokemonModel: ModelType {
                 }
             }
             //Sprites
-            let frontDefault = decodeData.sprites.front_default
-            let backDefault = decodeData.sprites.back_default ?? nil
-            let backFemale = decodeData.sprites.back_female ?? nil
-            let backShiny = decodeData.sprites.back_shiny ?? nil
-            let backShinyFemale = decodeData.sprites.back_shiny_female ?? nil
-            let frontFemale = decodeData.sprites.front_female ?? nil
-            let frontShiny = decodeData.sprites.front_shiny ?? nil
-            let frontShinyFemale = decodeData.sprites.front_shiny_female ?? nil
-            let officialFront = decodeData.sprites.other.officialArtwork.front_default ?? nil
-            let officialFrontShiny = decodeData.sprites.other.officialArtwork.front_shiny ?? nil
+            let frontDefault = decodeData.sprites.frontDefault
+            let backDefault = decodeData.sprites.backDefault ?? nil
+            let backFemale = decodeData.sprites.backFemale ?? nil
+            let backShiny = decodeData.sprites.backShiny ?? nil
+            let backShinyFemale = decodeData.sprites.backShinyFemale ?? nil
+            let frontFemale = decodeData.sprites.frontFemale ?? nil
+            let frontShiny = decodeData.sprites.frontShiny ?? nil
+            let frontShinyFemale = decodeData.sprites.frontShinyFemale ?? nil
+            let officialFront = decodeData.sprites.other.officialArtwork.frontDefault ?? nil
+            let officialFrontShiny = decodeData.sprites.other.officialArtwork.frontShiny ?? nil
             self.sprites = PokemonModel.Sprites(frontDefault: frontDefault, backDefault: backDefault, backFemale: backFemale, backShiny: backShiny, backShinyFemale: backShinyFemale, frontFemale: frontFemale, frontShiny: frontShiny, frontShinyFemale: frontShinyFemale, officialFront: officialFront, officialFrontShiny: officialFrontShiny)
         } catch {
             self.pokemonId = -1
