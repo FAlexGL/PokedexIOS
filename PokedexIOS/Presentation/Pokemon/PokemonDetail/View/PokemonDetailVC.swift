@@ -60,7 +60,7 @@ class PokemonDetailVC: UIViewController {
     @IBOutlet private weak var fairyImage: UIImageView!
     
     private var coordinator: PokemonCoordinator?
-    private var pokemonDTO: PokemonDTO?
+    private var pokemonDTO: PokemonRepresentable?
     private var isFavourite: Bool?
     private var learnMethod: String?
     private var spritesArray: [String] = []
@@ -141,24 +141,24 @@ class PokemonDetailVC: UIViewController {
         
     }
     
-    private func getStats(pokemonDTO: PokemonDTO) -> [(statName: String, baseStat: Int)]{
+    private func getStats(pokemonDTO: PokemonRepresentable) -> [(statName: String, baseStat: Int)]{
         var stats: [(statName: String, baseStat: Int)] = []
-        for stat in pokemonDTO.stats {
-            let stat = (statName: stat.stat.name, baseStat: stat.baseStat)
+        for stat in pokemonDTO.statsRepresentable {
+            let stat = (statName: stat.statRepresentable.name, baseStat: stat.baseStat)
             stats.append(stat)
         }
         return stats
     }
     
-    private func getTypes(pokemonDTO: PokemonDTO) -> [String] {
+    private func getTypes(pokemonDTO: PokemonRepresentable) -> [String] {
         var types: [String] = []
-        for type in pokemonDTO.types {
+        for type in pokemonDTO.typesRepresentable {
             types.append(type.type.name)
         }
         return types
     }
     
-    private func showData(pokemonDTO: PokemonDTO){
+    private func showData(pokemonDTO: PokemonRepresentable){
         print("Accesing to \(pokemonDTO.name)'s data...")
         spriteArrayPosition = 1
         
@@ -192,23 +192,23 @@ class PokemonDetailVC: UIViewController {
                 }
             }
             presenter.isFavourite(pokemonId: pokemonDTO.id)
-            presenter.downloadImage(urlString: pokemonDTO.sprites.frontDefault)
+            presenter.downloadImage(urlString: pokemonDTO.spritesRepresentable.frontDefault)
             presenter.getTypesValues(types: getTypes(pokemonDTO: pokemonDTO))
         }
-        presenter.getSprites(pokemonSprites: pokemonDTO.sprites)
+        presenter.getSprites(pokemonSprites: pokemonDTO.spritesRepresentable)
         print("Total sprites: \(spritesArray.count)")
     }
     
-    private func getLevelMoves(pokemonDTO: PokemonDTO) -> [PokemonMove] {
+    private func getLevelMoves(pokemonDTO: PokemonRepresentable) -> [PokemonMove] {
         guard let learnMethod = learnMethod else {
             return []
         }
         
-        let moves = pokemonDTO.moves
+        let moves = pokemonDTO.movesRepresentable
         var pokemonMoves: [PokemonMove] = []
         for move in moves {
-            let moveName = move.move.name
-            let moveURL = move.move.url
+            let moveName = move.moveRepresentable.name
+            let moveURL = move.moveRepresentable.url
             var moveVersionDetails: [(level: Int, game: String)] = []
             for moveVersion in move.versionGroupDetails {
                 if moveVersion.moveLearnMethod.name == learnMethod {
@@ -231,7 +231,7 @@ class PokemonDetailVC: UIViewController {
         guard let pokemonDTO = pokemonDTO else {
             return
         }
-        learnMethod = Constants.MoveLearnMethods.LEVEL_METHOD // Injecting learn method
+        learnMethod = Constants.MoveLearnMethods.LEVEL_METHOD // Injecting learn method (hard-coding)
         let pokemonMoves = getLevelMoves(pokemonDTO: pokemonDTO)
         if let learnMethod = learnMethod, pokemonMoves.count > 0 {
             DispatchQueue.main.async {
@@ -246,6 +246,7 @@ class PokemonDetailVC: UIViewController {
 }
 
 extension PokemonDetailVC: PokemonDetailViewDelegate {
+    
     func setSpritePosition(spritePosition: Int) {
         spriteArrayPosition = spritePosition
     }
@@ -281,7 +282,7 @@ extension PokemonDetailVC: PokemonDetailViewDelegate {
     }
     
     
-    func didUpdatePokemonDetail(pokemonDTO: PokemonDTO) {
+    func didUpdatePokemonDetail(pokemonDTO: PokemonRepresentable) {
         showData(pokemonDTO: pokemonDTO)
     }
     

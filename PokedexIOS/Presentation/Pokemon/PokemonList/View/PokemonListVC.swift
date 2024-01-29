@@ -6,14 +6,16 @@
 //
 
 import UIKit
+import Combine
 
 class PokemonListVC: UIViewController {
     
     @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var searchBar: UISearchBar!
     
     private var pokemonsFetched: [String] = []
     private var favouritePokemonsFetched: [FavouritePokemon] = []
-    private var pokemonListDTO: PokemonListDTO?
+    private var pokemonListDTO: PokemonListRepresentable?
     private var url = Constants.PokemonAPI.URL_POKEMON_LIST
     private var positionOfFavouritePokemonSelected: IndexPath?
     private var presenter: PokemonListPresenter
@@ -34,7 +36,9 @@ class PokemonListVC: UIViewController {
         initTable()
         initNavigationControllerFavouriteButton()
         presenter.viewDidLoad()
+        addSubscribers()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavController()
@@ -70,6 +74,14 @@ class PokemonListVC: UIViewController {
         tableView.delegate = self
         tableView.rowHeight = 93.0
         tableView.register(UINib(nibName: "PokemonCell", bundle: nil), forCellReuseIdentifier: Constants.Identifiers.POKEMON_CELL_IDENTIFIER)
+    }
+    
+    private func addSubscribers() {
+        let publisher = NotificationCenter.default.publisher(for: UISearchTextField.textDidChangeNotification, object: searchBar.searchTextField)
+            .map { ($0.object as? UISearchTextField)?.text ?? "" }
+            .eraseToAnyPublisher()
+        
+        presenter.addSubscribers(publisher: publisher)
     }
     
     @objc private func favouriteButtonTapped(_ sender: UIButton!){
@@ -142,7 +154,7 @@ extension PokemonListVC: UITableViewDelegate{
 
 extension PokemonListVC: PokemonListViewDelegate {
     
-    func didUpdatePokemonList(pokemonListDTO: PokemonListDTO) {
+    func didUpdatePokemonList(pokemonListDTO: PokemonListRepresentable) {
         self.pokemonListDTO = pokemonListDTO
         self.url = pokemonListDTO.next ?? ""
         self.loadPokemonList()

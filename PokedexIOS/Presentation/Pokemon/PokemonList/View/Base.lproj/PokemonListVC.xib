@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PokemonListVC" customModule="PokedexIOS" customModuleProvider="target">
             <connections>
+                <outlet property="searchBar" destination="y99-rs-hxu" id="Xee-en-QdG"/>
                 <outlet property="tableView" destination="zhh-5k-gSo" id="hwT-Gg-iW6"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -20,18 +21,28 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="zhh-5k-gSo">
-                    <rect key="frame" x="0.0" y="0.0" width="393" height="818"/>
+                    <rect key="frame" x="0.0" y="115" width="393" height="703"/>
                     <color key="backgroundColor" name="bluePokemonLogo"/>
                     <color key="sectionIndexBackgroundColor" name="bluePokemonLogo"/>
                 </tableView>
+                <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="y99-rs-hxu">
+                    <rect key="frame" x="0.0" y="59" width="393" height="56"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="Ug0-4d-IrG"/>
+                    </connections>
+                </searchBar>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="bluePokemonLogo"/>
             <constraints>
-                <constraint firstItem="zhh-5k-gSo" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="C0U-7r-MoX"/>
-                <constraint firstItem="zhh-5k-gSo" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="FyR-B1-JQ7"/>
-                <constraint firstItem="zhh-5k-gSo" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="THe-BD-6lU"/>
-                <constraint firstItem="zhh-5k-gSo" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="mV8-2V-9NM"/>
+                <constraint firstItem="y99-rs-hxu" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="28V-Km-Kzi"/>
+                <constraint firstItem="zhh-5k-gSo" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="45A-RF-nGF"/>
+                <constraint firstItem="zhh-5k-gSo" firstAttribute="top" secondItem="y99-rs-hxu" secondAttribute="bottom" id="Bpz-PP-cUT"/>
+                <constraint firstItem="y99-rs-hxu" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="ZQU-SC-kh2"/>
+                <constraint firstItem="zhh-5k-gSo" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="jD8-lo-Kqp"/>
+                <constraint firstItem="zhh-5k-gSo" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="rP0-Z6-Jg8"/>
+                <constraint firstItem="y99-rs-hxu" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="zfd-fw-tWp"/>
             </constraints>
             <point key="canvasLocation" x="832.82442748091603" y="19.718309859154932"/>
         </view>

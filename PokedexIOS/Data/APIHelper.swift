@@ -19,7 +19,7 @@ enum NetError: Error {
 
 protocol APIHelper {
     func fetchPokemonList(url: String)  -> AnyPublisher<PokemonListDTO, Error>
-    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonDTO, Error>
+    func fetchPokemonDetail(pokemonIdOrName: String) -> AnyPublisher<PokemonDTO, Error>
     func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error>
     func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void)
 }
@@ -32,9 +32,10 @@ struct DefaultAPIHelper {
             guard let url = URL(string: urlString) else {
                 fatalError("converting URL error")
             }
-            
+        
             return URLSession(configuration: .default)
                 .dataTaskPublisher(for: url)
+                .retry(3)
                 .map({ data, response in
                     return data
                 })
@@ -45,12 +46,12 @@ struct DefaultAPIHelper {
 
 extension DefaultAPIHelper: APIHelper {
     
-    func fetchPokemonList(url: String)  -> AnyPublisher<PokemonListDTO, Error> {
+    func fetchPokemonList(url: String) -> AnyPublisher<PokemonListDTO, Error> {
         performRequest(urlString: url)
     }
     
-    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonDTO, Error> {
-        performRequest(urlString: "\(Constants.PokemonAPI.URL_POKEMON_DETAIL)\(pokemonId)")
+    func fetchPokemonDetail(pokemonIdOrName: String) -> AnyPublisher<PokemonDTO, Error> {
+        performRequest(urlString: "\(Constants.PokemonAPI.URL_POKEMON_DETAIL)\(pokemonIdOrName)")
     }
     
     func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error> {

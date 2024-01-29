@@ -9,14 +9,14 @@ import Foundation
 import Combine
 
 protocol FetchPokemonsUseCase {
-    func fetchPokemonList() -> AnyPublisher<PokemonListDTO, Error>
-    func fetchPokemonList(url: String?) -> AnyPublisher<PokemonListDTO, Error>
-    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonDTO, Error>
+    func fetchPokemonList() -> AnyPublisher<PokemonListRepresentable, Error>
+    func fetchPokemonList(url: String?) -> AnyPublisher<PokemonListRepresentable, Error>
+    func fetchPokemonDetail<T>(pokemonIdOrName: T) -> AnyPublisher<PokemonRepresentable, Error>
     func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error>
 }
 
 extension FetchPokemonsUseCase {
-    func fetchPokemonList() -> AnyPublisher<PokemonListDTO, Error> {
+    func fetchPokemonList() -> AnyPublisher<PokemonListRepresentable, Error> {
         fetchPokemonList(url: nil)
     }
 }
@@ -35,7 +35,7 @@ extension DefaultFetchPokemonsUseCase: FetchPokemonsUseCase {
         pokemonRepository.fetchPokemonMove(urlString: urlString)
     }
     
-    func fetchPokemonList(url: String?) -> AnyPublisher<PokemonListDTO, Error> {
+    func fetchPokemonList(url: String?) -> AnyPublisher<PokemonListRepresentable, Error> {
         if let url = url {
             pokemonRepository.fetchPokemonList(url: url)
         } else {
@@ -43,8 +43,8 @@ extension DefaultFetchPokemonsUseCase: FetchPokemonsUseCase {
         }
     }
     
-    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonDTO, Error> {
-        pokemonRepository.fetchPokemonDetail(pokemonId: pokemonId)
+    func fetchPokemonDetail<T>(pokemonIdOrName: T) -> AnyPublisher<PokemonRepresentable, Error> {
+        pokemonRepository.fetchPokemonDetail(pokemonIdOrName: String(describing: pokemonIdOrName))
     }
     
 }

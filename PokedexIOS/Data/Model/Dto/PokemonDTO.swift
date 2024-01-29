@@ -31,12 +31,30 @@ struct PokemonDTO: Decodable {
     }
 }
 
-struct Types: Decodable{
+extension PokemonDTO: PokemonRepresentable {
+    var movesRepresentable: [MovesRepresentable] {
+        moves
+    }
+    
+    var spritesRepresentable: SpritesRepresentable {
+        sprites
+    }
+    
+    var statsRepresentable: [StatsRepresentable] {
+        stats
+    }
+    
+    var typesRepresentable: [TypesRepresentable] {
+        types
+    }
+}
+
+struct Types: Decodable, TypesRepresentable {
     let slot: Int
     let type: Type
 }
 
-struct Type: Decodable{
+struct Type: Decodable {
     let name: String
     let url: String
 }
@@ -51,12 +69,18 @@ struct Stats: Decodable {
     }
 }
 
-struct Stat: Decodable{
+extension Stats: StatsRepresentable {
+    var statRepresentable: StatRepresentable {
+        stat
+    }
+}
+
+struct Stat: Decodable, StatRepresentable {
     let name: String
     let url: String
 }
 
-struct Sprites: Decodable{
+struct Sprites: Decodable {
     let frontDefault: String
     let backDefault: String?
     let backFemale: String?
@@ -80,7 +104,38 @@ struct Sprites: Decodable{
     }
 }
 
-struct Moves: Decodable{
+extension Sprites: SpritesRepresentable {
+    var otherRepresentable: OtherRepresentable {
+        other
+    }
+}
+
+struct Other: Decodable {
+    let officialArtwork: OfficialArtwork
+    
+    enum CodingKeys: String, CodingKey {
+    case officialArtwork = "official-artwork"
+    }
+}
+
+extension Other: OtherRepresentable {
+    var officialArtworkRepresentable: OfficialArtworkRepresentable {
+        officialArtwork
+    }
+    
+}
+
+struct OfficialArtwork: Decodable, OfficialArtworkRepresentable {
+    let frontDefault: String?
+    let frontShiny: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case frontDefault = "front_default"
+        case frontShiny = "front_shiny"
+    }
+}
+
+struct Moves: Decodable {
     let move: Move
     let versionGroupDetails: [VersionGroupDetails]
     
@@ -90,12 +145,18 @@ struct Moves: Decodable{
     }
 }
 
-struct Move: Decodable{
+extension Moves: MovesRepresentable {
+    var moveRepresentable: MoveRepresentable {
+        move
+    }
+}
+
+struct Move: Decodable, MoveRepresentable{
     let name: String
     let url: String
 }
 
-struct VersionGroupDetails: Decodable{
+struct VersionGroupDetails: Decodable {
     let levelLearnedAt: Int
     let moveLearnMethod: MoveLearnMethod
     let versionGroup: VersionGroup
@@ -107,28 +168,22 @@ struct VersionGroupDetails: Decodable{
     }
 }
 
-struct VersionGroup: Decodable{
+extension VersionGroupDetails: VersionGroupDetailsRepresentable {
+    var moveLearnMethodRepresentable: MoveLearnMethodRepresentable {
+        moveLearnMethod
+    }
+    
+    var versionGroupRepresentable: VersionGroupRepresentable {
+        versionGroup
+    }
+    
+    
+}
+
+struct VersionGroup: Decodable, VersionGroupRepresentable {
     let name: String
 }
 
-struct MoveLearnMethod: Decodable{
+struct MoveLearnMethod: Decodable, MoveLearnMethodRepresentable {
     let name: String
-}
-
-struct Other: Decodable{
-    let officialArtwork: OfficialArtwork
-    
-    enum CodingKeys: String, CodingKey {
-    case officialArtwork = "official-artwork"
-    }
-}
-
-struct OfficialArtwork: Decodable {
-    let frontDefault: String?
-    let frontShiny: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case frontDefault = "front_default"
-        case frontShiny = "front_shiny"
-    }
 }

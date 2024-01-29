@@ -10,7 +10,7 @@ import UIKit
 import Combine
 
 protocol PokemonListViewDelegate {
-    func didUpdatePokemonList(pokemonListDTO: PokemonListDTO)
+    func didUpdatePokemonList(pokemonListDTO: PokemonListRepresentable)
     func favouriteUpdated(pokemonID: Int, isFavourite: Bool)
     func favouriteLoaded(pokemons: [FavouritePokemon])
     func favouriteChanged(result: Bool, messageError: String, indexPath: IndexPath)
@@ -26,6 +26,7 @@ protocol PokemonListPresenter {
     func cellForRowAt (tableView: UITableView, indexPath: IndexPath, showFavouritesButtonTitle: String?, favouritePokemonsFetched: [FavouritePokemon], pokemonsFetched: [String]) -> UITableViewCell
     func trailingSwipeActionsConfigurationForRowAt(pokemonId: Int, pokemonName: String, indexPath: IndexPath)
     func favouriteButtonTapped(showFavouritesButtonTitle: String?) -> String?
+    func addSubscribers(publisher: AnyPublisher<String, Never>)
 }
 
 class DefaultPokemonListPresenter {
@@ -49,6 +50,51 @@ class DefaultPokemonListPresenter {
 
 //MARK: - Presenter delegate
 extension DefaultPokemonListPresenter: PokemonListPresenter {
+    
+    func addSubscribers(publisher: AnyPublisher<String, Never>) {
+        publisher
+            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
+            .filter( {$0.count >= 3} )
+            .map { $0.lowercased() }
+            .flatMap {
+                self.fetchPokemonsUseCase.fetchPokemonDetail(pokemonIdOrName: $0)
+                //                    .delay(for: .seconds(2), scheduler: DispatchQueue.main)
+                    .handleEvents(receiveCompletion: { completion in
+                        switch completion {
+                        case .finished:
+                            print("Pokemon fetched")
+                        case .failure(let error):
+                            print("Error fetching Pokemon: \(error.localizedDescription)")
+                        }
+                    })
+                    .retry(3)
+                    .map { result -> PokemonRepresentable? in
+                        result
+                    }
+                    .replaceError(with: nil)
+            }
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("success")
+                case .failure(let error):
+                    print("failure: \(error)")
+                }
+            }, receiveValue: { pokemon in
+                guard let pokemon = pokemon else {
+                    return
+                }
+                if pokemon.id == 0 {
+                    print("Pokemon not found")
+                } else {
+                    print("Pokemon's id: \(pokemon.id) | Pokemon's name: \(pokemon.name)")
+                    let favouritePokemon = FavouritePokemon(pokemonId: pokemon.id, pokemonName: pokemon.name)
+                    let favouritesPokemon: [FavouritePokemon] = [favouritePokemon]
+                    self.delegate?.favouriteLoaded(pokemons: favouritesPokemon)
+                }
+            })
+            .store(in: &subscriptions)
+    }
     
     func didSelectRowAt(showFavouritesButtonTitle: String?, indexPath: IndexPath, favouritePokemonsFetched: [FavouritePokemon]) {
         let pokemonId: Int
@@ -127,8 +173,8 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
             let buttonString = NSLocalizedString("ShowAll", comment: "")
             let result = fetchFavouritesPokemonsUseCase.fetchFavouritesPokemons()
             switch result {
-            case .success(let success):
-                delegate?.favouriteLoaded(pokemons: success)
+            case .success(let pokemons):
+                delegate?.favouriteLoaded(pokemons: pokemons)
             case .failure(let failure):
                 self.delegate?.didFailWithError(error: failure)
             }

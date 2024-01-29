@@ -10,7 +10,7 @@ import UIKit
 import Combine
 
 protocol PokemonDetailViewDelegate: AnyObject {
-    func didUpdatePokemonDetail(pokemonDTO: PokemonDTO)
+    func didUpdatePokemonDetail(pokemonDTO: PokemonRepresentable)
     func didFailWithError(error: Error)
     func showImage(image: UIImage)
     func didUpdateSprites(spritesArray: [String])
@@ -25,9 +25,9 @@ protocol PokemonDetailPresenter {
     func movesButtonPushed(pokemonMoves: [PokemonMove], learnMethod: String)
     func getPokemonDetail(pokemonId: Int)
     func downloadImage(urlString: String)
-    func getSprites(pokemonSprites: Sprites)
+    func getSprites(pokemonSprites: SpritesRepresentable)
     func getTypesValues(types: [String])
-    func switchChanged(_ sender: UISwitch, pokemonDTO: PokemonDTO?)
+    func switchChanged(_ sender: UISwitch, pokemonDTO: PokemonRepresentable?)
     func isFavourite(pokemonId: Int)
     func imageTapped(_ sender: UITapGestureRecognizer, sprites: [String], spritePosition: Int)
 }
@@ -70,7 +70,7 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
         }
     }
     
-    func getSprites(pokemonSprites: Sprites) {
+    func getSprites(pokemonSprites: SpritesRepresentable) {
         var sprites: [String] = []
         
         sprites.append(pokemonSprites.frontDefault)
@@ -95,10 +95,10 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
         if let frontShinyFemale = pokemonSprites.frontShinyFemale {
             sprites.append(frontShinyFemale)
         }
-        if let officialFront = pokemonSprites.other.officialArtwork.frontDefault{
+        if let officialFront = pokemonSprites.otherRepresentable.officialArtworkRepresentable.frontDefault{
             sprites.append(officialFront)
         }
-        if let officialFrontShiny = pokemonSprites.other.officialArtwork.frontShiny {
+        if let officialFrontShiny = pokemonSprites.otherRepresentable.officialArtworkRepresentable.frontShiny {
             sprites.append(officialFrontShiny)
         }
         delegate?.didUpdateSprites(spritesArray: sprites)
@@ -169,7 +169,7 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
     
     
     func getPokemonDetail(pokemonId: Int) {
-        fetchPokemonsUseCase.fetchPokemonDetail(pokemonId: pokemonId)
+        fetchPokemonsUseCase.fetchPokemonDetail(pokemonIdOrName: pokemonId)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -181,7 +181,7 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
             .store(in: &subscriptions)
     }
     
-    func switchChanged(_ sender: UISwitch, pokemonDTO: PokemonDTO?) {
+    func switchChanged(_ sender: UISwitch, pokemonDTO: PokemonRepresentable?) {
         if let pokemonDTO = pokemonDTO {
             let favouritePokemon = FavouritePokemon(pokemonId: pokemonDTO.id, pokemonName: pokemonDTO.name)
             _ = updateFavouritePokemonsUseCase.updateFavourite(favouritePokemon: favouritePokemon)
