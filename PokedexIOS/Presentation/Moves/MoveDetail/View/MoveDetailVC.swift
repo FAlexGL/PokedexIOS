@@ -80,10 +80,10 @@ class MoveDetailVC: UIViewController {
         learnedAtCILable.text = learnedAtString
     }
     
-    private func showData(moveDTO: MoveDTO){
+    private func showData(moveDTORepresentable: MoveDTORepresentable){
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            presenter.showData(moveDTO: moveDTO, pokemonMove: pokemonMove, learnMethod: learnMethod)
+            presenter.showData(moveDTORepresentable: moveDTORepresentable, pokemonMove: pokemonMove, learnMethod: learnMethod)
         }
     }
 }
@@ -102,7 +102,7 @@ extension MoveDetailVC: MoveDetailViewDelegate {
         self.levelGamesTextView.attributedText = levelGames
     }
     
-    func didUpdatePokemonMove(moveDTO: MoveDTO) {
-        showData(moveDTO: moveDTO)
+    func didUpdatePokemonMove(moveDTORepresentable: MoveDTORepresentable) {
+        showData(moveDTORepresentable: moveDTORepresentable)
     }
 }

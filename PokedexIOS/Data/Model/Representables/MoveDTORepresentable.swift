@@ -14,11 +14,11 @@ protocol MoveDTORepresentable {
     var pp: Int { get }
     var priority: Int { get }
     var accuracy: Int? { get }
-    var damageClass: DamageClass { get }
+    var damageClassRepresentable: DamageClassRepresentable { get }
     var effectChance: Int? { get }
-    var effectEntries: [EffectEntries]? { get }
-    var target: Target { get }
-    var type: MoveType { get }
+    var effectEntriesRepresentable: [EffectEntriesRepresentable]? { get }
+    var targetRepresentable: TargetRepresentable { get }
+    var typeRepresentable: MoveTypeRepresentable { get }
 }
 
 protocol DamageClassRepresentable {

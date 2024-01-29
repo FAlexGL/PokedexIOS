@@ -12,7 +12,7 @@ protocol PokemonRepository {
     func fetchFavouritesPokemons() -> [FavouritePokemon]
     func fetchPokemonList(url: String) -> AnyPublisher<PokemonListRepresentable, Error>
     func fetchPokemonDetail(pokemonIdOrName: String) -> AnyPublisher<PokemonRepresentable, Error>
-    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error>
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTORepresentable, Error>
     func updateFavourite(favouritePokemon: FavouritePokemon) -> Bool
 }
 
@@ -40,7 +40,7 @@ extension DefaultPokemonRepository: PokemonRepository {
         apiDataSource.fetchPokemonDetail(pokemonIdOrName: pokemonIdOrName)
     }
     
-    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error> {
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTORepresentable, Error> {
         apiDataSource.fetchPokemonMove(urlString: urlString)
     }
     func updateFavourite(favouritePokemon: FavouritePokemon) -> Bool {

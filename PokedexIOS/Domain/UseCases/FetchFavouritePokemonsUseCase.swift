@@ -7,8 +7,8 @@
 
 import Foundation
 
-protocol FetchFavouritesPokemonsUseCase {
-    func fetchFavouritesPokemons() -> Result<[FavouritePokemon], Error>
+protocol FetchFavouritePokemonsUseCase {
+    func fetchFavouritePokemons() -> Result<[FavouritePokemon], Error>
 }
 
 class DefaultFetchFavouritesPokemonsUseCase {
@@ -19,8 +19,8 @@ class DefaultFetchFavouritesPokemonsUseCase {
     }
 }
 
-extension DefaultFetchFavouritesPokemonsUseCase: FetchFavouritesPokemonsUseCase {
-    func fetchFavouritesPokemons() -> Result<[FavouritePokemon], Error> {
+extension DefaultFetchFavouritesPokemonsUseCase: FetchFavouritePokemonsUseCase {
+    func fetchFavouritePokemons() -> Result<[FavouritePokemon], Error> {
         //TODO: update to Result
         return Result.success(pokemonRepository.fetchFavouritesPokemons())
     }

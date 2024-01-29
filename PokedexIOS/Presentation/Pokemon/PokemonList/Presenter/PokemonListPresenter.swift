@@ -35,13 +35,13 @@ class DefaultPokemonListPresenter {
     private var subscriptions: [AnyCancellable] = []
     private let coordinator: PokemonCoordinator
     private let fetchPokemonsUseCase: FetchPokemonsUseCase
-    private let fetchFavouritesPokemonsUseCase: FetchFavouritesPokemonsUseCase
+    private let fetchFavouritePokemonsUseCase: FetchFavouritePokemonsUseCase
     private let updateFavouritePokemonsUseCase: UpdateFavouritePokemonsUseCase
     
-    init(coordinator: PokemonCoordinator, fetchPokemonsUseCase: FetchPokemonsUseCase, fetchFavouritesPokemonsUseCase: FetchFavouritesPokemonsUseCase, updateFavouritePokemonsUseCase: UpdateFavouritePokemonsUseCase) {
+    init(coordinator: PokemonCoordinator, fetchPokemonsUseCase: FetchPokemonsUseCase, fetchFavouritePokemonsUseCase: FetchFavouritePokemonsUseCase, updateFavouritePokemonsUseCase: UpdateFavouritePokemonsUseCase) {
         self.coordinator = coordinator
         self.fetchPokemonsUseCase = fetchPokemonsUseCase
-        self.fetchFavouritesPokemonsUseCase = fetchFavouritesPokemonsUseCase
+        self.fetchFavouritePokemonsUseCase = fetchFavouritePokemonsUseCase
         self.updateFavouritePokemonsUseCase = updateFavouritePokemonsUseCase
     }
     
@@ -171,7 +171,7 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
     func favouriteButtonTapped(showFavouritesButtonTitle: String?) -> String? {
         if showFavouritesButtonTitle == NSLocalizedString("ShowFavourites", comment: "") || showFavouritesButtonTitle == nil {
             let buttonString = NSLocalizedString("ShowAll", comment: "")
-            let result = fetchFavouritesPokemonsUseCase.fetchFavouritesPokemons()
+            let result = fetchFavouritePokemonsUseCase.fetchFavouritePokemons()
             switch result {
             case .success(let pokemons):
                 delegate?.favouriteLoaded(pokemons: pokemons)

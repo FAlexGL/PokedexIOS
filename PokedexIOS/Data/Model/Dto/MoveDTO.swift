@@ -35,18 +35,54 @@ struct MoveDTO: Decodable {
     }
 }
 
+extension MoveDTO: MoveDTORepresentable {
+    var damageClassRepresentable: DamageClassRepresentable {
+        damageClass
+    }
+    
+    var effectEntriesRepresentable: [EffectEntriesRepresentable]? {
+        effectEntries
+    }
+    
+    var targetRepresentable: TargetRepresentable {
+        target
+    }
+    
+    var typeRepresentable: MoveTypeRepresentable {
+        type
+    }
+    
+    
+}
+
 struct DamageClass: Decodable{
     let name: String
+}
+
+extension DamageClass: DamageClassRepresentable {
+    
 }
 
 struct EffectEntries: Decodable{
     let effect: String
 }
 
+extension EffectEntries: EffectEntriesRepresentable {
+    
+}
+
 struct Target: Decodable{
     let name: String
 }
 
+extension Target: TargetRepresentable {
+    
+}
+
 struct MoveType: Decodable{
     let name: String
+}
+
+extension MoveType: MoveTypeRepresentable {
+    
 }

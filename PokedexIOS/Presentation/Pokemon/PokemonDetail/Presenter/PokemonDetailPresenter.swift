@@ -39,9 +39,9 @@ class DefaultPokemonDetailPresenter {
     private var apiHelper: APIHelper
     private let fetchPokemonsUseCase: FetchPokemonsUseCase
     private let updateFavouritePokemonsUseCase: UpdateFavouritePokemonsUseCase
-    private let fetchFavouritesPokemonsUseCase: FetchFavouritesPokemonsUseCase
+    private let fetchFavouritesPokemonsUseCase: FetchFavouritePokemonsUseCase
     
-    init(apiHelper: APIHelper, coordinator: PokemonCoordinator, fetchPokemonsUseCase: FetchPokemonsUseCase, updateFavouritePokemonsUseCase: UpdateFavouritePokemonsUseCase, fetchFavouritesPokemonsUseCase: FetchFavouritesPokemonsUseCase) {
+    init(apiHelper: APIHelper, coordinator: PokemonCoordinator, fetchPokemonsUseCase: FetchPokemonsUseCase, updateFavouritePokemonsUseCase: UpdateFavouritePokemonsUseCase, fetchFavouritesPokemonsUseCase: FetchFavouritePokemonsUseCase) {
         self.coordinator = coordinator
         self.apiHelper = apiHelper
         self.fetchPokemonsUseCase = fetchPokemonsUseCase
@@ -59,7 +59,7 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
     
     
     func isFavourite(pokemonId: Int) {
-        let favouritePokemons = fetchFavouritesPokemonsUseCase.fetchFavouritesPokemons()
+        let favouritePokemons = fetchFavouritesPokemonsUseCase.fetchFavouritePokemons()
         switch favouritePokemons {
         case .success(let pokemons):
             if pokemons.contains(where: { $0.pokemonId == pokemonId }) {

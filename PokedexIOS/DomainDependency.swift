@@ -9,14 +9,14 @@ import Foundation
 
 protocol DomainDependency {
     func resolve() -> FetchPokemonsUseCase
-    func resolve() -> FetchFavouritesPokemonsUseCase
+    func resolve() -> FetchFavouritePokemonsUseCase
 }
 
 extension DomainDependency where Self: DefaultAppDependency {
     func resolve() -> FetchPokemonsUseCase {
         DefaultFetchPokemonsUseCase(pokemonRepository: resolve())
     }
-    func resolve() -> FetchFavouritesPokemonsUseCase {
+    func resolve() -> FetchFavouritePokemonsUseCase {
         DefaultFetchFavouritesPokemonsUseCase(pokemonRepository: resolve())
     }
     

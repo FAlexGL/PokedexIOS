@@ -11,7 +11,7 @@ import Combine
 protocol ApiPokemonDataSource {
     func fetchPokemonList(url: String) -> AnyPublisher<PokemonListRepresentable, Error>
     func fetchPokemonDetail(pokemonIdOrName: String) -> AnyPublisher<PokemonRepresentable, Error>
-    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error>
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTORepresentable, Error>
 }
 
 class DefaultApiPokemonDataSource {
@@ -23,8 +23,10 @@ class DefaultApiPokemonDataSource {
 }
 
 extension DefaultApiPokemonDataSource: ApiPokemonDataSource {
-    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error> {
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTORepresentable, Error> {
         apiHelper.fetchPokemonMove(urlString: urlString)
+            .map { $0 as MoveDTORepresentable }
+            .eraseToAnyPublisher()
     }
     
     func fetchPokemonList(url: String) -> AnyPublisher<PokemonListRepresentable, Error> {
