@@ -16,6 +16,7 @@ final class PokemonCoordinatorMock: PokemonCoordinator {
     var pokemonId: Int?
     var goToPokemonDetailExpectation: XCTestExpectation?
     var goToPokemonDetailHasBeenCalled = false
+    var goToPokemonMovesHasBeenCalled = false
     
     func goToPokemonDetail(pokemonId: Int, delegate: PokemonDetailDelegate) {
         goToPokemonDetailExpectation?.fulfill()
@@ -24,7 +25,7 @@ final class PokemonCoordinatorMock: PokemonCoordinator {
     }
     
     func goToPokemonMoves(pokemonMoves: [PokemonMove], learnMethod: String) {
-        //
+        goToPokemonMovesHasBeenCalled = true
     }
     
     var childCoordinator: [Coordinator] = []

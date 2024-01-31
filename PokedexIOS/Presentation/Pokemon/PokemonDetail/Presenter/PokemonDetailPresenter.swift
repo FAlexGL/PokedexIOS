@@ -161,7 +161,7 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
             if let image = image {
                 imageReturned = image
             } else {
-                imageReturned = UIImage(named: Constants.Images.MISSINGNO)! // ¿POR QUÉ ES OPCIONAL??????
+                imageReturned = UIImage(named: Constants.Images.MISSINGNO)!
             }
             delegate?.showImage(image: imageReturned)
         }

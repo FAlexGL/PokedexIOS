@@ -44,7 +44,6 @@ class DefaultPokemonListPresenter {
         self.fetchFavouritePokemonsUseCase = fetchFavouritePokemonsUseCase
         self.updateFavouritePokemonsUseCase = updateFavouritePokemonsUseCase
     }
-    
 }
 
 
