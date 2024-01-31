@@ -49,14 +49,24 @@ extension PokemonDTO: PokemonRepresentable {
     }
 }
 
-struct Types: Decodable, TypesRepresentable {
+struct Types: Decodable {
     let slot: Int
     let type: Type
+}
+
+extension Types: TypesRepresentable {
+    var typeRepresentable: TypeRepresentable {
+        type
+    }
 }
 
 struct Type: Decodable {
     let name: String
     let url: String
+}
+
+extension Type: TypeRepresentable {
+    
 }
 
 struct Stats: Decodable {
@@ -146,6 +156,10 @@ struct Moves: Decodable {
 }
 
 extension Moves: MovesRepresentable {
+    var versionGroupDetailsRepresentable: [VersionGroupDetailsRepresentable] {
+        versionGroupDetails
+    }
+    
     var moveRepresentable: MoveRepresentable {
         move
     }

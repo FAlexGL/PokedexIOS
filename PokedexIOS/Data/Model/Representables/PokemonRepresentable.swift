@@ -21,7 +21,7 @@ protocol PokemonRepresentable {
 
 protocol TypesRepresentable {
     var slot: Int { get }
-    var type: Type { get }
+    var typeRepresentable: TypeRepresentable { get }
 }
 
 protocol TypeRepresentable {
@@ -62,7 +62,7 @@ protocol OfficialArtworkRepresentable {
 
 protocol MovesRepresentable {
     var moveRepresentable: MoveRepresentable { get }
-    var versionGroupDetails: [VersionGroupDetails] { get }
+    var versionGroupDetailsRepresentable: [VersionGroupDetailsRepresentable] { get }
 }
 
 protocol MoveRepresentable {

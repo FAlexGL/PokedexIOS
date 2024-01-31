@@ -13,6 +13,8 @@ final class FetchPokemonUseCaseMock: FetchPokemonsUseCase {
     
     var pokemonListMock = PokemonListMock()
     var pokemonMock = PokemonMock()
+    var moveDTOMock = MoveDTOMock()
+    var pokemonIdOrNameSpy: String?
     
     func fetchPokemonList(url: String?) -> AnyPublisher<PokemonListRepresentable, Error> {
         return Just(pokemonListMock)
@@ -20,14 +22,15 @@ final class FetchPokemonUseCaseMock: FetchPokemonsUseCase {
             .eraseToAnyPublisher()
     }
     
-    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonRepresentable, Error> {
+    func fetchPokemonDetail<T>(pokemonIdOrName: T) -> AnyPublisher<PokemonRepresentable, Error> {
+        pokemonIdOrNameSpy = String(describing: pokemonIdOrName)
         return Just(pokemonMock)
             .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
     }
     
-    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error> {
-        return Just(pokemonListMock)
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTORepresentable, Error> {
+        return Just(moveDTOMock)
             .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
     }

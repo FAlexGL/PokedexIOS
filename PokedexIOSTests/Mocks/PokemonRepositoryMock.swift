@@ -9,15 +9,19 @@ import Foundation
 import Combine
 @testable import PokedexIOS
 
-final class PokemonRepositoryMock: PokemonRepository {
+final class PokemonRepositoryMock: PokemonRepository {    
     
     var fetchPokemonListWithDefaultUrl = false
     var fetchPokemonListWithParameterUrl = false
     
     var pokemonListMock = PokemonListMock()
+    var moveDTOMock = MoveDTOMock()
+    var pokemonMock = PokemonMock()
+    var favouritePokemon1 = FavouritePokemon(pokemonId: 0, pokemonName: "missingno")
+    var favouritePokemon2 = FavouritePokemon(pokemonId: 1, pokemonName: "missingno2")
     
     func fetchFavouritesPokemons() -> [FavouritePokemon] {
-        []
+        [favouritePokemon1, favouritePokemon2]
     }
     
     func fetchPokemonList(url: String) -> AnyPublisher<PokemonListRepresentable, Error> {
@@ -28,12 +32,16 @@ final class PokemonRepositoryMock: PokemonRepository {
             .eraseToAnyPublisher()
     }
     
-    func fetchPokemonDetail(pokemonId: Int) -> AnyPublisher<PokemonDTO, Error> {
-        Fail(error: NSError()).eraseToAnyPublisher()
+    func fetchPokemonDetail(pokemonIdOrName: String) -> AnyPublisher<PokemonRepresentable, Error> {
+        return Just(pokemonMock)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
     }
     
-    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error> {
-        Fail(error: NSError()).eraseToAnyPublisher()
+    func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTORepresentable, Error> {
+        return Just(moveDTOMock)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
     }
     
     func updateFavourite(favouritePokemon: FavouritePokemon) -> Bool {

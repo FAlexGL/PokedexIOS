@@ -8,7 +8,7 @@
 @testable import PokedexIOS
 
 struct PokemonListMock: PokemonListRepresentable {
-    var next: String? = nil
-    var previous: String? = nil
+    var next: String? = "www.nextURL.com"
+    var previous: String? = "www.previousURL.com"
     var results: [PokemonListResult] = []
 }

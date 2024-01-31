@@ -54,45 +54,28 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
     func addSubscribers(publisher: AnyPublisher<String, Never>) {
         publisher
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
-            .filter( {$0.count >= 3} )
+            .print("[SEARCH]")
+            .filter {
+                $0.count >= 3
+            }
             .map { $0.lowercased() }
             .flatMap {
                 self.fetchPokemonsUseCase.fetchPokemonDetail(pokemonIdOrName: $0)
-                //                    .delay(for: .seconds(2), scheduler: DispatchQueue.main)
-                    .handleEvents(receiveCompletion: { completion in
-                        switch completion {
-                        case .finished:
-                            print("Pokemon fetched")
-                        case .failure(let error):
-                            print("Error fetching Pokemon: \(error.localizedDescription)")
-                        }
-                    })
                     .retry(3)
                     .map { result -> PokemonRepresentable? in
                         result
                     }
                     .replaceError(with: nil)
             }
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    print("success")
-                case .failure(let error):
-                    print("failure: \(error)")
-                }
-            }, receiveValue: { pokemon in
+            .sink { pokemon in
                 guard let pokemon = pokemon else {
+                    print("the pokemon doesn't exist")
                     return
                 }
-                if pokemon.id == 0 {
-                    print("Pokemon not found")
-                } else {
-                    print("Pokemon's id: \(pokemon.id) | Pokemon's name: \(pokemon.name)")
-                    let favouritePokemon = FavouritePokemon(pokemonId: pokemon.id, pokemonName: pokemon.name)
-                    let favouritesPokemon: [FavouritePokemon] = [favouritePokemon]
-                    self.delegate?.favouriteLoaded(pokemons: favouritesPokemon)
+                DispatchQueue.main.async {
+                    self.coordinator.goToPokemonDetail(pokemonId: pokemon.id, delegate: self)
                 }
-            })
+            }
             .store(in: &subscriptions)
     }
     
@@ -124,9 +107,6 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
     func willDisplay(showFavouritesButtonTitle: String?, totalRows: Int, indexPath: IndexPath, url: String) {
         if showFavouritesButtonTitle != NSLocalizedString("ShowAll", comment: "") {
             if indexPath.row == totalRows - 1 && url != "" {
-                
-                subscriptions = []
-                
                 fetchPokemonsUseCase.fetchPokemonList(url: url)
                     .sink(receiveCompletion: { completion in
                         switch completion {

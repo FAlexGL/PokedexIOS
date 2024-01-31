@@ -52,5 +52,27 @@ final class FetchPokemonsUseCaseTests: XCTestCase {
         // Then
         XCTAssertTrue(repository.fetchPokemonListWithDefaultUrl)
     }
+    
+    func test_Given_FetchPokemonsUseCase_When_FetchPokemonMoveIsCalled_Then_MoveReturned() throws {
+        // Given
+        let sut = DefaultFetchPokemonsUseCase(pokemonRepository: repository)
+        
+        // When
+        let move = try sut.fetchPokemonMove(urlString: "https://gettingmove.com").sinkAwait()
+        
+        // Then
+        XCTAssertEqual(move.name, "Mock punch")
+    }
+    
+    func test_Given_FetchPokemonUseCase_When_FetchPokemonDetailIsCalled_Then_PkemonDetailReturned() throws {
+        // Given "missingno"
+        let sut = DefaultFetchPokemonsUseCase(pokemonRepository: repository)
+        
+        // When
+        let pokemon = try sut.fetchPokemonDetail(pokemonIdOrName: "missingno").sinkAwait()
+        
+        // Then
+        XCTAssertEqual(pokemon.name, "missingno")
+    }
 
 }

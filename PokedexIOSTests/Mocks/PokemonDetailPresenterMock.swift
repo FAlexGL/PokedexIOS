@@ -11,9 +11,18 @@ import UIKit
 
 
 final class PokemonDetailPresenterMock: PokemonDetailPresenter {
+    
     var delegate: PokedexIOS.PokemonDetailViewDelegate?
     
-    func movesButtonPushed(pokemonMoves: [PokedexIOS.PokemonMove], learnMethod: String) {
+    func getSprites(pokemonSprites: SpritesRepresentable) {
+        return
+    }
+    
+    func switchChanged(_ sender: UISwitch, pokemonDTO: PokemonRepresentable?) {
+        return
+    }
+    
+    func movesButtonPushed(pokemonMoves: [PokemonMove], learnMethod: String) {
         return
     }
     
@@ -25,15 +34,7 @@ final class PokemonDetailPresenterMock: PokemonDetailPresenter {
         return
     }
     
-    func getSprites(pokemonSprites: PokedexIOS.Sprites) {
-        return
-    }
-    
     func getTypesValues(types: [String]) {
-        return
-    }
-    
-    func switchChanged(_ sender: UISwitch, pokemonDTO: PokedexIOS.PokemonDTO?) {
         return
     }
     

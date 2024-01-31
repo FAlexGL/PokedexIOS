@@ -153,7 +153,7 @@ class PokemonDetailVC: UIViewController {
     private func getTypes(pokemonDTO: PokemonRepresentable) -> [String] {
         var types: [String] = []
         for type in pokemonDTO.typesRepresentable {
-            types.append(type.type.name)
+            types.append(type.typeRepresentable.name)
         }
         return types
     }
@@ -210,9 +210,9 @@ class PokemonDetailVC: UIViewController {
             let moveName = move.moveRepresentable.name
             let moveURL = move.moveRepresentable.url
             var moveVersionDetails: [(level: Int, game: String)] = []
-            for moveVersion in move.versionGroupDetails {
-                if moveVersion.moveLearnMethod.name == learnMethod {
-                    moveVersionDetails.append((level: moveVersion.levelLearnedAt, game: moveVersion.versionGroup.name))
+            for moveVersion in move.versionGroupDetailsRepresentable {
+                if moveVersion.moveLearnMethodRepresentable.name == learnMethod {
+                    moveVersionDetails.append((level: moveVersion.levelLearnedAt, game: moveVersion.versionGroupRepresentable.name))
                 }
             }
             if moveVersionDetails.count > 0 {
