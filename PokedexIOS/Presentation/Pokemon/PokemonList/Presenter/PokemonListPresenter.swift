@@ -10,11 +10,16 @@ import UIKit
 import Combine
 
 protocol PokemonListViewDelegate {
+    func didUpdatePokemonDetailsUpdated(pokemon: PokemonRepresentable)
     func didUpdatePokemonList(pokemonListDTO: PokemonListRepresentable)
     func favouriteUpdated(pokemonID: Int, isFavourite: Bool)
     func favouriteLoaded(pokemons: [FavouritePokemon])
     func favouriteChanged(result: Bool, messageError: String, indexPath: IndexPath)
     func didFailWithError(error: Error)
+}
+
+protocol PokemonCellViewDelegate {
+    func didFetchImage(image: UIImage)
 }
 
 protocol PokemonListPresenter {
@@ -32,7 +37,8 @@ protocol PokemonListPresenter {
 class DefaultPokemonListPresenter {
     var delegate: PokemonListViewDelegate?
     
-    private var subscriptions: [AnyCancellable] = []
+    private var subscriptions: Set<AnyCancellable> = []
+    private var pokemons: [PokemonRepresentable] = []
     private let coordinator: PokemonCoordinator
     private let fetchPokemonsUseCase: FetchPokemonsUseCase
     private let fetchFavouritePokemonsUseCase: FetchFavouritePokemonsUseCase
@@ -54,9 +60,7 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
         publisher
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
             .print("[SEARCH]")
-            .filter {
-                $0.count >= 3
-            }
+            .filter { $0.count >= 3 }
             .map { $0.lowercased() }
             .flatMap {
                 self.fetchPokemonsUseCase.fetchPokemonDetail(pokemonIdOrName: $0)
@@ -90,16 +94,24 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
     
     func viewDidLoad() {
         fetchPokemonsUseCase.fetchPokemonList()
-            .sink(receiveCompletion: { completion in
+            .handleEvents(receiveOutput: { pokemonListRepresentable in
+                self.delegate?.didUpdatePokemonList(pokemonListDTO: pokemonListRepresentable)
+            })
+            .map { $0.results }
+            .flatMap { $0.publisher }
+            .flatMap { self.fetchPokemonsUseCase.fetchPokemonDetail(pokemonIdOrName: $0.name) }
+            .collect()
+            .sink { completion in
                 switch completion {
                 case .finished:
-                    print("New Pokemons fetched")
-                case .failure(let error):
-                    print("Fetching new Pokemons error: \(error.localizedDescription)")
+                    print("Pokemons Fetched")
+                case .failure(_):
+                    print("Error fetching Pokemons")
                 }
-            }, receiveValue: { pokemonListDTO in
-                self.delegate?.didUpdatePokemonList(pokemonListDTO: pokemonListDTO)
-            })
+            } receiveValue: { [weak self] value in
+                guard let self = self else {return}
+                value.forEach { self.delegate?.didUpdatePokemonDetailsUpdated(pokemon: $0) }
+            }
             .store(in: &subscriptions)
     }
     
@@ -107,16 +119,24 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
         if showFavouritesButtonTitle != NSLocalizedString("ShowAll", comment: "") {
             if indexPath.row == totalRows - 1 && url != "" {
                 fetchPokemonsUseCase.fetchPokemonList(url: url)
-                    .sink(receiveCompletion: { completion in
+                    .handleEvents(receiveOutput: { [weak self] pokemonListRepresentable in
+                        guard let self = self else {return}
+                        self.delegate?.didUpdatePokemonList(pokemonListDTO: pokemonListRepresentable)
+                    })
+                    .map { $0.results }
+                    .flatMap { $0.publisher }
+                    .flatMap { self.fetchPokemonsUseCase.fetchPokemonDetail(pokemonIdOrName: $0.name) }
+                    .collect()
+                    .sink { completion in
                         switch completion {
                         case .finished:
-                            print("New Pokemons fetched")
-                        case .failure(let error):
-                            print("Fetching new Pokemons error: \(error.localizedDescription)")
+                            print("Pokemons Fetched")
+                        case .failure(_):
+                            print("Error fetching Pokemons")
                         }
-                    }, receiveValue: { pokemonListDTO in
-                        self.delegate?.didUpdatePokemonList(pokemonListDTO: pokemonListDTO)
-                    })
+                    } receiveValue: { value in
+                        value.forEach { self.delegate?.didUpdatePokemonDetailsUpdated(pokemon: $0) }
+                    }
                     .store(in: &subscriptions)
             }
         }
@@ -129,7 +149,11 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
         return pokemonsFetched
     }
     
-    func cellForRowAt (tableView: UITableView, indexPath: IndexPath, showFavouritesButtonTitle: String?, favouritePokemonsFetched: [FavouritePokemon], pokemonsFetched: [String]) -> UITableViewCell {
+    func cellForRowAt2(indexPath: IndexPath, showFavouritesButtonTitle: String?, favouritePokemonsFetched: [FavouritePokemon], pokemonsFetched: [PokemonRepresentable]) {
+        
+    }
+    
+    func cellForRowAt(tableView: UITableView, indexPath: IndexPath, showFavouritesButtonTitle: String?, favouritePokemonsFetched: [FavouritePokemon], pokemonsFetched: [String]) -> UITableViewCell {
         if showFavouritesButtonTitle == NSLocalizedString("ShowAll", comment: "") {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Identifiers.POKEMON_CELL_IDENTIFIER, for: indexPath) as! PokemonCell
             cell.showData(pokemonID: favouritePokemonsFetched[indexPath.row].pokemonId, pokemonName: favouritePokemonsFetched[indexPath.row].pokemonName)

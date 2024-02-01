@@ -34,7 +34,7 @@ protocol PokemonDetailPresenter {
 
 class DefaultPokemonDetailPresenter {
     weak var delegate: PokemonDetailViewDelegate?
-    private var subscriptions: [AnyCancellable] = []
+    private var subscriptions: Set<AnyCancellable> = []
     private var coordinator: PokemonCoordinator
     private var apiHelper: APIHelper
     private let fetchPokemonsUseCase: FetchPokemonsUseCase
@@ -155,16 +155,11 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
     }
     
     func downloadImage(urlString: String) {
-        apiHelper.downloadImage(from: urlString) { [weak self] (image) in
-            guard let self = self else {return}
-            var imageReturned: UIImage
-            if let image = image {
-                imageReturned = image
-            } else {
-                imageReturned = UIImage(named: Constants.Images.MISSINGNO)!
+        apiHelper.downloadImage(from: urlString)
+            .sink { image in
+                self.delegate?.showImage(image: image)
             }
-            delegate?.showImage(image: imageReturned)
-        }
+            .store(in: &subscriptions)
     }
     
     

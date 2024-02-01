@@ -21,7 +21,7 @@ protocol APIHelper {
     func fetchPokemonList(url: String)  -> AnyPublisher<PokemonListDTO, Error>
     func fetchPokemonDetail(pokemonIdOrName: String) -> AnyPublisher<PokemonDTO, Error>
     func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTO, Error>
-    func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void)
+    func downloadImage(from urlString: String) -> AnyPublisher<UIImage, Never>
 }
 
 struct DefaultAPIHelper {
@@ -58,24 +58,21 @@ extension DefaultAPIHelper: APIHelper {
         performRequest(urlString: "\(Constants.PokemonAPI.URL_POKEMON_MOVE)\(urlString)")
     }
     
-    func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
+    func downloadImage(from urlString: String) -> AnyPublisher<UIImage, Never> {
         guard let url = URL(string: urlString) else {
             print("Error converting URL object")
-            completion(nil)
-            return
+            return Just(UIImage(named: Constants.Images.MISSINGNO)!)
+                .eraseToAnyPublisher()
         }
         
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let data = data {
-                if let image = UIImage(data: data){
-                    completion(image)
-                } else {
-                    completion(nil)
-                }
-            } else {
-                completion(nil)
-            }
-        }
-        task.resume()
+        return URLSession(configuration: .default)
+            .dataTaskPublisher(for: url)
+            .retry(3)
+            .map({ data, response in
+                return data
+            })
+            .map { (UIImage(data: $0) ?? UIImage(named: Constants.Images.MISSINGNO)!) }
+            .replaceError(with: UIImage(named: Constants.Images.MISSINGNO)!)
+            .eraseToAnyPublisher()
     }
 }

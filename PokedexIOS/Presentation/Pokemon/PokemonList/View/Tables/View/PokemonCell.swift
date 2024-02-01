@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 
 //
@@ -20,6 +21,7 @@ class PokemonCell: UITableViewCell {
     
     private let dbHelper:  DBHelper = DefaultDBHelper.shared
     private let apiHelper: APIHelper = DefaultAPIHelper.shared
+    private var subscriptions: Set<AnyCancellable> = []
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -31,16 +33,20 @@ class PokemonCell: UITableViewCell {
         self.pokemonName.text = pokemonName
         let urlString = "\(Constants.PokemonAPI.URL_POKEMON_IMAGE)\(pokemonID).png"
         favouriteImage.isHidden = dbHelper.isFavourite(pokemonId: pokemonID) ? false : true
-        apiHelper.downloadImage(from: urlString) { image in
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else {return}
-                if let image = image {
+        apiHelper.downloadImage(from: urlString)
+            .sink(receiveValue: { image in
+                DispatchQueue.main.async {
                     self.pokemonImage.image = image
-                } else {
-                    self.pokemonImage.image = UIImage(named: Constants.Images.MISSINGNO)
                 }
-            }
-        }
+            })
+            .store(in: &subscriptions)
     }
+}
+
+extension PokemonCell: PokemonCellViewDelegate {
+    func didFetchImage(image: UIImage) {
+        //
+    }
+    
     
 }

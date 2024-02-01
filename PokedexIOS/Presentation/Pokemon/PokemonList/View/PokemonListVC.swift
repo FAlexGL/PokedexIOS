@@ -13,6 +13,7 @@ class PokemonListVC: UIViewController {
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var searchBar: UISearchBar!
     
+    private var pokemons: [PokemonRepresentable] = []
     private var pokemonsFetched: [String] = []
     private var favouritePokemonsFetched: [FavouritePokemon] = []
     private var pokemonListDTO: PokemonListRepresentable?
@@ -33,10 +34,10 @@ class PokemonListVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initDelegates()
-        initTable()
-        initNavigationControllerFavouriteButton()
         presenter.viewDidLoad()
         addSubscribers()
+        initTable()
+        initNavigationControllerFavouriteButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -81,7 +82,7 @@ class PokemonListVC: UIViewController {
             .map { ($0.object as? UISearchTextField)?.text ?? "" }
             .eraseToAnyPublisher()
         
-        presenter.addSubscribers(publisher: publisher)
+        presenter.addSubscribers(publisher: publisher)        
     }
     
     @objc private func favouriteButtonTapped(_ sender: UIButton!){
@@ -153,6 +154,10 @@ extension PokemonListVC: UITableViewDelegate{
 
 
 extension PokemonListVC: PokemonListViewDelegate {
+    func didUpdatePokemonDetailsUpdated(pokemon: PokemonRepresentable) {
+        self.pokemons.append(pokemon)
+    }
+    
     
     func didUpdatePokemonList(pokemonListDTO: PokemonListRepresentable) {
         self.pokemonListDTO = pokemonListDTO

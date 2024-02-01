@@ -24,7 +24,7 @@ class DefaultMoveDetailPresenter {
     var delegate: MoveDetailViewDelegate?
     private var apiHelper: APIHelper
     private let fetchPokemonUseCase: FetchPokemonsUseCase
-    private var subscriptions: [AnyCancellable] = []
+    private var subscriptions: Set<AnyCancellable> = []
     
     init(apiHelper: APIHelper, fetchPokemonUseCase: FetchPokemonsUseCase) {
         self.fetchPokemonUseCase = fetchPokemonUseCase
