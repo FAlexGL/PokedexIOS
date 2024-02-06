@@ -23,7 +23,7 @@ protocol PokemonDetailViewDelegate: AnyObject {
 protocol PokemonDetailPresenter {
     var delegate: PokemonDetailViewDelegate? { get set }
     func movesButtonPushed(pokemonMoves: [PokemonMove], learnMethod: String)
-    func getPokemonDetail(pokemonId: Int)
+    func getPokemonDetail(pokemonName: String?, pokemonDetail: PokemonRepresentable?)
     func downloadImage(urlString: String)
     func getSprites(pokemonSprites: SpritesRepresentable)
     func getTypesValues(types: [String])
@@ -34,7 +34,7 @@ protocol PokemonDetailPresenter {
 
 class DefaultPokemonDetailPresenter {
     weak var delegate: PokemonDetailViewDelegate?
-    private var subscriptions: Set<AnyCancellable> = []
+    private var subscriptions = Set<AnyCancellable>()
     private var coordinator: PokemonCoordinator
     private var apiHelper: APIHelper
     private let fetchPokemonsUseCase: FetchPokemonsUseCase
@@ -52,6 +52,7 @@ class DefaultPokemonDetailPresenter {
 
 //MARK: - ext. PokemonDetailPresenter
 extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
+    
     
     func movesButtonPushed(pokemonMoves: [PokemonMove], learnMethod: String) {
         coordinator.goToPokemonMoves(pokemonMoves: pokemonMoves, learnMethod: learnMethod)
@@ -163,8 +164,15 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
     }
     
     
-    func getPokemonDetail(pokemonId: Int) {
-        fetchPokemonsUseCase.fetchPokemonDetail(pokemonIdOrName: pokemonId)
+    func getPokemonDetail(pokemonName: String?, pokemonDetail: PokemonRepresentable?) {
+        guard let pokemonName = pokemonName else {
+            return
+        }
+        
+        if let pokemonDetail = pokemonDetail {
+            delegate?.didUpdatePokemonDetail(pokemonDTO: pokemonDetail)
+        } else {
+            fetchPokemonsUseCase.fetchPokemonDetail(pokemonIdOrName: pokemonName)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -174,6 +182,7 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
                 }
             }, receiveValue: { self.delegate?.didUpdatePokemonDetail(pokemonDTO: $0) })
             .store(in: &subscriptions)
+            }
     }
     
     func switchChanged(_ sender: UISwitch, pokemonDTO: PokemonRepresentable?) {

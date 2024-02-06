@@ -6,6 +6,13 @@
 //
 
 import Foundation
+import RealmSwift
+
+
+
+
+
+
 
 protocol PokemonRepresentable {
     var id: Int { get }

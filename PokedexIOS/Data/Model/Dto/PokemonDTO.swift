@@ -32,6 +32,7 @@ struct PokemonDTO: Decodable {
 }
 
 extension PokemonDTO: PokemonRepresentable {
+    
     var movesRepresentable: [MovesRepresentable] {
         moves
     }

@@ -21,11 +21,22 @@ class PokemonCell: UITableViewCell {
     
     private let dbHelper:  DBHelper = DefaultDBHelper.shared
     private let apiHelper: APIHelper = DefaultAPIHelper.shared
-    private var subscriptions: Set<AnyCancellable> = []
+    private var subscriptions = Set<AnyCancellable>()
     
     override func awakeFromNib() {
         super.awakeFromNib()
         contentCellView.layer.cornerRadius = 15
+    }
+    
+    func getPokemonName() -> String {
+        pokemonName.text ?? ""
+    }
+    
+    func getPokemonId() -> Int {
+        guard let pokemonId = pokemonID.text else {
+            return 0
+        }
+        return Int(pokemonId.replacingOccurrences(of: "#", with: "")) ?? 0
     }
     
     func showData(pokemonID: Int, pokemonName: String) {
@@ -41,12 +52,4 @@ class PokemonCell: UITableViewCell {
             })
             .store(in: &subscriptions)
     }
-}
-
-extension PokemonCell: PokemonCellViewDelegate {
-    func didFetchImage(image: UIImage) {
-        //
-    }
-    
-    
 }

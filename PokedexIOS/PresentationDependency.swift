@@ -34,7 +34,7 @@ extension PresentationDependency where Self: DefaultAppDependency {
     }
     
     func resolve(coordinator: PokemonCoordinator) -> PokemonListPresenter {
-        DefaultPokemonListPresenter(coordinator: coordinator, fetchPokemonsUseCase: resolve(), fetchFavouritePokemonsUseCase: resolve(), updateFavouritePokemonsUseCase: resolve())
+        DefaultPokemonListPresenter(coordinator: coordinator, fetchPokemonsUseCase: resolve(), fetchFavouritePokemonsUseCase: resolve(), updateFavouritePokemonsUseCase: resolve(), dbHelper: resolve())
     }
     
     func resolve(coordinator: PokemonCoordinator) -> PokemonDetailVC {

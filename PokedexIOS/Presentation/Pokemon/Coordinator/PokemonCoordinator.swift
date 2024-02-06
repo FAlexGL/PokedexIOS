@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 protocol PokemonCoordinator: Coordinator {
-    func goToPokemonDetail(pokemonId: Int, delegate: PokemonDetailDelegate)
+    func goToPokemonDetail(pokemonName: String, delegate: PokemonDetailDelegate, pokemonDetail: PokemonRepresentable?)
     func goToPokemonMoves(pokemonMoves: [PokemonMove], learnMethod: String)
 }
 
@@ -28,9 +28,9 @@ class DefaultPokemonCoordinator: PokemonCoordinator {
         navigationController.pushViewController(mainVC, animated: false)
     }
     
-    func goToPokemonDetail(pokemonId: Int, delegate: PokemonDetailDelegate){
+    func goToPokemonDetail(pokemonName: String, delegate: PokemonDetailDelegate, pokemonDetail: PokemonRepresentable?){
         let pokemonDetailVC: PokemonDetailVC = presentationDependencies.resolve(coordinator: self)
-        pokemonDetailVC.setPokemonId(pokemonId: pokemonId)
+        pokemonDetailVC.setPokemonData(pokemonName: pokemonName, pokemonDetail: pokemonDetail)
         pokemonDetailVC.delegate = delegate
         navigationController.pushViewController(pokemonDetailVC, animated: true)
     }

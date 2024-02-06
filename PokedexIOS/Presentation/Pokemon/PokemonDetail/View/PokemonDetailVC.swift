@@ -66,7 +66,8 @@ class PokemonDetailVC: UIViewController {
     private var spritesArray: [String] = []
     private var spriteArrayPosition: Int = -1
     private let defaultAlphaTypes = 0.1
-    private var pokemonId: Int?
+    private var pokemonName: String?
+    private var pokemonDetail: PokemonRepresentable?
     private var presenter: PokemonDetailPresenter
     
     var delegate: PokemonDetailDelegate?
@@ -100,8 +101,9 @@ class PokemonDetailVC: UIViewController {
         }
     }
     
-    func setPokemonId(pokemonId: Int){
-        self.pokemonId = pokemonId
+    func setPokemonData(pokemonName: String, pokemonDetail: PokemonRepresentable?){
+        self.pokemonName = pokemonName
+        self.pokemonDetail = pokemonDetail
     }
     
     private func initDelegates(){
@@ -109,9 +111,7 @@ class PokemonDetailVC: UIViewController {
     }
     
     private func getPokemonDetail(){
-        if let pokemonId = pokemonId{
-            presenter.getPokemonDetail(pokemonId: pokemonId)
-        }
+        presenter.getPokemonDetail(pokemonName: pokemonName, pokemonDetail: pokemonDetail)
     }
     
     private func translateViews(){

@@ -9,16 +9,9 @@ import Foundation
 import Combine
 
 protocol FetchPokemonsUseCase {
-    func fetchPokemonList() -> AnyPublisher<PokemonListRepresentable, Error>
     func fetchPokemonList(url: String?) -> AnyPublisher<PokemonListRepresentable, Error>
     func fetchPokemonDetail<T>(pokemonIdOrName: T) -> AnyPublisher<PokemonRepresentable, Error>
     func fetchPokemonMove(urlString: String) -> AnyPublisher<MoveDTORepresentable, Error>
-}
-
-extension FetchPokemonsUseCase {
-    func fetchPokemonList() -> AnyPublisher<PokemonListRepresentable, Error> {
-        fetchPokemonList(url: nil)
-    }
 }
 
 class DefaultFetchPokemonsUseCase {

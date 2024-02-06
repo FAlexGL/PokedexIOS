@@ -14,13 +14,12 @@ class PokemonListVC: UIViewController {
     @IBOutlet private weak var searchBar: UISearchBar!
     
     private var pokemons: [PokemonRepresentable] = []
-    private var pokemonsFetched: [String] = []
-    private var favouritePokemonsFetched: [FavouritePokemon] = []
     private var pokemonListDTO: PokemonListRepresentable?
     private var url = Constants.PokemonAPI.URL_POKEMON_LIST
     private var positionOfFavouritePokemonSelected: IndexPath?
     private var presenter: PokemonListPresenter
-    
+    private var subscriptions = Set<AnyCancellable>()
+
     init(presenter: PokemonListPresenter){
         self.presenter = presenter
         super.init(nibName: Constants.NibNames.POKEMON_LIST, bundle: nil)
@@ -33,11 +32,11 @@ class PokemonListVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initDelegates()
         presenter.viewDidLoad()
         addSubscribers()
         initTable()
         initNavigationControllerFavouriteButton()
+        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,10 +53,6 @@ class PokemonListVC: UIViewController {
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
-    }
-    
-    private func initDelegates(){
-        presenter.delegate = self
     }
     
     private func initNavigationControllerFavouriteButton(){
@@ -86,45 +81,33 @@ class PokemonListVC: UIViewController {
     }
     
     @objc private func favouriteButtonTapped(_ sender: UIButton!){
-        let showFavouritesButtonTitle = navigationItem.rightBarButtonItem?.title
-        navigationItem.rightBarButtonItem?.title = presenter.favouriteButtonTapped(showFavouritesButtonTitle: showFavouritesButtonTitle)
-        
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-    }
-    
-    private func loadPokemonList() {
-        if let pokemonListDTO = self.pokemonListDTO {
-            for pokemon in pokemonListDTO.results {
-                self.pokemonsFetched.append(pokemon.name)
-            }
-        }
-        DispatchQueue.main.async { [weak self] in
-            self?.tableView.reloadData()
-        }
+        let buttonString = presenter.favouriteButtonTapped()
+        self.navigationItem.rightBarButtonItem?.title = buttonString
+        sender.setTitle(buttonString, for: .normal)
     }
 }
 
 
-extension PokemonListVC: UITableViewDataSource{
+extension PokemonListVC: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let showFavouritesButtonTitle = self.navigationItem.rightBarButtonItem?.title
-        return presenter.numberOfRowsInSection(showFavouritesButtonTitle: showFavouritesButtonTitle, favouritePokemonsFetched: favouritePokemonsFetched.count, pokemonsFetched: pokemonsFetched.count)
+        pokemons.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let showFavouritesButtonTitle = self.navigationItem.rightBarButtonItem?.title
-        return presenter.cellForRowAt(tableView: tableView, indexPath: indexPath, showFavouritesButtonTitle: showFavouritesButtonTitle, favouritePokemonsFetched: favouritePokemonsFetched, pokemonsFetched: pokemonsFetched)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Identifiers.POKEMON_CELL_IDENTIFIER, for: indexPath) as? PokemonCell else {
+            return UITableViewCell()
+        }
+        let model = pokemons[indexPath.row]
+        cell.showData(pokemonID: model.id, pokemonName: model.name)
+        return cell
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let stringFavourite = NSLocalizedString("Favourite", comment: "")
         let item = UIContextualAction(style: .normal, title: stringFavourite) { [weak self] (action, view, completionHandler) in
             guard let self = self else { return }
-            let pokemonId = self.navigationItem.rightBarButtonItem?.title ==  NSLocalizedString("ShowAll", comment: "") ? favouritePokemonsFetched[indexPath.row].pokemonId : indexPath.row + 1
-            
-            self.presenter.trailingSwipeActionsConfigurationForRowAt(pokemonId: pokemonId, pokemonName: self.pokemonsFetched[indexPath.row], indexPath: indexPath)
+            self.presenter.trailingSwipeActionsConfigurationForRowAt(pokemon: pokemons[indexPath.row], indexPath: indexPath)
             completionHandler(true)
         }
         item.image = UIImage(named: Constants.Images.POKEBALL_FAVOURITE)
@@ -134,90 +117,72 @@ extension PokemonListVC: UITableViewDataSource{
         
         return swipeActions
     }
-    
 }
 
-extension PokemonListVC: UITableViewDelegate{
+extension PokemonListVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let showFavouritesButtonTitle = self.navigationItem.rightBarButtonItem?.title
-        let totalRows = tableView.numberOfRows(inSection: indexPath.section)
-        presenter.willDisplay(showFavouritesButtonTitle: showFavouritesButtonTitle, totalRows: totalRows, indexPath: indexPath, url: url)
+        presenter.willDisplay(totalRows: pokemons.count, indexPath: indexPath)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.positionOfFavouritePokemonSelected = indexPath
-        let showFavouritesButtonTitle = self.navigationItem.rightBarButtonItem?.title
-        presenter.didSelectRowAt(showFavouritesButtonTitle: showFavouritesButtonTitle, indexPath: indexPath, favouritePokemonsFetched: favouritePokemonsFetched)
+        presenter.didSelectRowAt(pokemon: pokemons[indexPath.row])
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
-
-extension PokemonListVC: PokemonListViewDelegate {
-    func didUpdatePokemonDetailsUpdated(pokemon: PokemonRepresentable) {
-        self.pokemons.append(pokemon)
+private extension PokemonListVC {
+    func bind() {
+        bindPokemonsList()
+        bindFavoriteChanged()
+        bindError()
     }
     
-    
-    func didUpdatePokemonList(pokemonListDTO: PokemonListRepresentable) {
-        self.pokemonListDTO = pokemonListDTO
-        self.url = pokemonListDTO.next ?? ""
-        self.loadPokemonList()
-    }
-    
-    func favouriteUpdated(pokemonID: Int, isFavourite: Bool) {
-        let indexPath = IndexPath(row: pokemonID - 1, section: 0)
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.tableView.reloadRows(at: [indexPath], with: .none)
-            if self.navigationItem.rightBarButtonItem?.title ==  NSLocalizedString("ShowAll", comment: "") {
-                if let indexPath = self.positionOfFavouritePokemonSelected {
-                    self.tableView.beginUpdates()
-                    self.favouritePokemonsFetched.remove(at: indexPath.row)
-                    self.tableView.deleteRows(at: [indexPath], with: .automatic)
-                    self.tableView.endUpdates()
+    func bindPokemonsList() {
+        presenter.statePublisher
+            .sink { [weak self] in
+                switch $0 {
+                case .reloadTable(let pokemons):
+                    self?.pokemons = pokemons.sorted { $0.id < $1.id }
+                    self?.tableView.reloadData()
+                default: break
                 }
-            }
+            }.store(in: &subscriptions)
+    }
+    
+    func bindFavoriteChanged() {
+        presenter.statePublisher
+            .sink { [weak self] in
+                switch $0 {
+                case .favoriteChanged(let indexPath):
+                    self?.favouriteChanged(indexPath: indexPath)
+                default: break
+                }
+            }.store(in: &subscriptions)
+    }
+    
+    func bindError() {
+        presenter.statePublisher
+            .sink { [weak self] in
+                switch $0 {
+                case .showError(let errorMessage):
+                    self?.showErrorAlert(errorMessage: errorMessage)
+                default: break
+                }
+            }.store(in: &subscriptions)
+    }
+}
+
+private extension PokemonListVC {
+    func showErrorAlert(errorMessage: String) {
+        let alert = UIAlertController(title: "", message: errorMessage, preferredStyle: .actionSheet)
+        self.present(alert , animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            alert.dismiss(animated: true)
         }
     }
     
-    func favouriteLoaded(pokemons: [FavouritePokemon]) {
-        favouritePokemonsFetched = pokemons
-        let buttonString = NSLocalizedString("ShowAll", comment: "")
-        self.navigationItem.rightBarButtonItem?.title = buttonString
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.tableView.reloadData()
-        }
+    func favouriteChanged(indexPath: IndexPath) {
+        tableView.reloadData()
     }
-    
-    func favouriteChanged(result: Bool, messageError: String, indexPath: IndexPath) {
-        if !result {
-            let alert = UIAlertController(title: "", message: messageError, preferredStyle: .actionSheet)
-            self.present(alert , animated: true)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                alert.dismiss(animated: true)
-            }
-        }
-        
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            if  self.navigationItem.rightBarButtonItem?.title ==  NSLocalizedString("ShowAll", comment: "") {
-                self.tableView.beginUpdates()
-                self.favouritePokemonsFetched.remove(at: indexPath.row)
-                self.tableView.deleteRows(at: [indexPath], with: .automatic)
-                self.tableView.endUpdates()
-            } else {
-                self.tableView.reloadRows(at: [indexPath], with: .none)
-            }
-        }
-    }
-    
-    func didFailWithError(error: Error) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else {return}
-            let errorVC = ErrorVC(nibName: Constants.NibNames.POKEMON_ERROR, bundle: nil)
-            self.navigationController?.pushViewController(errorVC, animated: true)
-        }
-    }
+
 }
