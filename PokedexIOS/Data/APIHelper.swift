@@ -29,7 +29,8 @@ struct DefaultAPIHelper {
     static let shared = DefaultAPIHelper()
     
     func performRequest<T: Decodable>(urlString: String) -> AnyPublisher<T, Error> {
-            guard let url = URL(string: urlString) else {
+        
+        guard let url = URL(string: urlString) else {
                 fatalError("converting URL error")
             }
         
@@ -45,6 +46,7 @@ struct DefaultAPIHelper {
 }
 
 extension DefaultAPIHelper: APIHelper {
+    
     
     func fetchPokemonList(url: String) -> AnyPublisher<PokemonListDTO, Error> {
         performRequest(urlString: url)

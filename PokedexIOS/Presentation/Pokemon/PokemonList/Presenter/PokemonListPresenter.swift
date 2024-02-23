@@ -21,7 +21,6 @@ protocol PokemonListViewDelegate {
 protocol PokemonListPresenter {
     var delegate: PokemonListViewDelegate? { get set }
     var statePublisher: AnyPublisher<PokemonListState, Never> { get }
-    
     func didSelectRowAt(pokemon: PokemonRepresentable)
     func viewDidLoad()
     func willDisplay(totalRows: Int, indexPath: IndexPath)
@@ -35,7 +34,7 @@ protocol PokemonListPresenter {
 enum PokemonListState {
     case idle
     case reloadTable([PokemonRepresentable])
-    case favoriteChanged(IndexPath)
+    case favoriteChanged(indexPath: IndexPath, showingFavourites: Bool)
     case showError(String)
 }
 
@@ -110,7 +109,6 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
             .sink { [weak self] result in
                 self?.searchText = nil
                 self?.reloadTable()
-//                self.delegate?.didUpdatePokemonsFoundByUser(pokemonsFoundByUser: [])
             }
             .store(in: &subscriptions)
         
@@ -177,8 +175,7 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
     func trailingSwipeActionsConfigurationForRowAt(pokemon: PokemonRepresentable, indexPath: IndexPath) {
         let favouritePokemon = FavouritePokemon(pokemonId: pokemon.id, pokemonName: pokemon.name)
         let _ = updateFavouritePokemonsUseCase.updateFavourite(favouritePokemon: favouritePokemon)
-        stateSubject.send(.favoriteChanged(indexPath))
-//        delegate?.favouriteChanged(result: result, messageError: "Error updating favourite", indexPath: indexPath)
+        stateSubject.send(.favoriteChanged(indexPath: indexPath, showingFavourites: showingFavourites))
     }
     
     func favouriteButtonTapped() -> String? {
@@ -188,21 +185,21 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
             let result = fetchFavouritePokemonsUseCase.fetchFavouritePokemons()
             switch result {
             case .success(let pokemons):
-                var publishers: [AnyPublisher<PokemonRepresentable, Error>] = []
-                pokemons.forEach { favouritePokemon in
-                    publishers.append(fetchPokemonsUseCase.fetchPokemonDetail(pokemonIdOrName: favouritePokemon.pokemonName))
+                let publishers = pokemons.compactMap { favouritePokemon in
+                    fetchPokemonsUseCase.fetchPokemonDetail(pokemonIdOrName: favouritePokemon.pokemonName)
                 }
                 
-                let _ = Publishers.Zip(publishers[0], publishers[1])
+                Publishers.MergeMany(publishers)
+                    .collect()
+                    .eraseToAnyPublisher()
                     .sink { result in
                         //
-                    } receiveValue: { pok1, pok2 in
-                        self.storedPokemons = []
-                        self.storedPokemons.append(pok1)
-                        self.storedPokemons.append(pok2)
+                    } receiveValue: { pokemons in
+                        self.storedPokemons = pokemons
                         self.stateSubject.send(.reloadTable(self.storedPokemons))
                     }
                     .store(in: &subscriptions)
+                
             case .failure(let failure):
                 self.delegate?.didFailWithError(error: failure)
             }
@@ -211,28 +208,13 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
             isPaginating = true
             stateSubject.send(.reloadTable(loadedPokemons))
             return NSLocalizedString("ShowFavourites", comment: "")
-    }
-//        if showFavouritesButtonTitle == NSLocalizedString("ShowFavourites", comment: "") || showFavouritesButtonTitle == nil {
-//            let buttonString = NSLocalizedString("ShowAll", comment: "")
-//            let result = fetchFavouritePokemonsUseCase.fetchFavouritePokemons()
-//            switch result {
-//            case .success(let pokemons):
-//                delegate?.favouriteLoaded(pokemons: pokemons)
-//            case .failure(let failure):
-//                self.delegate?.didFailWithError(error: failure)
-//            }
-//            return buttonString
-//        } else {
-//            let buttonString = NSLocalizedString("ShowFavourites", comment: "")
-//            return buttonString
-//        }
+        }
     }
     
     private func fetchMoreData(url: String?) {
         fetchPokemonsUseCase.fetchPokemonList(url: url)
             .handleEvents(receiveOutput: { [weak self] pokemonListRepresentable in
                 self?.pageUrl = pokemonListRepresentable.next
-//                self.delegate?.didUpdatePokemonList(pokemonListDTO: pokemonListRepresentable)
             })
             .map { $0.results }
             .flatMap { $0.publisher }
@@ -245,7 +227,6 @@ extension DefaultPokemonListPresenter: PokemonListPresenter {
                     self.loadedPokemons.append(pokemon)
                 }
                 self.stateSubject.send(.reloadTable(self.loadedPokemons))
-//                self.delegate?.didUpdatePokemonDetailsUpdated(pokemon: allFetchedPokemonsWithFavouriteValue)
             }
             .store(in: &subscriptions)
     }

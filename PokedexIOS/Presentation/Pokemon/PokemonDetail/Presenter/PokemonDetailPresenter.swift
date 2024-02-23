@@ -9,19 +9,17 @@ import Foundation
 import UIKit
 import Combine
 
-protocol PokemonDetailViewDelegate: AnyObject {
-    func didUpdatePokemonDetail(pokemonDTO: PokemonRepresentable)
-    func didFailWithError(error: Error)
-    func showImage(image: UIImage)
-    func didUpdateSprites(spritesArray: [String])
-    func typesValuesFetched(types: [String: Double])
-    func setFavourite(isFavourite: Bool)
-    func setSwitchStatus(switchStatus: Bool)
-    func setSpritePosition(spritePosition: Int)
+enum PokemonDetailState {
+    case idle
+    case pokemonLoaded(PokemonRepresentable)
+    case spritesLoaded([String])
+    case favouriteUpdated(Bool)
+    case imageLoaded(UIImage)
+    case typesValuesLoaded([String : Double])
 }
 
 protocol PokemonDetailPresenter {
-    var delegate: PokemonDetailViewDelegate? { get set }
+    var statePublisher: AnyPublisher<PokemonDetailState, Never> { get }
     func movesButtonPushed(pokemonMoves: [PokemonMove], learnMethod: String)
     func getPokemonDetail(pokemonName: String?, pokemonDetail: PokemonRepresentable?)
     func downloadImage(urlString: String)
@@ -29,17 +27,27 @@ protocol PokemonDetailPresenter {
     func getTypesValues(types: [String])
     func switchChanged(_ sender: UISwitch, pokemonDTO: PokemonRepresentable?)
     func isFavourite(pokemonId: Int)
-    func imageTapped(_ sender: UITapGestureRecognizer, sprites: [String], spritePosition: Int)
+    func imageTapped(_ sender: UITapGestureRecognizer, sprites: [String])
+    func imageSwapper(sprites: [String])
 }
 
 class DefaultPokemonDetailPresenter {
-    weak var delegate: PokemonDetailViewDelegate?
     private var subscriptions = Set<AnyCancellable>()
     private var coordinator: PokemonCoordinator
     private var apiHelper: APIHelper
     private let fetchPokemonsUseCase: FetchPokemonsUseCase
     private let updateFavouritePokemonsUseCase: UpdateFavouritePokemonsUseCase
     private let fetchFavouritesPokemonsUseCase: FetchFavouritePokemonsUseCase
+    private var spritePosition: Int
+    private var imageSwappingTimer: Timer?
+    private var imagesCache: [UIImage]
+    
+    private var stateSubject = CurrentValueSubject<PokemonDetailState, Never>(.idle)
+    public var statePublisher: AnyPublisher<PokemonDetailState, Never> {
+        stateSubject
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
     
     init(apiHelper: APIHelper, coordinator: PokemonCoordinator, fetchPokemonsUseCase: FetchPokemonsUseCase, updateFavouritePokemonsUseCase: UpdateFavouritePokemonsUseCase, fetchFavouritesPokemonsUseCase: FetchFavouritePokemonsUseCase) {
         self.coordinator = coordinator
@@ -47,12 +55,14 @@ class DefaultPokemonDetailPresenter {
         self.fetchPokemonsUseCase = fetchPokemonsUseCase
         self.updateFavouritePokemonsUseCase = updateFavouritePokemonsUseCase
         self.fetchFavouritesPokemonsUseCase = fetchFavouritesPokemonsUseCase
+        spritePosition = 1
+        imageSwappingTimer = nil
+        imagesCache = []
     }
 }
 
 //MARK: - ext. PokemonDetailPresenter
 extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
-    
     
     func movesButtonPushed(pokemonMoves: [PokemonMove], learnMethod: String) {
         coordinator.goToPokemonMoves(pokemonMoves: pokemonMoves, learnMethod: learnMethod)
@@ -64,7 +74,7 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
         switch favouritePokemons {
         case .success(let pokemons):
             if pokemons.contains(where: { $0.pokemonId == pokemonId }) {
-                delegate?.setSwitchStatus(switchStatus: true)
+                stateSubject.send(.favouriteUpdated(true))
             }
         case .failure(_):
             print("Error searching favourite Pokemons")
@@ -102,7 +112,8 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
         if let officialFrontShiny = pokemonSprites.otherRepresentable.officialArtworkRepresentable.frontShiny {
             sprites.append(officialFrontShiny)
         }
-        delegate?.didUpdateSprites(spritesArray: sprites)
+        stateSubject.send(.spritesLoaded(sprites))
+        print("Total sprites: \(sprites.count)")
     }
     
     func getTypesValues(types: [String]) {
@@ -150,7 +161,7 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
             default:
                 print("error con el typo: \(type)")
             }
-            delegate?.typesValuesFetched(types: typesValues)
+            stateSubject.send(.typesValuesLoaded(typesValues))
         }
         
     }
@@ -158,7 +169,8 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
     func downloadImage(urlString: String) {
         apiHelper.downloadImage(from: urlString)
             .sink { image in
-                self.delegate?.showImage(image: image)
+                self.stateSubject.send(.imageLoaded(image))
+                self.imagesCache.append(image)
             }
             .store(in: &subscriptions)
     }
@@ -170,7 +182,7 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
         }
         
         if let pokemonDetail = pokemonDetail {
-            delegate?.didUpdatePokemonDetail(pokemonDTO: pokemonDetail)
+            stateSubject.send(.pokemonLoaded(pokemonDetail))
         } else {
             fetchPokemonsUseCase.fetchPokemonDetail(pokemonIdOrName: pokemonName)
             .sink(receiveCompletion: { completion in
@@ -180,7 +192,7 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
                 case .failure(_):
                     print("Error fetching Pokemon's Detail")
                 }
-            }, receiveValue: { self.delegate?.didUpdatePokemonDetail(pokemonDTO: $0) })
+            }, receiveValue: { self.stateSubject.send(.pokemonLoaded($0)) })
             .store(in: &subscriptions)
             }
     }
@@ -189,19 +201,26 @@ extension DefaultPokemonDetailPresenter: PokemonDetailPresenter {
         if let pokemonDTO = pokemonDTO {
             let favouritePokemon = FavouritePokemon(pokemonId: pokemonDTO.id, pokemonName: pokemonDTO.name)
             _ = updateFavouritePokemonsUseCase.updateFavourite(favouritePokemon: favouritePokemon)
-            delegate?.setFavourite(isFavourite: sender.isOn)
+            stateSubject.send(.favouriteUpdated(sender.isOn))
         }
     }
     
-    func imageTapped(_ sender: UITapGestureRecognizer, sprites: [String], spritePosition: Int) {
-        downloadImage(urlString: sprites[spritePosition])
-        var nextSpritePosition = spritePosition
-        if spritePosition < sprites.count-1{
-            nextSpritePosition += 1
-        } else {
-            nextSpritePosition = 0
+    func imageTapped(_ sender: UITapGestureRecognizer, sprites: [String]) {
+        if let imageSwappingTimer = imageSwappingTimer {
+            imageSwappingTimer.isValid ? imageSwappingTimer.invalidate() : imageSwapper(sprites: sprites)
         }
-        delegate?.setSpritePosition(spritePosition: nextSpritePosition)
     }
     
+    func imageSwapper(sprites: [String]) {
+        imageSwappingTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
+            if self.imagesCache.count != sprites.count  && sprites.count > 1{
+                self.downloadImage(urlString: sprites[self.spritePosition])
+                print("image downloaded")
+            } else if sprites.count > 1 {
+                self.stateSubject.send(.imageLoaded(self.imagesCache[self.spritePosition]))
+                print("image from cache")
+            }
+            self.spritePosition < sprites.count-1 ? (self.spritePosition += 1) : (self.spritePosition = 0)
+        }
+    }
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 protocol PokemonDetailDelegate {
     func favouriteUpdated(pokemonID: Int, isFavourite: Bool)
@@ -69,6 +70,7 @@ class PokemonDetailVC: UIViewController {
     private var pokemonName: String?
     private var pokemonDetail: PokemonRepresentable?
     private var presenter: PokemonDetailPresenter
+    private var subscriptions = Set<AnyCancellable>()
     
     var delegate: PokemonDetailDelegate?
     
@@ -84,14 +86,13 @@ class PokemonDetailVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initDelegates()
+        bind()
         translateViews()
         self.navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.boldSystemFont(ofSize: 22),
             .foregroundColor: UIColor(named: Constants.Colours.BLUE_POKEMON_TITLE) ?? UIColor.systemBlue
         ]
         getPokemonDetail()
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -104,10 +105,6 @@ class PokemonDetailVC: UIViewController {
     func setPokemonData(pokemonName: String, pokemonDetail: PokemonRepresentable?){
         self.pokemonName = pokemonName
         self.pokemonDetail = pokemonDetail
-    }
-    
-    private func initDelegates(){
-        presenter.delegate = self
     }
     
     private func getPokemonDetail(){
@@ -196,7 +193,6 @@ class PokemonDetailVC: UIViewController {
             presenter.getTypesValues(types: getTypes(pokemonDTO: pokemonDTO))
         }
         presenter.getSprites(pokemonSprites: pokemonDTO.spritesRepresentable)
-        print("Total sprites: \(spritesArray.count)")
     }
     
     private func getLevelMoves(pokemonDTO: PokemonRepresentable) -> [PokemonMove] {
@@ -241,64 +237,98 @@ class PokemonDetailVC: UIViewController {
     }
     
     @IBAction private func imageTapped(_ sender: UITapGestureRecognizer) {
-        presenter.imageTapped(sender, sprites: spritesArray, spritePosition: spriteArrayPosition)
+        presenter.imageTapped(sender, sprites: spritesArray)
     }
 }
 
-extension PokemonDetailVC: PokemonDetailViewDelegate {
-    
-    func setSpritePosition(spritePosition: Int) {
-        spriteArrayPosition = spritePosition
+extension PokemonDetailVC {
+    private func bind() {
+        bindPokemonUpdated()
+        bindSpritesLoaded()
+        bindFavouriteUpdated()
+        bindImageLoaded()
+        bindTypesValuesLoaded()
     }
     
-    
-    func setFavourite(isFavourite: Bool) {
-        self.isFavourite = isFavourite
+    private func bindPokemonUpdated() {
+        presenter.statePublisher
+            .sink { [weak self] in
+                switch $0 {
+                case .pokemonLoaded(let pokemonRepresentable):
+                    self?.showData(pokemonDTO: pokemonRepresentable)
+                default: break
+                }
+            }
+            .store(in: &subscriptions)
     }
     
-    func typesValuesFetched(types: [String : Double]) {
-        normalImage.alpha = types["normal"] ?? 0.1
-        fightingImage.alpha = types["fighting"] ?? 0.1
-        flyingImage.alpha = types["flying"] ?? 0.1
-        poisonImage.alpha = types["poison"] ?? 0.1
-        groundImage.alpha = types["ground"] ?? 0.1
-        rockImage.alpha = types["rock"] ?? 0.1
-        bugImage.alpha = types["bug"] ?? 0.1
-        ghostImage.alpha = types["ghost"] ?? 0.1
-        steelImage.alpha = types["steel"] ?? 0.1
-        fireImage.alpha = types["fire"] ?? 0.1
-        waterImage.alpha = types["water"] ?? 0.1
-        grassImage.alpha = types["grass"] ?? 0.1
-        electricImage.alpha = types["electric"] ?? 0.1
-        psychicImage.alpha = types["psychic"] ?? 0.1
-        iceImage.alpha = types["ice"] ?? 0.1
-        dragonImage.alpha = types["dragon"] ?? 0.1
-        darkImage.alpha = types["dark"] ?? 0.1
-        fairyImage.alpha = types["fairy"] ?? 0.1
+    private func bindSpritesLoaded() {
+        presenter.statePublisher
+            .sink { [weak self] in
+                switch $0 {
+                case .spritesLoaded(let sprites):
+                    self?.spritesArray = sprites
+                    self?.presenter.imageSwapper(sprites: sprites)
+                default: break
+                }
+            }
+            .store(in: &subscriptions)
     }
     
-    func didUpdateSprites(spritesArray: [String]) {
-        self.spritesArray = spritesArray
+    private func bindFavouriteUpdated() {
+        presenter.statePublisher
+            .sink { [weak self] in
+                switch $0 {
+                case .favouriteUpdated(let isFavourite):
+                    self?.isFavourite = isFavourite
+                    self?.favouriteSwitch.isOn = isFavourite
+                default: break
+                }
+            }
+            .store(in: &subscriptions)
+    }
+    private func bindImageLoaded() {
+        presenter.statePublisher
+            .sink { [weak self] in
+                switch $0 {
+                case .imageLoaded(let image):
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else {return}
+                        self.pokemonImage.image = image
+                    }
+                default: break
+                }
+            }
+            .store(in: &subscriptions)
     }
     
-    
-    func didUpdatePokemonDetail(pokemonDTO: PokemonRepresentable) {
-        showData(pokemonDTO: pokemonDTO)
+    private func bindTypesValuesLoaded() {
+        presenter.statePublisher
+            .sink {  [weak self] in
+                guard let self = self else {return}
+                switch $0 {
+                case .typesValuesLoaded(let types):
+                    normalImage.alpha = types["normal"] ?? 0.1
+                    fightingImage.alpha = types["fighting"] ?? 0.1
+                    flyingImage.alpha = types["flying"] ?? 0.1
+                    poisonImage.alpha = types["poison"] ?? 0.1
+                    groundImage.alpha = types["ground"] ?? 0.1
+                    rockImage.alpha = types["rock"] ?? 0.1
+                    bugImage.alpha = types["bug"] ?? 0.1
+                    ghostImage.alpha = types["ghost"] ?? 0.1
+                    steelImage.alpha = types["steel"] ?? 0.1
+                    fireImage.alpha = types["fire"] ?? 0.1
+                    waterImage.alpha = types["water"] ?? 0.1
+                    grassImage.alpha = types["grass"] ?? 0.1
+                    electricImage.alpha = types["electric"] ?? 0.1
+                    psychicImage.alpha = types["psychic"] ?? 0.1
+                    iceImage.alpha = types["ice"] ?? 0.1
+                    dragonImage.alpha = types["dragon"] ?? 0.1
+                    darkImage.alpha = types["dark"] ?? 0.1
+                    fairyImage.alpha = types["fairy"] ?? 0.1
+                default: break
+                }
+            }
+            .store(in: &subscriptions)
     }
-    
-    func didFailWithError(error: Error) {
-        print("error: \(error)")
-    }
-    
-    func showImage(image: UIImage) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else {return}
-            self.pokemonImage.image = image
-        }
-    }
-    
-    func setSwitchStatus(switchStatus: Bool) {
-        favouriteSwitch.isOn = switchStatus
-    }
-    
 }

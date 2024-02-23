@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 struct PokemonDTO: Decodable {
     let id: Int
@@ -191,8 +192,6 @@ extension VersionGroupDetails: VersionGroupDetailsRepresentable {
     var versionGroupRepresentable: VersionGroupRepresentable {
         versionGroup
     }
-    
-    
 }
 
 struct VersionGroup: Decodable, VersionGroupRepresentable {

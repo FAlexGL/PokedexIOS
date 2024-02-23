@@ -81,9 +81,20 @@ class PokemonListVC: UIViewController {
     }
     
     @objc private func favouriteButtonTapped(_ sender: UIButton!){
+        searchBar.text = ""
         let buttonString = presenter.favouriteButtonTapped()
         self.navigationItem.rightBarButtonItem?.title = buttonString
         sender.setTitle(buttonString, for: .normal)
+    }
+    
+    private func deleteRow(indexPath: IndexPath) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            pokemons.remove(at: indexPath.row)
+            tableView.beginUpdates()
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.endUpdates()
+        }
     }
 }
 
@@ -153,8 +164,13 @@ private extension PokemonListVC {
         presenter.statePublisher
             .sink { [weak self] in
                 switch $0 {
-                case .favoriteChanged(let indexPath):
-                    self?.favouriteChanged(indexPath: indexPath)
+                case .favoriteChanged(let indexPath, let showingFavourites):
+                    if showingFavourites {
+                        self?.deleteRow(indexPath: indexPath)
+                    } else {
+                        self?.favouriteChanged(indexPath: indexPath)
+                    }
+                    
                 default: break
                 }
             }.store(in: &subscriptions)
